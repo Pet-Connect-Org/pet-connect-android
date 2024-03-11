@@ -1,4 +1,4 @@
-package com.example.petconnect;
+package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
+import com.example.petconnect.R;
+
 public class Onboarding1Activity extends AppCompatActivity {
-    private static final int DURATION = 3000;
+    private static final int DURATION = 2000;
     private View onboardingView;
 
     @Override
@@ -25,7 +27,7 @@ public class Onboarding1Activity extends AppCompatActivity {
         onboardingView.setAlpha(0f);
         onboardingView.animate()
                 .alpha(1f)
-                .setDuration(1000) // Fade in duration
+                .setDuration(2000) // Fade in duration
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {

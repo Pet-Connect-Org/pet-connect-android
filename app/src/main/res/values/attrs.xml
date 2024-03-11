@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomTextfield">
+        <attr name="labelText" format="string"/>
+        <attr name="inputText" format="string"/>
+        <attr name="hint" format="string"/>
+        <attr name="startIcon" format="reference" />
+        <attr name="endIcon" format="reference" />
+        <attr name="onTextChange" format="reference" />
+    </declare-styleable>
+</resources>

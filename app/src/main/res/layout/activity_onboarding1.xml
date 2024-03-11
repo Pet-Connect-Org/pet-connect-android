@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/onboarding_background"
-    android:layout_gravity="center"
-    tools:context=".Onboarding1Activity">
+    android:gravity="center"
+    tools:context=".activity.Onboarding1Activity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -33,7 +33,7 @@
         <Button
             android:id="@+id/current"
             android:layout_width="42dp"
-            android:layout_height="12dp"
+            android:layout_height="16dp"
             android:layout_marginHorizontal="4dp"
             android:backgroundTint="@color/primaryMain"
             android:text=" " />
@@ -43,7 +43,7 @@
 
             android:id="@+id/next"
             android:layout_width="42dp"
-            android:layout_height="12dp"
+            android:layout_height="16dp"
             android:layout_marginHorizontal="4dp"
             android:layout_weight="1"
             android:backgroundTint="@color/primaryLight"

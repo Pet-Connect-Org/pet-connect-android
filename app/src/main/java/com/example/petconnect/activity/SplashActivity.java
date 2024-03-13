@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.view.View;
 
 import com.example.petconnect.R;
+import com.example.petconnect.activity_createnewpost;
 
 public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 2000; // 2 seconds
@@ -37,7 +38,9 @@ public class SplashActivity extends AppCompatActivity {
                                 SharedPreferences sharedPreferences = getSharedPreferences("AccountPreference", Context.MODE_PRIVATE);
                                     Intent intent;
 
-                                    intent = new Intent(SplashActivity.this, Onboarding1Activity.class);
+                                 intent = new Intent(SplashActivity.this, Onboarding1Activity.class);
+
+
                                     startActivity(intent);
                                     finish();
                             }

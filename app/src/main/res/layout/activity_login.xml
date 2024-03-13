@@ -93,13 +93,14 @@
 
             <Button
                 android:id="@+id/button3"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
-                android:drawableLeft="@drawable/facebook"
-                android:text="Continue with Facebook"
-                style="?android:attr/borderlessButtonStyle"
 
+                android:drawableLeft="@drawable/facebook"
+
+                android:text="Continue with Facebook"
                 android:textColor="@android:color/black"
                 app:cornerRadius="4dp" />
         </LinearLayout>

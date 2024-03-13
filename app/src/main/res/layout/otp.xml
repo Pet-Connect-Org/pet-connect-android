@@ -91,7 +91,7 @@
                 android:id="@+id/editTextNumber9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEpnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/layoutbe"
                 android:ems="10"
@@ -134,13 +134,24 @@
             android:textSize="16dp"
             android:text="Haven't received the code yet?" />
 
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Resend OTP (20s)"
+            android:textColor="#B61A1A"
+            android:layout_marginBottom="20dp"
+            android:textSize="16sp"
+
+            android:textStyle="bold" />
+
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="20dp"
-            android:src="@drawable/button" />
+            android:padding="30dp"
+            android:background="@drawable/button" />
 
     </LinearLayout>
 

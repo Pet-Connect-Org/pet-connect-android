@@ -63,12 +63,14 @@ public class CustomTextfield extends LinearLayout {
             if (hint != null) {
                 inputEditText.setHint(hint);
             }
-            if (startIconDrawable != null) {
-                inputEditText.setCompoundDrawablesWithIntrinsicBounds(startIconDrawable, null, null, null);
-            }
-            if (endIconDrawable != null) {
-                inputEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, endIconDrawable, null);
-            }
+            inputEditText.setCompoundDrawablesWithIntrinsicBounds(startIconDrawable, null, endIconDrawable, null);
+//
+//
+//            if (startIconDrawable != null) {
+//            }
+//            if (endIconDrawable != null) {
+//                inputEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, endIconDrawable, null);
+//            }
         }
 
         setupTextChangeListener();

@@ -21,33 +21,22 @@
             android:layout_width="164dp"
             android:layout_height="69dp"
             android:contentDescription="logo"
+            android:src="@drawable/logo"
             tools:srcCompat="@drawable/logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/labelName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Name *"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-            <EditText
-                android:padding="16dp"
-                android:textSize="14sp"
-                android:id="@+id/input_name"
+            <com.example.petconnect.CustomTextfield
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:hint="Full Name" />
+                app:labelText="Name *"
+                app:hint="Name"
+                />
+
 
         </LinearLayout>
 
@@ -62,30 +51,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginEnd="12dp">
-
-                <TextView
-                    android:id="@+id/labelGender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:text="Gender *"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/input_gender"
+                <com.example.petconnect.CustomTextfield
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-
-                    android:background="@drawable/rounded_edittext"
+                    app:labelText="Gender *"
+                    app:hint="Female"
+                    app:endIcon="@drawable/chevron_down"
                     android:drawableEnd="@drawable/chevron_down"
-                    android:drawablePadding="8dp"
-                    android:hint="Female"
-                    android:padding="16dp"
-                    android:textSize="14sp" />
+                    />
 
             </LinearLayout>
 
@@ -94,28 +67,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/labelDOB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:text="Date of Birth *"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/inputDOB"
+                <com.example.petconnect.CustomTextfield
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_edittext"
-                    android:drawablePadding="8dp"
-                    android:hint="30/12/2002"
-                    android:drawableEnd="@drawable/calendar"
-                    android:padding="16dp"
-                    android:textSize="14sp" />
+                    app:labelText="Date of Birth"
+                    app:hint="DD/MM/YYYY"
+                    app:endIcon="@drawable/calendar"
+
+                    />
 
             </LinearLayout>
 
@@ -128,27 +87,15 @@
             android:layout_marginTop="12dp"
             >
 
-            <TextView
-                android:id="@+id/labelEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Email *"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-            <EditText
-                android:padding="16dp"
-                android:textSize="14sp"
-                android:id="@+id/input_email"
+            <com.example.petconnect.CustomTextfield
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:drawableStart="@drawable/envelope"
-                android:hint="Email" />
+                app:labelText="Email"
+                app:hint="Email"
+                app:startIcon="@drawable/envelope"
+
+                />
+
 
         </LinearLayout>
         <LinearLayout
@@ -157,27 +104,14 @@
             android:orientation="vertical"
             android:layout_marginTop="12dp">
 
-            <TextView
-                android:id="@+id/labelAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Address"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-            <EditText
-                android:padding="16dp"
-                android:textSize="14sp"
-                android:id="@+id/inputEditText"
+            <com.example.petconnect.CustomTextfield
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:drawableStart="@drawable/adress"
-                android:hint="Address" />
+                app:labelText="Address"
+                app:hint="Address"
+                app:startIcon="@drawable/adress"
+
+                />
 
         </LinearLayout>
 
@@ -187,29 +121,17 @@
             android:layout_marginTop="12dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/labelPW"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Password"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/input_password"
+            <com.example.petconnect.CustomTextfield
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:drawableStart="@drawable/lock_closed"
-                android:drawableEnd="@drawable/eye"
-                android:drawablePadding="8dp"
-                android:hint="Password"
-                android:padding="16dp"
-                android:textSize="14sp" />
+                app:labelText="Password"
+                app:hint="Password"
+                app:startIcon="@drawable/lock_closed"
+                app:endIcon="@drawable/eye"
+
+                />
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -225,7 +147,7 @@
                     android:paddingVertical="4dp" />
 
                 <TextView
-                    android:id="@+id/labelsub"
+                    android:id="@+id/labelsub1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
@@ -249,7 +171,7 @@
                     android:paddingVertical="4dp" />
 
                 <TextView
-                    android:id="@+id/labelsub"
+                    android:id="@+id/labelsub2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
@@ -266,28 +188,15 @@
             android:orientation="vertical"
             android:layout_marginTop="12dp">
 
-            <TextView
-                android:id="@+id/labelcfpw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Confirm password"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-            <EditText
-                android:padding="16dp"
-                android:textSize="14sp"
-                android:id="@+id/input_confirm_pw"
+            <com.example.petconnect.CustomTextfield
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="8dp"
-                android:background="@drawable/rounded_edittext"
-                android:hint="Password"
-                android:drawableStart="@drawable/lock_closed"
-                android:drawableEnd="@drawable/eye"/>
+                app:labelText="Confirm Password"
+                app:hint="Password"
+                app:startIcon="@drawable/lock_closed"
+                app:endIcon="@drawable/eye"
+
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -296,7 +205,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/icon"
+                    android:id="@+id/icon1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:drawableLeft="@drawable/tick"
@@ -316,39 +225,49 @@
             </LinearLayout>
         </LinearLayout>
 
-<
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_gravity="center"
-            android:background="@color/primaryMain"
-            app:cornerRadius="8dp"
-            android:layout_marginTop="16dp">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="46dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:background="@color/primaryMain"-->
+<!--            app:cornerRadius="8dp"-->
+<!--            android:layout_marginTop="16dp">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Sign Up"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/btnsignup"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="Sign Up"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold" />-->
 
-                <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="94dp"
-                    android:padding="10dp"
-                    android:src="@drawable/cat_fp" />
-            </RelativeLayout>
-        </RelativeLayout>
+<!--                <ImageView-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_alignParentLeft="true"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_marginLeft="94dp"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:src="@drawable/cat_fp" />-->
+<!--            </RelativeLayout>-->
+<!--        </RelativeLayout>-->
+        <Button
+            android:id="@+id/button_signup"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Sign Up"
+            android:textColor="@color/white"
+            android:layout_marginTop="16dp"
+            android:background="@color/primaryMain" />
 
         <TextView
             android:layout_width="66dp"
@@ -419,8 +338,4 @@
 
     </LinearLayout>
 
-
-
-
-    </LinearLayout>
 </ScrollView>

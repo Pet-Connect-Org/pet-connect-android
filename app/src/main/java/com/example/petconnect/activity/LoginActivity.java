@@ -29,12 +29,15 @@ public class LoginActivity extends AppCompatActivity {
     CustomDialog dialog;
     AccessTokenManager accessTokenManager;
 
+    Button toSignup;
+
     UserStore userStore = UserStore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         submit_login_button = findViewById(R.id.submit_login_button);
+        toSignup = findViewById(R.id.toSignup);
         email = findViewById(R.id.email_input_box);
         password= findViewById(R.id.password_input_box);
 
@@ -43,6 +46,15 @@ public class LoginActivity extends AppCompatActivity {
         password.setText("buithuyngoc2003");
         accessTokenManager = new AccessTokenManager(getApplicationContext());
 
+        toSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         submit_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

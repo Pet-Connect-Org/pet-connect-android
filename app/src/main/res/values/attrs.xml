@@ -8,4 +8,9 @@
         <attr name="endIcon" format="reference" />
         <attr name="onTextChange" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="CustomDropdown">
+        <attr name="labelDropdown" format="string"/>
+        <attr name="options" format="string" />
+    </declare-styleable>
 </resources>

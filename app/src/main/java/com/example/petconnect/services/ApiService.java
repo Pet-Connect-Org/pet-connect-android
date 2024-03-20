@@ -24,7 +24,7 @@ public interface ApiService {
     String password = "";
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     //    "http://10.0.2.2:8000/api/"
-    ApiService apiService = new Retrofit.Builder().baseUrl("http://10.0.2.2:8000/api/")
+    ApiService apiService = new Retrofit.Builder().baseUrl("https://db.pet-connect.website/api/")
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(ApiService.class);
 
     @POST("auth/login")

@@ -98,7 +98,6 @@ public class CustomDropdown extends LinearLayout {
                     public boolean onMenuItemClick(MenuItem item) {
                         setSelectedItemKey(items[item.getItemId()].getKey());
                         dropdown_menu.setText(item.getTitle());
-
                         return true;
                     }
                 });

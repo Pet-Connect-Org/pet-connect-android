@@ -31,12 +31,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.SignUpActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".activity.Onboarding1Activity"
             android:exported="false"
@@ -47,14 +42,14 @@
             android:exported="false" />
         <activity
             android:name=".activity.SplashActivity"
-            android:exported="false"
-            android:label="@string/app_name"/>
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+    </activity>
     </application>
 
 </manifest>

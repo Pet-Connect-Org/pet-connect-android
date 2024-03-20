@@ -65,9 +65,7 @@ public class CustomTextfield extends LinearLayout {
                 inputEditText.setHint(hint);
             }
             inputEditText.setCompoundDrawablesWithIntrinsicBounds(startIconDrawable, null, endIconDrawable, null);
-
         }
-
         setupTextChangeListener();
     }
 

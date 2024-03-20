@@ -3,7 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/name"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,11 +31,11 @@
             android:orientation="vertical">
 
             <com.example.petconnect.CustomTextfield
+                android:id="@+id/name_input_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:labelText="Name *"
-                app:hint="Name"
-                />
+                app:hint="Your Name"
+                app:labelText="Name *" />
 
 
         </LinearLayout>
@@ -51,14 +51,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginEnd="12dp">
+
+
                 <com.example.petconnect.CustomTextfield
+                    android:id="@+id/gender_input_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:labelText="Gender *"
-                    app:hint="Female"
                     app:endIcon="@drawable/chevron_down"
-                    android:drawableEnd="@drawable/chevron_down"
-                    />
+                    app:hint="Female"
+                    app:labelText="Gender" />
 
             </LinearLayout>
 
@@ -68,13 +69,13 @@
                 android:orientation="vertical">
 
                 <com.example.petconnect.CustomTextfield
+                    android:id="@+id/dob_input_box"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:labelText="Date of Birth"
-                    app:hint="DD/MM/YYYY"
                     app:endIcon="@drawable/calendar"
+                    app:hint="DD/MM/YYYY"
 
-                    />
+                    app:labelText="Date of Birth" />
 
             </LinearLayout>
 
@@ -88,13 +89,13 @@
             >
 
             <com.example.petconnect.CustomTextfield
+                android:id="@+id/email_input_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:labelText="Email"
-                app:hint="Email"
-                app:startIcon="@drawable/envelope"
+                app:hint="abc@gmail.com"
+                app:labelText="Email *"
 
-                />
+                app:startIcon="@drawable/envelope" />
 
 
         </LinearLayout>
@@ -105,13 +106,13 @@
             android:layout_marginTop="12dp">
 
             <com.example.petconnect.CustomTextfield
+                android:id="@+id/address_input_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:hint="Adress"
                 app:labelText="Address"
-                app:hint="Address"
-                app:startIcon="@drawable/adress"
 
-                />
+                app:startIcon="@drawable/adress" />
 
         </LinearLayout>
 
@@ -122,29 +123,35 @@
             android:orientation="vertical">
 
             <com.example.petconnect.CustomTextfield
+                android:id="@+id/pw_input_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:labelText="Password"
-                app:hint="Password"
-                app:startIcon="@drawable/lock_closed"
                 app:endIcon="@drawable/eye"
+                app:hint="Password"
+                app:labelText="Password *"
 
-                />
+                app:startIcon="@drawable/lock_closed" />
 
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                >
 
-                <TextView
-                    android:id="@+id/labelicon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/tick"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp" />
+
+                   <TextView
+                       android:id="@+id/tick1"
+                       android:layout_width="12dp"
+                       android:layout_height="12dp"
+                       android:background="@drawable/tick"
+                       android:paddingHorizontal="8dp"
+                       android:layout_gravity="center"
+                       android:paddingVertical="4dp" />
+
+
 
                 <TextView
                     android:id="@+id/labelsub1"
@@ -157,29 +164,36 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
+
 
                 <TextView
-                    android:id="@+id/icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/tick"
-                    android:drawableTint="#17A117"
+                    android:id="@+id/tick2"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/tick"
                     android:paddingHorizontal="8dp"
+                    android:layout_gravity="center"
                     android:paddingVertical="4dp" />
 
-                <TextView
-                    android:id="@+id/labelsub2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:text="Must be at least 6 characters"
-                    android:textColor="#17A117"
-                    android:textSize="13sp" />
-            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/labelsub2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="Must be at least 6 characters"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -189,40 +203,45 @@
             android:layout_marginTop="12dp">
 
             <com.example.petconnect.CustomTextfield
+                android:id="@+id/confirm_pw"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:labelText="Confirm Password"
-                app:hint="Password"
-                app:startIcon="@drawable/lock_closed"
                 app:endIcon="@drawable/eye"
+                app:hint="Re-enter your password"
+                app:labelText="Confirm Password *"
 
-                />
+                app:startIcon="@drawable/lock_closed" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_gravity="center"
                 >
 
-                <TextView
-                    android:id="@+id/icon1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/tick"
-                    android:drawableTint="#17A117"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp" />
+
+                    <TextView
+                        android:id="@+id/tick3"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:background="@drawable/tick"
+                        android:paddingHorizontal="8dp"
+                        android:layout_gravity="center"
+                        android:paddingVertical="4dp" />
+
 
                 <TextView
-                    android:id="@+id/labelsub"
+                    android:id="@+id/labelsub3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="4dp"
                     android:text="Match with password"
-                    android:textColor="#17A117"
                     android:textSize="13sp" />
             </LinearLayout>
+
+
         </LinearLayout>
 
 <!--        <RelativeLayout-->
@@ -259,7 +278,7 @@
 <!--            </RelativeLayout>-->
 <!--        </RelativeLayout>-->
         <Button
-            android:id="@+id/button_signup"
+            android:id="@+id/btn_signup"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -285,7 +304,7 @@
             android:background="@drawable/custom_bg_with_shadow">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btn_fb"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -303,7 +322,7 @@
             android:background="@drawable/custom_bg_with_shadow">
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_gg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/smoke"
@@ -327,7 +346,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/button_signin"
+            android:id="@+id/btn_signin"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

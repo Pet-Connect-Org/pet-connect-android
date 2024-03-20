@@ -11,12 +11,11 @@ import android.widget.Toast;
 import com.example.petconnect.CustomDialog;
 import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.R;
-import com.example.petconnect.manager.AccessTokenManager;
+import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
-import com.example.petconnect.stores.UserStore;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,24 +26,24 @@ public class LoginActivity extends AppCompatActivity {
     CustomTextfield email;
     CustomTextfield password;
     CustomDialog dialog;
-    AccessTokenManager accessTokenManager;
+    UserManager userManager;
+
 
     Button toSignup;
 
-    UserStore userStore = UserStore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        userManager = new UserManager(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         submit_login_button = findViewById(R.id.submit_login_button);
         toSignup = findViewById(R.id.toSignup);
         email = findViewById(R.id.email_input_box);
-        password= findViewById(R.id.password_input_box);
+        password = findViewById(R.id.password_input_box);
 
-        // This is demo account for log in function
+        // This is demo account for login function
         email.setText("buithuyngoc1@gmail.com");
         password.setText("buithuyngoc2003");
-        accessTokenManager = new AccessTokenManager(getApplicationContext());
 
         toSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,13 +69,13 @@ public class LoginActivity extends AppCompatActivity {
                             ExtendedAccount account = loginResponse.getUser();
                             String token = loginResponse.getToken();
                             String message = loginResponse.getMessage();
-
-                            userStore.setAccessToken(token);
-                            userStore.setAccountInformation(account);
+                            userManager.saveAccessToken(token);
+                            userManager.saveUser(account);
 
                             Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
                             Intent intent;
+
                             intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();

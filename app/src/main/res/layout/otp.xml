@@ -118,11 +118,13 @@
 
         </LinearLayout>
 
-        <ImageView
+        <TextView
             android:id="@+id/imageView9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/notice"/>
+            android:gravity="center"
+            android:text="Wrong OTP entered"
+            android:textColor="#DC3B31" />
 
         <TextView
             android:id="@+id/textView6"

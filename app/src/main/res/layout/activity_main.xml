@@ -25,4 +25,15 @@
         android:layout_height="wrap_content"
         android:text="userInformation: " />
 
+    <Button
+        android:id="@+id/clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
+    <com.example.petconnect.CustomDropdown
+        android:id="@+id/dropdown_demo"
+        app:labelDropdown="Sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

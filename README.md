@@ -26,23 +26,7 @@ Running follow these simple example steps below
 
 7. Open website in [http://localhost:3000/](http://localhost:3000/)
 
-### Run application with Docker
-
-<!--
-1. Pull docker image
-
-```sh
-  docker pull
-```
-
-2. Run a Docker container
-
-```sh
-  docker run -dp 127.0.0.1:3000:3000
-``` -->
-
 ## Features
-
 
 - Authentication:
     - [x] Sign in

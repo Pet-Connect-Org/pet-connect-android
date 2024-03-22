@@ -92,13 +92,13 @@
             android:background="@drawable/custom_bg_with_shadow">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btn_fb"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/transparent"
                 android:drawableLeft="@drawable/facebook"
                 android:text="Continue with Facebook"
-                style="?android:attr/borderlessButtonStyle"
 
                 android:textColor="@android:color/black"
                 app:cornerRadius="4dp" />
@@ -111,7 +111,7 @@
             android:background="@drawable/custom_bg_with_shadow">
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_gg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/smoke"
@@ -135,7 +135,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/toSignup"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

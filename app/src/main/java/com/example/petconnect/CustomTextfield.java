@@ -60,6 +60,8 @@ public class CustomTextfield extends LinearLayout {
             }
             if (labelText != null) {
                 labelTextView.setText(labelText);
+            } else {
+                labelTextView.setVisibility(TextView.GONE);
             }
             if (hint != null) {
                 inputEditText.setHint(hint);

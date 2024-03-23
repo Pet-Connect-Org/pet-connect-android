@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.petconnect.CustomDialog;
 import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
@@ -25,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     Button submit_login_button;
     CustomTextfield email;
     CustomTextfield password;
-    CustomDialog dialog;
     UserManager userManager;
 
 
@@ -57,10 +55,9 @@ public class LoginActivity extends AppCompatActivity {
         submit_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                submit_login_button.setClickable(false);
                 String email_to_submit = email.getText();
                 String password_to_submit = password.getText();
-//                Toast.makeText(LoginActivity.this, email_to_submit+password_to_submit, Toast.LENGTH_LONG).show();
-//                CustomDialog.showDialog(LoginActivity.this, email_to_submit, password_to_submit);
                 ApiService.apiService.login(new LoginRequest(email_to_submit, password_to_submit)).enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
@@ -80,17 +77,16 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            // Handle unsuccessful login
                             Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        // Handle network errors or unexpected exceptions
                         Toast.makeText(LoginActivity.this, "Login failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+                submit_login_button.setClickable(true);
             }
         });
     }

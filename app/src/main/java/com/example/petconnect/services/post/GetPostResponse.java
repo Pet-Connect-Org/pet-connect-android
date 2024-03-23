@@ -1,9 +1,7 @@
 package com.example.petconnect.services.post;
 
-import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.models.ExtendedPost;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GetPostResponse {
@@ -13,7 +11,8 @@ public class GetPostResponse {
     public String getMessage() {
         return this.message;
     }
-    public ArrayList<ExtendedPost> getUser() {
+
+    public ArrayList<ExtendedPost> getPostList() {
         return this.data;
     }
 }

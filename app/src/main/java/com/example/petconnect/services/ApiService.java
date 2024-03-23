@@ -16,14 +16,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
-
+import retrofit2.http.QueryMap;
 
 
 public interface ApiService {
-    String email = "";
-    String password = "";
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     ApiService apiService = new Retrofit.Builder().baseUrl("https://db.pet-connect.website/api/")
@@ -34,8 +31,7 @@ public interface ApiService {
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
     @GET("posts")
-    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization,
-                                   @HeaderMap Map<String, String> headers);
+    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @QueryMap Map<String, Number> options);
 
     @POST("auth/sign-up")
     Call<SignupRespone> signup(@Body SignupRequest signupRequest);

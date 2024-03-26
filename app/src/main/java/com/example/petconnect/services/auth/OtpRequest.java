@@ -1,11 +1,14 @@
 package com.example.petconnect.services.auth;
 
+import retrofit2.Callback;
+
 public class OtpRequest {
     private String email;
     private String token;
 
-    public OtpRequest(String email, String token, String number3, String number4, String number5, String number6) {
+    public OtpRequest(String email, String token) {
         this.email = email;
         this.token = token;
     }
+
 }

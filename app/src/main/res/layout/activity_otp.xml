@@ -9,9 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/onboarding_background" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/onboarding_background"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,6 +67,10 @@
                 android:background="@drawable/layoutbe"
                 android:ems="10"
                 android:maxLength="1"
+                android:backgroundTint="@color/neutral"
+                android:gravity="center"
+                android:hint="1"
+
                 android:inputType="number" />
 
             <EditText
@@ -77,6 +82,9 @@
                 android:background="@drawable/layoutbe"
                 android:ems="10"
                 android:maxLength="1"
+                android:backgroundTint="@color/neutral"
+                android:hint="1"
+                android:gravity="center"
                 android:inputType="number" />
 
             <EditText
@@ -88,6 +96,9 @@
                 android:background="@drawable/layoutbe"
                 android:ems="10"
                 android:maxLength="1"
+                android:backgroundTint="@color/neutral"
+                android:hint="1"
+                android:gravity="center"
                 android:inputType="number" />
 
             <EditText
@@ -96,9 +107,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/layoutbe"
+                android:background ="@drawable/layoutbe"
                 android:ems="10"
                 android:maxLength="1"
+                android:backgroundTint="@color/neutral"
+                android:hint="1"
+                android:gravity="center"
                 android:inputType="number" />
 
             <EditText
@@ -110,6 +124,9 @@
                 android:background="@drawable/layoutbe"
                 android:ems="10"
                 android:maxLength="1"
+                android:backgroundTint="@color/neutral"
+                android:hint="1"
+                android:gravity="center"
                 android:inputType="number" />
 
             <EditText
@@ -120,17 +137,26 @@
                 android:background="@drawable/layoutbe"
                 android:ems="10"
                 android:maxLength="1"
+                android:backgroundTint="@color/neutral"
+                android:hint="1"
+                android:gravity="center"
                 android:inputType="number" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/imageView9"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Wrong OTP entered"
-            android:textColor="#DC3B31" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtWrong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Wrong OTP entered"
+                android:gravity="center" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView6"
@@ -139,17 +165,16 @@
             android:gravity="center"
             android:paddingTop="30dp"
             android:paddingBottom="5dp"
-            android:textSize="16dp"
-            android:text="Haven't received the code yet?" />
+            android:text="Haven't received the code yet?"
+            android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/resendBtn"
+            android:id="@+id/txtResend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Resend OTP"
-            android:textColor="#B61A1A"
+
 
             android:textSize="16sp"
             android:textStyle="bold" />

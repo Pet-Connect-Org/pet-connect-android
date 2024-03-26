@@ -120,6 +120,9 @@ public class SignUpActivity extends AppCompatActivity {
                 // Set isLoading to true before making the signup request
                 isLoading = true;
 
+                Intent myintent = new Intent(SignUpActivity.this, OtpActivity.class);
+
+
                 ApiService.apiService.signup(new SignupRequest(email_to_submit, pw_to_submit, name_to_submit, re_pw_to_submit, gender_to_submit, dob_to_submit, address_to_submit)).enqueue(new Callback<SignupRespone>() {
                     @Override
                     public void onResponse(Call<SignupRespone> call, Response<SignupRespone> response) {
@@ -131,8 +134,12 @@ public class SignUpActivity extends AppCompatActivity {
                             String message = signupRespone.getMessage();
 
                             Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                            String a = email.getText().toString();
                             // Navigate to OTPActivity upon successful signup
                             Intent intent = new Intent(SignUpActivity.this, OtpActivity.class);
+                            // gửi kèm dữ liệu chuyển sang activity
+                            intent.putExtra("email", a);
                             startActivity(intent);
 
                         } else {
@@ -153,6 +160,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    // Phương thức tạo mã OTP
 
     public void checkPassword(String pw_to_submit, String re_pw_to_submit) {
         if (pw_to_submit.length() >= 6 && pw_to_submit.matches(passwordPattern)) {
@@ -177,6 +185,5 @@ public class SignUpActivity extends AppCompatActivity {
             tick3.setBackgroundTintList(ContextCompat.getColorStateList(SignUpActivity.this, R.color.third));
         }
     }
-
 
 }

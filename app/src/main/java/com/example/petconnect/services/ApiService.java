@@ -3,10 +3,9 @@ package com.example.petconnect.services;
 import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
 import com.example.petconnect.services.post.GetPostResponse;
+import com.example.petconnect.services.post.PostRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -32,5 +31,5 @@ public interface ApiService {
 
     @GET("posts")
     Call<GetPostResponse> getPosts(@Header("Authorization") String authorization,
-                                   @HeaderMap Map<String, String> headers);
+                                   @HeaderMap PostRequest headers);
 }

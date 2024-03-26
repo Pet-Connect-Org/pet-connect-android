@@ -27,7 +27,7 @@ public class OtpActivity extends AppCompatActivity {
     EditText otp1, otp2, otp3, otp4, otp5, otp6;
     ImageButton btnOtp;
 
-    TextView txtWrong , txtResend;
+    TextView txtWrong, txtResend;
     CountDownTimer countDownTimer;
 
     @Override
@@ -41,8 +41,8 @@ public class OtpActivity extends AppCompatActivity {
         otp4 = findViewById(R.id.otp4);
         otp5 = findViewById(R.id.otp5);
         otp6 = findViewById(R.id.otp6);
-        txtWrong =findViewById(R.id.txtWrong );
-        txtResend = findViewById(R.id.txtResend );
+        txtWrong = findViewById(R.id.txtWrong);
+        txtResend = findViewById(R.id.txtResend);
         btnOtp = findViewById(R.id.btnOtp);
 
         Intent myintent = getIntent();
@@ -79,7 +79,7 @@ public class OtpActivity extends AppCompatActivity {
                             OtpResponse otpResponse = response.body();
 
                             String message = otpResponse.getMessage();
-                            Toast.makeText(OtpActivity.this,message , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OtpActivity.this, message, Toast.LENGTH_SHORT).show();
                             // Xử lý kết quả ở đây
                         } else {
                             Toast.makeText(OtpActivity.this, "Otp failed.", Toast.LENGTH_SHORT).show();
@@ -94,6 +94,7 @@ public class OtpActivity extends AppCompatActivity {
             }
         });
     }
+
     // Kiểm tra xem có bất kỳ TextView nào có giá trị null không
     private boolean isAnyTextViewNull() {
         return otp1.getText().toString().isEmpty() ||

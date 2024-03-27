@@ -17,14 +17,11 @@ import com.example.petconnect.activity_createnewpost;
 public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 2000; // 2 seconds
     private View splashView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         splashView = findViewById(R.id.splash_view);
-
         splashView.setAlpha(0f);
         splashView.animate()
                 .alpha(1f)
@@ -36,13 +33,10 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 SharedPreferences sharedPreferences = getSharedPreferences("AccountPreference", Context.MODE_PRIVATE);
-                                    Intent intent;
-
-                                 intent = new Intent(SplashActivity.this, Onboarding1Activity.class);
-
-
-                                    startActivity(intent);
-                                    finish();
+                                Intent intent;
+                                intent = new Intent(SplashActivity.this, Onboarding1Activity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         }, SPLASH_DURATION);
                     }

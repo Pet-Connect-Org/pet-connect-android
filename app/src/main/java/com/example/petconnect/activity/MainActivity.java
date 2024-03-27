@@ -1,31 +1,92 @@
 package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.petconnect.R;
-import com.example.petconnect.stores.UserStore;
+import com.example.petconnect.adapter.PostListAdapter;
+import com.example.petconnect.manager.UserManager;
+import com.example.petconnect.models.ExtendedPost;
+import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.post.GetPostResponse;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    RecyclerView recyclerViewPostList;
+    PostListAdapter postListAdapter;
+    UserManager userManager;
 
-    TextView accessToken;
-    TextView userInformation;
+    Intent intent;
 
-    UserStore userStore = UserStore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        userManager = new UserManager(this);
 
-        accessToken = findViewById(R.id.accessToken);
-        userInformation = findViewById(R.id.userInformation);
+        recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
+        recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        accessToken.setText(accessToken.getText()+ " " + userStore.getAccessToken());
+        fetchPosts();
+    }
 
-        userInformation.setText(userInformation.getText() + " " + userStore.getAccountInformation().getEmail());
+    private void fetchPosts() {
+        String token = userManager.getAccessToken();
 
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userManager.clearAccessToken();
+                intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        Map<String, Number> queryOptions = new HashMap<>();
+        queryOptions.put("limit", 20);
+        queryOptions.put("offset", 0);
+
+        ApiService.apiService.getPosts("Bearer " + token, queryOptions).enqueue(new Callback<GetPostResponse>() {
+            @Override
+            public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<ExtendedPost> postList = response.body().getPostList();
+                    updateRecyclerView(postList);
+                } else {
+                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetPostResponse> call, Throwable t) {
+//                Toast.makeText(MainActivity.this, "Bearer " + token, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateRecyclerView(List<ExtendedPost> postList) {
+        postListAdapter = new PostListAdapter(MainActivity.this, postList);
+        recyclerViewPostList.setAdapter(postListAdapter);
     }
 }

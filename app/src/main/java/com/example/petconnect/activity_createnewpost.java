@@ -11,17 +11,12 @@ import android.widget.Toast;
 
 import com.example.petconnect.activity.LoginActivity;
 import com.example.petconnect.activity.MainActivity;
-import com.example.petconnect.manager.AccessTokenManager;
-import com.example.petconnect.models.ExtendedAccount;
-import com.example.petconnect.models.ExtendedPost;
-import com.example.petconnect.services.ApiService;
-import com.example.petconnect.services.auth.LoginRequest;
-import com.example.petconnect.services.auth.LoginResponse;
-import com.example.petconnect.services.post.GetPostResponse;
-import com.example.petconnect.services.post.PostRequest;
 
-import java.util.ArrayList;
-import java.util.Map;
+import com.example.petconnect.manager.UserManager;
+import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.post.CreatePostResponse;
+import com.example.petconnect.services.post.GetPostResponse;
+import com.example.petconnect.services.post.CreatePostRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +25,7 @@ import retrofit2.Response;
 public class activity_createnewpost extends AppCompatActivity {
     Button btnPost;
     EditText txtStatusPost;
-    AccessTokenManager accessTokenManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +33,7 @@ public class activity_createnewpost extends AppCompatActivity {
         btnPost = findViewById(R.id.btnPost);
         txtStatusPost = findViewById(R.id.txtstatus_post);
 
-        accessTokenManager = new AccessTokenManager(this);
+
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,9 +45,9 @@ public class activity_createnewpost extends AppCompatActivity {
 
 
     private void uploatPost() {
-        String accessToken = accessTokenManager.getAccessToken();
-        String createPost = txtStatusPost.getText().toString();
 
+        String createPost = txtStatusPost.getText().toString();
+        String accessToken = (new UserManager(this)).getAccessToken();
         if (accessToken==null){
             Toast.makeText(this, "Please login to continue ",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(activity_createnewpost.this, LoginActivity.class);
@@ -60,13 +55,13 @@ public class activity_createnewpost extends AppCompatActivity {
             return;
         }else {
             String authorizationHeader = "Bearer "+ accessToken;
-            ApiService.apiService.getPosts(authorizationHeader, new PostRequest(createPost)).enqueue(new Callback<GetPostResponse>() {
+            ApiService.apiService.createPost(authorizationHeader, new CreatePostRequest(createPost)).enqueue(new Callback<CreatePostResponse>() {
                 @Override
-                public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {
+                public void onResponse(Call<CreatePostResponse> call, Response<CreatePostResponse> response) {
                         if (response.isSuccessful()){
-                            GetPostResponse postResponse = response.body();
+                            CreatePostResponse postResponse = response.body();
                             if(postResponse!=null){
-                                ArrayList<ExtendedPost> posts = postResponse.getUser();
+                                Toast.makeText(activity_createnewpost.this,"Post created successfully.",Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(activity_createnewpost.this,MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -74,13 +69,13 @@ public class activity_createnewpost extends AppCompatActivity {
 
                         }
                         else {
-                            Toast.makeText(activity_createnewpost.this,"Create post failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity_createnewpost.this,"Create post failed.",Toast.LENGTH_LONG).show();
                         }
                 }
 
                 @Override
-                public void onFailure(Call<GetPostResponse> call, Throwable t) {
-                    Toast.makeText(activity_createnewpost.this, "Request failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                public void onFailure(Call<CreatePostResponse> call, Throwable t) {
+                    Toast.makeText(activity_createnewpost.this, "Failed to create post. Please try again" , Toast.LENGTH_SHORT).show();
                 }
             });
 

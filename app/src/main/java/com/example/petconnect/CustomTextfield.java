@@ -1,4 +1,5 @@
 package com.example.petconnect;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -59,18 +60,14 @@ public class CustomTextfield extends LinearLayout {
             }
             if (labelText != null) {
                 labelTextView.setText(labelText);
+            } else {
+                labelTextView.setVisibility(TextView.GONE);
             }
             if (hint != null) {
                 inputEditText.setHint(hint);
             }
-            if (startIconDrawable != null) {
-                inputEditText.setCompoundDrawablesWithIntrinsicBounds(startIconDrawable, null, null, null);
-            }
-            if (endIconDrawable != null) {
-                inputEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, endIconDrawable, null);
-            }
+            inputEditText.setCompoundDrawablesWithIntrinsicBounds(startIconDrawable, null, endIconDrawable, null);
         }
-
         setupTextChangeListener();
     }
 
@@ -78,7 +75,10 @@ public class CustomTextfield extends LinearLayout {
         this.textChangeListener = listener;
     }
 
-    public void setText(String value) {inputEditText.setText(value);}
+    public void setText(String value) {
+        inputEditText.setText(value);
+    }
+
     public String getText() {
         return inputEditText.getText().toString();
     }

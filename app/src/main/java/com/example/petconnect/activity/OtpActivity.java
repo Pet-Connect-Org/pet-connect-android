@@ -158,7 +158,6 @@ public class OtpActivity extends AppCompatActivity {
                    @Override
                    public void onClick(View view) {
                        startResendCountdown();
-
                        String number1 = otp1.getText().toString().trim();
                        String number2 = otp2.getText().toString().trim();
                        String number3 = otp3.getText().toString().trim();
@@ -167,7 +166,7 @@ public class OtpActivity extends AppCompatActivity {
                        String number6 = otp6.getText().toString().trim();
 
                        String numbera = number1 + number2 + number3 + number4 + number5 + number6;
-                   if(email != null){
+                      if(email != null){
                        ApiService.apiService.ReSendOTP(new ResendRequest(email)).enqueue(new Callback<ResendResponse>() {
                            @Override
                            public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {

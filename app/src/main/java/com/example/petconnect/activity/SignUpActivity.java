@@ -85,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
                 picker = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, month + 1, year);
+                        String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, month + 1, year);
                         dob.setText(formattedDate);
                     }
                 }, year, month, day);
@@ -119,7 +119,6 @@ public class SignUpActivity extends AppCompatActivity {
                 // Set isLoading to true before making the signup request
                 isLoading = true;
 
-                Intent myintent = new Intent(SignUpActivity.this, OtpActivity.class);
                 ApiService.apiService.signup(new SignupRequest(email_to_submit, pw_to_submit, name_to_submit, re_pw_to_submit, gender_to_submit, dob_to_submit, address_to_submit)).enqueue(new Callback<SignupRespone>() {
                     @Override
                     public void onResponse(Call<SignupRespone> call, Response<SignupRespone> response) {
@@ -127,7 +126,6 @@ public class SignUpActivity extends AppCompatActivity {
                         isLoading = false;
                         if (response.isSuccessful()) {
                             SignupRespone signupRespone = response.body();
-                            String token = signupRespone.getAccessToken();
                             String message = signupRespone.getMessage();
 
                             Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();

@@ -136,7 +136,7 @@ public class OtpActivity extends AppCompatActivity {
     }
     // Bắt đầu đếm ngược cho việc gửi lại OTP
     private void startResendCountdown() {
-        countDownTimer = new CountDownTimer(60000, 1000) { // 60 giây, mỗi lần giảm 1 giây
+        countDownTimer = new CountDownTimer(30000, 1000) { // 30 giây, mỗi lần giảm 1 giây
             @Override
             public void onTick(long millisUntilFinished) {
                 txtResend.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
@@ -147,15 +147,8 @@ public class OtpActivity extends AppCompatActivity {
             public void onFinish() {
                 txtWrong.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
                 txtReceive.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-                txtResend.setTextColor(getResources().getColor(android.R.color.black)); // Đổi màu văn bản về màu đen khi kết thúc
+                //txtResend.setTextColor(getResources().getColor(android.R.color.black)); // Đổi màu văn bản về màu đen khi kết thúc
                 txtResend.setText("Resend again"); // Hiển thị lại văn bản "Resend"
-                txtResend.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Gọi lại phương thức gửi lại OTP ở đây
-                        startResendCountdown();
-                    }
-                });
             }
         }.start();
     }

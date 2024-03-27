@@ -29,7 +29,7 @@ import retrofit2.Response;
 public class OtpActivity extends AppCompatActivity {
     EditText otp1, otp2, otp3, otp4, otp5, otp6;
     Button btnOtp;
-    TextView txtWrong,txtReceive, txtResend;
+    TextView txtWrong, txtReceive, txtResend;
     CountDownTimer countDownTimer;
 
     @Override
@@ -52,7 +52,6 @@ public class OtpActivity extends AppCompatActivity {
         Intent myintent = getIntent();
         String email = myintent.getStringExtra("email");
 
-        
         // goi phuong thuc dich chuyen thoi gian sau khi chuyen man hinh otp
         startResendCountdown();
 
@@ -67,9 +66,9 @@ public class OtpActivity extends AppCompatActivity {
         btnOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Kiểm tra các TextView
                 if (isAnyTextViewNull()) {
-                    txtWrong.setVisibility(View.VISIBLE); // Hiển thị textview "wrong enter"
+                    txtWrong.setVisibility(View.VISIBLE);
+                    return;
                 }
 
                 String number1 = otp1.getText().toString().trim();
@@ -88,7 +87,9 @@ public class OtpActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             OtpResponse otpResponse = response.body();
                             String message = otpResponse.getMessage();
+
                             Toast.makeText(OtpActivity.this, message, Toast.LENGTH_SHORT).show();
+                            // Chuyển qua màn Login
                             Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
                             startActivity(intent);
                         } else {
@@ -134,6 +135,7 @@ public class OtpActivity extends AppCompatActivity {
             }
         });
     }
+
     // Bắt đầu đếm ngược cho việc gửi lại OTP
     private void startResendCountdown() {
         countDownTimer = new CountDownTimer(30000, 1000) { // 30 giây, mỗi lần giảm 1 giây

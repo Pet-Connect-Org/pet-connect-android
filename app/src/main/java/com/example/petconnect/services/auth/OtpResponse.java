@@ -1,10 +1,7 @@
 package com.example.petconnect.services.auth;
 
 public class OtpResponse {
-    private String status;
     private String message;
-
-
 
     public String getMessage() {
         return message;

@@ -116,13 +116,10 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
                 checkPassword(pw_to_submit, re_pw_to_submit);
-
                 // Set isLoading to true before making the signup request
                 isLoading = true;
 
                 Intent myintent = new Intent(SignUpActivity.this, OtpActivity.class);
-
-
                 ApiService.apiService.signup(new SignupRequest(email_to_submit, pw_to_submit, name_to_submit, re_pw_to_submit, gender_to_submit, dob_to_submit, address_to_submit)).enqueue(new Callback<SignupRespone>() {
                     @Override
                     public void onResponse(Call<SignupRespone> call, Response<SignupRespone> response) {
@@ -137,10 +134,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                             String a = email.getText().toString();
                             // Navigate to OTPActivity upon successful signup
-                            Intent intent = new Intent(SignUpActivity.this, OtpActivity.class);
+                            Intent myintent = new Intent(SignUpActivity.this, OtpActivity.class);
                             // gửi kèm dữ liệu chuyển sang activity
-                            intent.putExtra("email", a);
-                            startActivity(intent);
+                            myintent.putExtra("email", a);
+                            startActivity(myintent);
 
                         } else {
                             // Handle unsuccessful signup

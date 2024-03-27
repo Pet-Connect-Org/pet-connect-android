@@ -7,17 +7,29 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".activity_createnewpost">
-
-    <TextView
-        android:id="@+id/textView4"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:drawableLeft="@drawable/xmark"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Create new post"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="42dp">
+
+        <TextView
+            android:id="@+id/close_create_post"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/xmark" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="369dp"
+            android:layout_height="47dp"
+
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Create new post"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView5"
@@ -26,7 +38,7 @@
         android:background="#ECECEC" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/create_post_username"
         android:layout_width="411dp"
         android:layout_height="49dp"
         android:layout_gravity="center_horizontal"
@@ -43,11 +55,13 @@
     <EditText
         android:id="@+id/txtstatus_post"
         android:layout_width="match_parent"
-        android:layout_height="221dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:background="@drawable/border_transparent"
         android:ems="10"
         android:gravity="top"
+        android:layout_weight="1"
+
         android:hint="Jame, what are you ..."
         android:inputType="text"
         android:paddingLeft="20dp"
@@ -126,18 +140,18 @@
         android:textColor="#030B5B"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+<!--    <TextView-->
+<!--        android:id="@+id/textView14"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
 
-        android:drawableLeft="@drawable/attach"
-        android:drawablePadding="10dp"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:text="Attachment"
-        android:textColor="#030B5B"
-        android:textSize="20sp" />
+<!--        android:drawableLeft="@drawable/attach"-->
+<!--        android:drawablePadding="10dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:text="Attachment"-->
+<!--        android:textColor="#030B5B"-->
+<!--        android:textSize="20sp" />-->
 
     <Button
         android:id="@+id/btnPost"
@@ -147,6 +161,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/border_button"
         android:gravity="center"
         android:text="Post"

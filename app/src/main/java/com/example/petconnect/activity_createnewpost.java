@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.petconnect.activity.LoginActivity;
@@ -25,6 +26,7 @@ import retrofit2.Response;
 public class activity_createnewpost extends AppCompatActivity {
     Button btnPost;
     EditText txtStatusPost;
+    TextView create_post_username,close_create_post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,17 @@ public class activity_createnewpost extends AppCompatActivity {
         setContentView(R.layout.activity_createnewpost);
         btnPost = findViewById(R.id.btnPost);
         txtStatusPost = findViewById(R.id.txtstatus_post);
-
-
+        create_post_username = findViewById(R.id.create_post_username);
+        close_create_post = findViewById(R.id.close_create_post);
+        close_create_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity_createnewpost.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        UserManager userManager = new UserManager(this);
+//        create_post_username.setText(userManager.getUser().getUser().getName());
         btnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

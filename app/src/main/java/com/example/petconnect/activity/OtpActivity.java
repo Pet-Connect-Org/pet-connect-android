@@ -138,8 +138,10 @@ public class OtpActivity extends AppCompatActivity {
     }
     // Bắt đầu đếm ngược cho việc gửi lại OTP
     private void startResendCountdown() {
-
-        countDownTimer = new CountDownTimer(30000, 1000) { // 30 giây, mỗi lần giảm 1 giây
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Hủy đếm ngược hiện tại trước khi khởi động mới
+        }
+        countDownTimer = new CountDownTimer(60000, 1000) { // 30 giây, mỗi lần giảm 1 giây
             @Override
             public void onTick(long millisUntilFinished) {
                 txtResend.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
@@ -157,7 +159,7 @@ public class OtpActivity extends AppCompatActivity {
 
                    @Override
                    public void onClick(View view) {
-                       startResendCountdown();
+
                        String number1 = otp1.getText().toString().trim();
                        String number2 = otp2.getText().toString().trim();
                        String number3 = otp3.getText().toString().trim();
@@ -166,7 +168,7 @@ public class OtpActivity extends AppCompatActivity {
                        String number6 = otp6.getText().toString().trim();
 
                        String numbera = number1 + number2 + number3 + number4 + number5 + number6;
-                      if(email != null){
+                       if(email != null && !email.isEmpty()){
                        ApiService.apiService.ReSendOTP(new ResendRequest(email)).enqueue(new Callback<ResendResponse>() {
                            @Override
                            public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
@@ -184,10 +186,11 @@ public class OtpActivity extends AppCompatActivity {
                                Toast.makeText(OtpActivity.this, "Otp failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                            }
                        });
+                   }else {
+                           Toast.makeText(OtpActivity.this, "Email is not valid.", Toast.LENGTH_SHORT).show();
+                       }
+                       startResendCountdown();
                    }
-
-                   }
-
 
                 });
             }
@@ -206,5 +209,4 @@ public class OtpActivity extends AppCompatActivity {
             countDownTimer.cancel(); // Dừng đếm ngược nếu activity bị hủy
         }
     }
-
 }

@@ -26,7 +26,12 @@
             android:exported="false" />
         <activity
             android:name=".activity.SignUpActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.LoginActivity"
@@ -37,12 +42,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.OtpActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".activity.Onboarding1Activity"
             android:exported="false"

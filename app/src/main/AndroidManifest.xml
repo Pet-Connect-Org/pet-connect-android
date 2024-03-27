@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PetConnect"
         android:usesCleartextTraffic="true"
+<<<<<<< HEAD
         tools:targetApi="31" >
         <activity
             android:name=".activity_createnewpost"
@@ -24,12 +25,25 @@
         <activity
             android:name=".activity.ChangePasswordActivity"
             android:exported="false" />
+=======
+        tools:targetApi="31">
+
+        <activity
+            android:name=".activity.ChangePasswordActivity"
+            android:exported="false" />
+
+>>>>>>> main
         <activity
             android:name=".CustomTextfield"
             android:exported="false" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.SignUpActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="true"/>
+
         <activity
             android:name=".activity.Onboarding2Activity"
             android:exported="false" />

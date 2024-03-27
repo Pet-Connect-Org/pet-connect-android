@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetPostResponse> call, Throwable t) {
-//                Toast.makeText(MainActivity.this, "Bearer " + token, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Bearer " + token, Toast.LENGTH_SHORT).show();
             }
         });
     }

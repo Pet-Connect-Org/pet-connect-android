@@ -38,7 +38,7 @@ public class CustomAvatar extends LinearLayout {
 
     public void setName(String name) {
         if (button != null) {
-            button.setText(name.toUpperCase().charAt(0));
+            button.setText(String.valueOf(name.toUpperCase().charAt(0)));
         }
     }
 }

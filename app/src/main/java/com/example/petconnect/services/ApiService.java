@@ -2,16 +2,11 @@ package com.example.petconnect.services;
 
 import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
-<<<<<<< HEAD
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
 import com.example.petconnect.services.post.CreatePostResponse;
-=======
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
-import com.example.petconnect.services.auth.SignupRequest;
-import com.example.petconnect.services.auth.SignupRespone;
->>>>>>> main
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
 import com.google.gson.Gson;

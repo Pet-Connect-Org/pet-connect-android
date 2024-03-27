@@ -28,10 +28,9 @@ public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     ApiService apiService = new Retrofit.Builder().baseUrl("https://db.pet-connect.website/api/")
-
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(ApiService.class);
 
-// AUTH
+    // AUTH
     @POST("auth/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
@@ -41,11 +40,11 @@ public interface ApiService {
     @POST("auth/verify_user_email")
     Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
 
-// POST
+    // POST
     @GET("posts")
     Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @HeaderMap Map<String, Number> options);
 
     @POST("post")
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
-    
+
 }

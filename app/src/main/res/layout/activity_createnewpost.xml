@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:drawableLeft="@drawable/xmark"
-        android:fontFamily="@font/inter_semibold"
         android:gravity="center_horizontal|center_vertical"
         android:text="Create new post"
         android:textColor="#000000"
@@ -33,7 +32,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
         android:drawablePadding="8dp"
-        android:fontFamily="@font/roboto"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="James"
@@ -49,7 +47,6 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/border_transparent"
         android:ems="10"
-        android:fontFamily="@font/roboto"
         android:gravity="top"
         android:hint="Jame, what are you ..."
         android:inputType="text"
@@ -70,7 +67,6 @@
         android:layout_height="50dp"
         android:drawableLeft="@drawable/camera"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/inter_light"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="Upload pictures/videos"
@@ -85,7 +81,6 @@
 
         android:drawableLeft="@drawable/feeling"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/inter_light"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="Feeling"
@@ -99,7 +94,6 @@
 
         android:drawableLeft="@drawable/checkin"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/inter_light"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="Check-in"
@@ -113,7 +107,6 @@
 
         android:drawableLeft="@drawable/tag"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/inter_light"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="Tag someone"
@@ -127,7 +120,6 @@
 
         android:drawableLeft="@drawable/gif"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/inter_light"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="File GIF"
@@ -141,7 +133,6 @@
 
         android:drawableLeft="@drawable/attach"
         android:drawablePadding="10dp"
-        android:fontFamily="@font/inter_light"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
         android:text="Attachment"
@@ -157,8 +148,6 @@
         android:layout_marginTop="30dp"
         android:layout_marginRight="15dp"
         android:background="@drawable/border_button"
-
-        android:fontFamily="@font/inter_bold"
         android:gravity="center"
         android:text="Post"
         android:textColor="#FFFFFF" />

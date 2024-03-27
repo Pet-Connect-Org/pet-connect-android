@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.petconnect.activity.MainActivity;
 
 public class CustomPostBox extends LinearLayout {
-    CustomTextfield txtToCreatePost;
+    Button txtToCreatePost;
     public CustomPostBox(Context context) {
         super(context);
         initializeViews(context, null);

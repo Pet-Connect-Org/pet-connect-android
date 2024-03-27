@@ -85,21 +85,11 @@ public class SignUpActivity extends AppCompatActivity {
                 picker = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, month + 1, year);
+                        String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, month + 1, year);
                         dob.setText(formattedDate);
                     }
                 }, year, month, day);
                 picker.show();
-            }
-        });
-
-        btn_signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 
@@ -109,7 +99,6 @@ public class SignUpActivity extends AppCompatActivity {
                 if (isLoading) {
                     return;
                 }
-
                 String email_to_submit = email.getText().trim();
                 String pw_to_submit = pw.getText();
                 String re_pw_to_submit = re_pw.getText();
@@ -127,7 +116,6 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
                 checkPassword(pw_to_submit, re_pw_to_submit);
-
                 // Set isLoading to true before making the signup request
                 isLoading = true;
 
@@ -138,10 +126,17 @@ public class SignUpActivity extends AppCompatActivity {
                         isLoading = false;
                         if (response.isSuccessful()) {
                             SignupRespone signupRespone = response.body();
-                            String token = signupRespone.getAccessToken();
                             String message = signupRespone.getMessage();
 
                             Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                            String a = email.getText().toString();
+                            // Navigate to OTPActivity upon successful signup
+                            Intent myintent = new Intent(SignUpActivity.this, OtpActivity.class);
+                            // gửi kèm dữ liệu chuyển sang activity
+                            myintent.putExtra("email", a);
+                            startActivity(myintent);
+
                         } else {
                             // Handle unsuccessful signup
                             Toast.makeText(SignUpActivity.this, "Signup failed.", Toast.LENGTH_SHORT).show();
@@ -160,6 +155,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    // Phương thức tạo mã OTP
 
     public void checkPassword(String pw_to_submit, String re_pw_to_submit) {
         if (pw_to_submit.length() >= 6 && pw_to_submit.matches(passwordPattern)) {

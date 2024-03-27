@@ -2,6 +2,8 @@ package com.example.petconnect.services;
 
 import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
+import com.example.petconnect.services.auth.OtpRequest;
+import com.example.petconnect.services.auth.OtpResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
 import com.example.petconnect.services.post.GetPostResponse;
@@ -16,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
 
@@ -31,8 +34,12 @@ public interface ApiService {
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
     @GET("posts")
-    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @QueryMap Map<String, Number> options);
+    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization,
+                                   @HeaderMap Map<String, Number> headers);
 
     @POST("auth/sign-up")
     Call<SignupRespone> signup(@Body SignupRequest signupRequest);
+
+    @POST("auth/verify_user_email")
+    Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
 }

@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.MainActivity;
+import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
 
 import java.util.List;
@@ -48,6 +51,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         TextView postLikeCount;
         TextView postCommentCount;
         TextView postTime;
+        RecyclerView recyclerViewCommentList;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,17 +60,23 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postLikeCount = itemView.findViewById(R.id.post_like_count);
             postCommentCount = itemView.findViewById(R.id.post_comment_count);
             postTime = itemView.findViewById(R.id.post_time);
+            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
         }
 
         public void bind(ExtendedPost post) {
             int likes = post.getComments().size();
-            int comments = post.getComments().size();
+            List<ExtendedComment> comments = post.getComments();
 
             postUserName.setText(post.getUser().getName());
             postContent.setText(post.getContent());
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 0 ? "Likes" : "Like"));
-            postCommentCount.setText(String.valueOf(comments) + " " + (comments > 0 ? "Comments" : "Comment"));
+            postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
+
+            recyclerViewCommentList.setLayoutManager(new LinearLayoutManager(PostListAdapter.this.context, LinearLayoutManager.VERTICAL, false));
+            CommentListAdapter commentListAdapter = new CommentListAdapter(PostListAdapter.this.context, comments);
+            recyclerViewCommentList.setAdapter(commentListAdapter);
+
         }
     }
 }

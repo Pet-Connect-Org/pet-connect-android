@@ -24,6 +24,7 @@
         <activity
             android:name=".activity.ChangePasswordActivity"
             android:exported="false" />
+
         <activity
             android:name=".activity.OtpActivity"
             android:exported="false">
@@ -43,12 +44,13 @@
         <activity
             android:name=".activity.Onboarding2Activity"
             android:exported="false" />
-
         <activity
             android:name=".activity.Onboarding1Activity"
             android:exported="false"
             android:label="@string/title_activity_onboarding1"
             android:theme="@style/Theme.PetConnect" />
+
+
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />

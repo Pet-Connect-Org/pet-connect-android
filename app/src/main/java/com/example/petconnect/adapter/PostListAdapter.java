@@ -102,16 +102,17 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 public void onClick(View v) {
                     String commentContent = commentBox.getText().toString();
                     String token = (new UserManager(PostListAdapter.this.context)).getAccessToken();
+                    AddCommentRequest req = new AddCommentRequest(commentContent, 16);
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
-                    ApiService.apiService.createComment("Bearer" + token, new AddCommentRequest(commentContent, 16)).enqueue(new Callback<AddCommentResponse>() {
+                    ApiService.apiService.createComment("Bearer " + token, req).enqueue(new Callback<AddCommentResponse>() {
                         @Override
                         public void onResponse(Call<AddCommentResponse> call, Response<AddCommentResponse> response) {
                             if (response.isSuccessful()) {
                                 // Thêm comment mới vào danh sách comments của post
-//                                comments.add(response.body().getData());
+                                comments.add(response.body().getData());
 //
 //                                // Cập nhật RecyclerView thông qua adapter
-//                                notifyDataSetChanged();
+                                notifyDataSetChanged();
 
                                 // Hiển thị thông báo
                                 Toast.makeText(context, response.body().getData().getUser().getName(), Toast.LENGTH_SHORT).show();
@@ -137,82 +138,3 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
     }
 }
-
-//        public void bind(ExtendedPost post) {
-//            int likes = post.getLikes().size();
-//            List<ExtendedComment> comments = post.getComments();
-//
-//            postUserName.setText(post.getUser().getName());
-//            postContent.setText(post.getContent());
-//            postLikeCount.setText(String.valueOf(likes) + " " + (likes > 0 ? "Likes" : "Like"));
-//            postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
-//            postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
-//
-//            // Xử lý sự kiện khi nhấn nút sendButton
-//            sendButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String commentContent = commentBox.getText().toString();
-//
-//                    // Tạo một instance của ExtendedComment từ dữ liệu nhập vào
-//                    ExtendedComment newComment = new ExtendedComment();
-//                    newComment.setContent(commentContent);
-//                    newComment.setCreated_at(new Date()); // Set thời gian tạo mới comment
-//                    newComment.setUser(currentUser); // Set thông tin của user hiện tại (nếu đã đăng nhập)
-//
-//                    // Thêm comment mới vào danh sách comments của post
-//                    comments.add(newComment);
-//
-//                    // Cập nhật RecyclerView thông qua adapter
-//                    notifyDataSetChanged();
-//
-//
-//                    // Hiển thị thông báo
-//                    Toast.makeText(context, "Comment added successfully", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            sendButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String commentContent = commentBox.getText().toString();
-//
-//                    // Gửi yêu cầu tạo mới comment đến server với content và post_id
-//                    ApiService.apiService.createComment(new AddCommentRequest(commentContent, post.getId())).enqueue(new Callback<AddCommentResponse>() {
-//                        @Override
-//                        public void onResponse(Call<AddCommentResponse> call, Response<AddCommentResponse> response) {
-//                            if (response.isSuccessful()) {
-//            String commentContent = commentBox.getText().toString();
-//
-//                    // Tạo một instance của ExtendedComment từ dữ liệu phản hồi
-//                    ExtendedComment newComment = new ExtendedComment(1, 2, 3, commentContent, new Date(), new Date(), null,  null );
-//
-//                    // Thêm comment mới vào danh sách comments
-//                    comments.add(newComment);
-//
-//                    // Cập nhật RecyclerView thông qua adapter
-//                    notifyDataSetChanged();
-//
-//                    // Hiển thị thông báo
-//                    Toast.makeText(context, "Comment added successfully", Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                // Xử lý khi gửi yêu cầu tạo mới comment thất bại
-//                                Toast.makeText(context, "Create comment failed.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<AddCommentResponse> call, Throwable t) {
-//                            // Xử lý khi gửi yêu cầu tạo mới comment thất bại
-//                            Toast.makeText(context, "Create comment failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//            });
-
-//            // Phương thức cập nhật RecyclerView
-//            recyclerViewCommentList.setLayoutManager(new LinearLayoutManager(context));
-//            CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments,currentUser);
-//            recyclerViewCommentList.setAdapter(commentListAdapter);
-//        }
-//    }
-//}

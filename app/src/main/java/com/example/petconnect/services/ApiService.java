@@ -11,6 +11,8 @@ import com.example.petconnect.services.auth.ResendRequest;
 import com.example.petconnect.services.auth.ResendResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
+import com.example.petconnect.services.comment.UpdateCommentRequest;
+import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
@@ -30,6 +32,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -48,6 +51,9 @@ public interface ApiService {
     Call<AddCommentResponse> createComment(@Header("Authorization") String authorization,
                                            @Body AddCommentRequest commentRequest);
 
+    @PUT("comment/{id}")
+    Call<UpdateCommentResponse> updateComment(@Header("Authorization") String authorization,
+                                              @Body UpdateCommentRequest commentRequest);
 
     @POST("auth/verify_user_email")
     Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);

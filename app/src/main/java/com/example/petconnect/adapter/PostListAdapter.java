@@ -2,9 +2,12 @@ package com.example.petconnect.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,13 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.R;
-import com.example.petconnect.activity.MainActivity;
 import com.example.petconnect.manager.UserManager;
-import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.services.ApiService;
@@ -26,7 +26,6 @@ import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +33,7 @@ import retrofit2.Response;
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
     private Context context;
     private List<ExtendedPost> postList;
-//    private User currentUser;
+
 
     public PostListAdapter(Context context, List<ExtendedPost> postList) {
         this.context = context;
@@ -62,10 +61,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         return postList.size();
     }
 
-//    public void setCurrentUser(User currentUser) {
-//        this.currentUser = currentUser;
-//    }
-
     public class PostViewHolder extends RecyclerView.ViewHolder {
         TextView postUserName;
         TextView postContent;
@@ -74,8 +69,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         TextView postTime;
         CustomTextfield commentBox;
         ImageButton sendButton;
+
+        LinearLayout commentBoxHover;
+        Button updateButton;
         RecyclerView recyclerViewCommentList;
-        CustomAvatar post_avatar;
 
 
         public PostViewHolder(@NonNull View itemView) {
@@ -87,8 +84,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postTime = itemView.findViewById(R.id.post_time);
             commentBox = itemView.findViewById(R.id.comment_box);
             sendButton = itemView.findViewById(R.id.comment_send);
-            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
-            post_avatar = itemView.findViewById(R.id.post_avatar);
+            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList); // RecyclerView để hiển thị danh sách comment
+            updateButton = itemView.findViewById(R.id.comment_edit_button);
+            commentBoxHover = itemView.findViewById(R.id.comment_box_hover);
         }
 
         public void bind(ExtendedPost post) {
@@ -100,31 +98,29 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 0 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
-            post_avatar.setName(post.getUser().getName());
 
-            // Xử lý sự kiện khi người dùng nhấn nút sendButton để thêm comment
+            // Add comment
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String commentContent = commentBox.getText().toString();
                     String token = (new UserManager(PostListAdapter.this.context)).getAccessToken();
-                    AddCommentRequest req = new AddCommentRequest(commentContent, post.getId());
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
-                    ApiService.apiService.createComment("Bearer " + token, req).enqueue(new Callback<AddCommentResponse>() {
+                    ApiService.apiService.createComment(" Bearer " + token, new AddCommentRequest(commentContent, post.getId())).enqueue(new Callback<AddCommentResponse>() {
                         @Override
                         public void onResponse(Call<AddCommentResponse> call, Response<AddCommentResponse> response) {
                             if (response.isSuccessful()) {
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
-//
+
 //                                // Cập nhật RecyclerView thông qua adapter
                                 notifyDataSetChanged();
-
+//
                                 // Hiển thị thông báo
-                                Toast.makeText(context, response.body().getData().getUser().getName(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
                             } else {
                                 // Xử lý khi gửi yêu cầu tạo mới comment thất bại
-                                Toast.makeText(context, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Comment Failed", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -137,6 +133,23 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 }
             });
 
+
+            //Update comment
+            commentBoxHover.setOnHoverListener(new View.OnHoverListener() {
+                @Override
+                public boolean onHover(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_HOVER_ENTER:
+                            updateButton.setVisibility(View.VISIBLE);
+                            break;
+                        case MotionEvent.ACTION_HOVER_EXIT:
+                            updateButton.setVisibility(View.GONE);
+                            break;
+                    }
+                    return false;
+                }
+            });
+
             // Phương thức cập nhật RecyclerView
             recyclerViewCommentList.setLayoutManager(new LinearLayoutManager(context));
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
@@ -144,3 +157,4 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
     }
 }
+

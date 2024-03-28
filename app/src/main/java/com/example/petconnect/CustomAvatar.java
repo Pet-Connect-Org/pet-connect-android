@@ -31,14 +31,14 @@ public class CustomAvatar extends LinearLayout {
         UserManager userManager = new UserManager(context);
         ExtendedAccount user = userManager.getUser();
 
-        if (user != null && user.getUser() != null && user.getUser().getName() != null) {
-            setName(user.getUser().getName());
+        if (user != null  && user.getName() != null) {
+            setName(user.getName());
         }
     }
 
     public void setName(String name) {
         if (button != null) {
-            button.setText(name.toUpperCase().charAt(0));
+            button.setText(String.valueOf(name.toUpperCase().charAt(0)));
         }
     }
 }

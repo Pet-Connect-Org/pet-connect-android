@@ -25,8 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     CustomTextfield email;
     CustomTextfield password;
     UserManager userManager;
-
-
     Button toSignup;
 
     @Override
@@ -83,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        Toast.makeText(LoginActivity.this, "Login failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Server error", Toast.LENGTH_SHORT).show();
                     }
                 });
                 submit_login_button.setClickable(true);

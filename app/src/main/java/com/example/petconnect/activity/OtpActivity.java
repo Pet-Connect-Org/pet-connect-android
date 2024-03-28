@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,8 +19,6 @@ import com.example.petconnect.R;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
-import com.example.petconnect.services.auth.ResendRequest;
-import com.example.petconnect.services.auth.ResendResponse;
 
 import org.w3c.dom.Text;
 
@@ -69,7 +68,6 @@ public class OtpActivity extends AppCompatActivity {
         btnOtp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Kiểm tra các TextView
                 if (isAnyTextViewNull()) {
                     txtWrong.setVisibility(View.VISIBLE);
                     return;
@@ -91,7 +89,9 @@ public class OtpActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             OtpResponse otpResponse = response.body();
                             String message = otpResponse.getMessage();
+
                             Toast.makeText(OtpActivity.this, message, Toast.LENGTH_SHORT).show();
+                            // Chuyển qua màn Login
                             Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
                             startActivity(intent);
                         } else {

@@ -155,8 +155,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    // Phương thức tạo mã OTP
-
     public void checkPassword(String pw_to_submit, String re_pw_to_submit) {
         if (pw_to_submit.length() >= 6 && pw_to_submit.matches(passwordPattern)) {
             labelsub1.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.correct));

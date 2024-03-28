@@ -67,14 +67,20 @@ public class MainActivity extends AppCompatActivity {
         ApiService.apiService.getPosts("Bearer " + token, queryOptions).enqueue(new Callback<GetPostResponse>() {
             @Override
             public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {
+                Toast.makeText(MainActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<ExtendedPost> postList = response.body().getPostList();
                     updateRecyclerView(postList);
-                } else {
-                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (response.code() == 401) {
+                    Toast.makeText(MainActivity.this, "You need to login again. Someone has login to your account.", Toast.LENGTH_SHORT).show();
                     intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
+                } else {
+                    Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 

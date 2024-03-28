@@ -135,20 +135,20 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
 
             //Update comment
-            commentBoxHover.setOnHoverListener(new View.OnHoverListener() {
-                @Override
-                public boolean onHover(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_HOVER_ENTER:
-                            updateButton.setVisibility(View.VISIBLE);
-                            break;
-                        case MotionEvent.ACTION_HOVER_EXIT:
-                            updateButton.setVisibility(View.GONE);
-                            break;
-                    }
-                    return false;
-                }
-            });
+//            commentBoxHover.setOnHoverListener(new View.OnHoverListener() {
+//                @Override
+//                public boolean onHover(View v, MotionEvent event) {
+//                    switch (event.getAction()) {
+//                        case MotionEvent.ACTION_HOVER_ENTER:
+//                            updateButton.setVisibility(View.VISIBLE);
+//                            break;
+//                        case MotionEvent.ACTION_HOVER_EXIT:
+//                            updateButton.setVisibility(View.GONE);
+//                            break;
+//                    }
+//                    return false;
+//                }
+//            });
 
             // Phương thức cập nhật RecyclerView
             recyclerViewCommentList.setLayoutManager(new LinearLayoutManager(context));

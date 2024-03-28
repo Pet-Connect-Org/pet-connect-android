@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".activity_createnewpost">
-    <LinearLayout
+    tools:context=".activity.CreateNewPostActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="42dp">
 
@@ -19,23 +20,34 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="369dp"
+            android:layout_width="wrap_content"
             android:layout_height="47dp"
 
             android:gravity="center_horizontal|center_vertical"
             android:text="Create new post"
             android:textColor="#000000"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/close_create_post" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#ECECEC" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="18dp"
+        android:layout_height="wrap_content">
+        <com.example.petconnect.CustomAvatar
+            android:layout_width="52dp"
+            android:layout_height="52dp"/>
 
     <TextView
         android:id="@+id/create_post_username"
@@ -50,7 +62,8 @@
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:drawableLeftCompat="@drawable/imagee" />
+        />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/txtstatus_post"
@@ -61,8 +74,7 @@
         android:ems="10"
         android:gravity="top"
         android:layout_weight="1"
-
-        android:hint="Jame, what are you ..."
+        android:hint="Share your status . . ."
         android:inputType="text"
         android:paddingLeft="20dp"
         android:textColorHint="#C2C3C4" />
@@ -114,31 +126,31 @@
         android:textColor="#030B5B"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+<!--    <TextView-->
+<!--        android:id="@+id/textView11"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
 
-        android:drawableLeft="@drawable/tag"
-        android:drawablePadding="10dp"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:text="Tag someone"
-        android:textColor="#030B5B"
-        android:textSize="20sp" />
+<!--        android:drawableLeft="@drawable/tag"-->
+<!--        android:drawablePadding="10dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:text="Tag someone"-->
+<!--        android:textColor="#030B5B"-->
+<!--        android:textSize="20sp" />-->
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+<!--    <TextView-->
+<!--        android:id="@+id/textView12"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
 
-        android:drawableLeft="@drawable/gif"
-        android:drawablePadding="10dp"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:text="File GIF"
-        android:textColor="#030B5B"
-        android:textSize="20sp" />
+<!--        android:drawableLeft="@drawable/gif"-->
+<!--        android:drawablePadding="10dp"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:paddingStart="16dp"-->
+<!--        android:text="File GIF"-->
+<!--        android:textColor="#030B5B"-->
+<!--        android:textSize="20sp" />-->
 
 <!--    <TextView-->
 <!--        android:id="@+id/textView14"-->

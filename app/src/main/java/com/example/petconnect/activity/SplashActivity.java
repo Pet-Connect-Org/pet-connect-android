@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.view.View;
 
 import com.example.petconnect.R;
-import com.example.petconnect.activity_createnewpost;
 
 public class SplashActivity extends AppCompatActivity {
     private static final int SPLASH_DURATION = 2000; // 2 seconds

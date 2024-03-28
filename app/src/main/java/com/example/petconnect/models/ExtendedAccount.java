@@ -1,14 +1,33 @@
 package com.example.petconnect.models;
 
-public class ExtendedAccount extends Account {
-    public User getUser() {
-        return user;
+import java.util.Date;
+
+public class ExtendedAccount extends User {
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    private User user;
+    public int getRole() {
+        return role;
+    }
 
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    private String email;
+    private int role;
+    private Boolean isActive;
 }

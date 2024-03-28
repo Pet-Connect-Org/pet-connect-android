@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity_createnewpost"
+            android:name=".activity.CreateNewPostActivity"
             android:exported="false"
             android:label="@string/title_activity_createnewpost"
             android:theme="@style/Theme.PetConnect" />

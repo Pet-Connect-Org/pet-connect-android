@@ -2,7 +2,6 @@ package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +17,8 @@ import com.example.petconnect.R;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
-
-import org.w3c.dom.Text;
+import com.example.petconnect.services.auth.ResendRequest;
+import com.example.petconnect.services.auth.ResendResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,11 +26,11 @@ import retrofit2.Response;
 
 public class OtpActivity extends AppCompatActivity {
     EditText otp1, otp2, otp3, otp4, otp5, otp6;
-    Button btnOtp;
-    TextView txtWrong,txtReceive, txtResend;
+    Button btnOtp, toLogin;
+    TextView txtWrong, txtReceive, txtResend;
     CountDownTimer countDownTimer;
     String email;
-    private boolean isCountDownRunning = false; // Biến này để kiểm tra xem CountDownTimer có đang chạy hay không
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +46,13 @@ public class OtpActivity extends AppCompatActivity {
         txtReceive = findViewById(R.id.txtReceive);
         txtResend = findViewById(R.id.txtResend);
         btnOtp = findViewById(R.id.btnOtp);
+        toLogin = findViewById(R.id.toLogin);
 
         // chuyen man hi hinh intent
         Intent myintent = getIntent();
         email = myintent.getStringExtra("email");
 
-        
+
         // goi phuong thuc dich chuyen thoi gian sau khi chuyen man hinh otp
         startResendCountdown();
 
@@ -106,6 +105,14 @@ public class OtpActivity extends AppCompatActivity {
                 });
             }
         });
+
+        toLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     //Kiểm tra xem có bất kỳ TextView nào có giá trị null không
@@ -137,6 +144,7 @@ public class OtpActivity extends AppCompatActivity {
             }
         });
     }
+
     // Bắt đầu đếm ngược cho việc gửi lại OTP
     private void startResendCountdown() {
         if (countDownTimer != null) {
@@ -151,7 +159,6 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                isCountDownRunning = false;
                 txtWrong.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
                 txtReceive.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                 //txtResend.setTextColor(getResources().getColor(android.R.color.black)); // Đổi màu văn bản về màu đen khi kết thúc
@@ -160,49 +167,38 @@ public class OtpActivity extends AppCompatActivity {
 
                 txtResend.setOnClickListener(new View.OnClickListener() {
 
-                   @Override
-                   public void onClick(View view) {
+                    @Override
+                    public void onClick(View view) {
+                        if (email != null && !email.isEmpty()) {
+                            ApiService.apiService.ReSendOTP(new ResendRequest(email)).enqueue(new Callback<ResendResponse>() {
+                                @Override
+                                public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        ResendResponse resendResponse = response.body();
+                                        String message = resendResponse.getMessage();
+                                        Toast.makeText(OtpActivity.this, message, Toast.LENGTH_SHORT).show();
+                                        startResendCountdown();
+                                    } else {
+                                        Toast.makeText(OtpActivity.this, "Resend otp failed.", Toast.LENGTH_SHORT).show();
+                                        startResendCountdown();
+                                    }
+                                }
 
-                       String number1 = otp1.getText().toString().trim();
-                       String number2 = otp2.getText().toString().trim();
-                       String number3 = otp3.getText().toString().trim();
-                       String number4 = otp4.getText().toString().trim();
-                       String number5 = otp5.getText().toString().trim();
-                       String number6 = otp6.getText().toString().trim();
+                                @Override
+                                public void onFailure(Call<ResendResponse> call, Throwable t) {
+                                    startResendCountdown();
 
-                       String numbera = number1 + number2 + number3 + number4 + number5 + number6;
-                       if(email != null && !email.isEmpty()){
-                       ApiService.apiService.ReSendOTP(new ResendRequest(email)).enqueue(new Callback<ResendResponse>() {
-                           @Override
-                           public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
-                               if (response.isSuccessful()) {
-                                   ResendResponse resendResponse = response.body();
-                                   String message = resendResponse.getMessage();
-                                   Toast.makeText(OtpActivity.this, email, Toast.LENGTH_SHORT).show();
-                               } else {
-                                   Toast.makeText(OtpActivity.this, "Otp failed.", Toast.LENGTH_SHORT).show();
-                               }
-                           }
-
-                           @Override
-                           public void onFailure(Call<ResendResponse> call, Throwable t) {
-                               Toast.makeText(OtpActivity.this, "Otp failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                           }
-                       });
-                   }else {
-                           Toast.makeText(OtpActivity.this, "Email is not valid.", Toast.LENGTH_SHORT).show();
-                       }
-                       startResendCountdown();
-                   }
+                                    Toast.makeText(OtpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(OtpActivity.this, "Email is not valid.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
                 });
             }
         }.start();
-    }
-
-    // Phương thức hiển thị thông báo toast
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

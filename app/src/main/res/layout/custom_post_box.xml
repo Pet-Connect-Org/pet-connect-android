@@ -7,13 +7,18 @@
     android:padding="12dp">
 
     <com.example.petconnect.CustomAvatar
+        android:id="@+id/post_box_user_avatar"
         android:layout_width="42dp"
         android:layout_height="42dp" />
-
-    <com.example.petconnect.CustomTextfield
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/to_create_post"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
-        android:layout_weight="1" />
+        android:alpha="10"
+        android:background="@drawable/custom_rounded_neutral_bg"
+        android:hint="Your thinking here"
+        android:paddingHorizontal="8dp"
+        android:textAlignment="textStart" />
 
 </LinearLayout>

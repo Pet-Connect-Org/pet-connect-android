@@ -7,9 +7,15 @@ import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
+import com.example.petconnect.services.auth.ResendRequest;
+import com.example.petconnect.services.auth.ResendResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
+import com.example.petconnect.services.post.CreatePostResponse;
+import com.example.petconnect.services.auth.OtpRequest;
+import com.example.petconnect.services.auth.OtpResponse;
 import com.example.petconnect.services.post.GetPostResponse;
+import com.example.petconnect.services.post.CreatePostRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -25,20 +31,15 @@ import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 
-
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
     ApiService apiService = new Retrofit.Builder().baseUrl("https://db.pet-connect.website/api/")
-
             .addConverterFactory(GsonConverterFactory.create(gson)).build().create(ApiService.class);
 
+    // AUTH
     @POST("auth/login")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
-
-    @GET("posts")
-    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization,
-                                   @HeaderMap Map<String, Number> headers);
 
     @POST("auth/sign-up")
     Call<SignupRespone> signup(@Body SignupRequest signupRequest);
@@ -50,4 +51,14 @@ public interface ApiService {
 
     @POST("auth/verify_user_email")
     Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
+
+    @POST("auth/resend_verification_code")
+    Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
+    // POST
+    @GET("posts")
+    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @HeaderMap Map<String, Number> options);
+
+    @POST("post")
+    Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+
 }

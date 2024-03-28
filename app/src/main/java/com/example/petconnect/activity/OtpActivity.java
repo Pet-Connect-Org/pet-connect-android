@@ -2,7 +2,6 @@ package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,7 +10,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +17,8 @@ import com.example.petconnect.R;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
-
-import org.w3c.dom.Text;
+import com.example.petconnect.services.auth.ResendRequest;
+import com.example.petconnect.services.auth.ResendResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,9 +26,10 @@ import retrofit2.Response;
 
 public class OtpActivity extends AppCompatActivity {
     EditText otp1, otp2, otp3, otp4, otp5, otp6;
-    Button btnOtp;
+    Button btnOtp, toLogin;
     TextView txtWrong, txtReceive, txtResend;
     CountDownTimer countDownTimer;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +46,12 @@ public class OtpActivity extends AppCompatActivity {
         txtReceive = findViewById(R.id.txtReceive);
         txtResend = findViewById(R.id.txtResend);
         btnOtp = findViewById(R.id.btnOtp);
+        toLogin = findViewById(R.id.toLogin);
 
         // chuyen man hi hinh intent
         Intent myintent = getIntent();
-        String email = myintent.getStringExtra("email");
+        email = myintent.getStringExtra("email");
+
 
         // goi phuong thuc dich chuyen thoi gian sau khi chuyen man hinh otp
         startResendCountdown();
@@ -105,9 +106,17 @@ public class OtpActivity extends AppCompatActivity {
                 });
             }
         });
+
+        toLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OtpActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    // Kiểm tra xem có bất kỳ TextView nào có giá trị null không
+    //Kiểm tra xem có bất kỳ TextView nào có giá trị null không
     private boolean isAnyTextViewNull() {
         return otp1.getText().toString().isEmpty() ||
                 otp2.getText().toString().isEmpty() ||
@@ -139,7 +148,10 @@ public class OtpActivity extends AppCompatActivity {
 
     // Bắt đầu đếm ngược cho việc gửi lại OTP
     private void startResendCountdown() {
-        countDownTimer = new CountDownTimer(30000, 1000) { // 30 giây, mỗi lần giảm 1 giây
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // Hủy đếm ngược hiện tại trước khi khởi động mới
+        }
+        countDownTimer = new CountDownTimer(60000, 1000) { // 30 giây, mỗi lần giảm 1 giây
             @Override
             public void onTick(long millisUntilFinished) {
                 txtResend.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
@@ -151,14 +163,43 @@ public class OtpActivity extends AppCompatActivity {
                 txtWrong.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
                 txtReceive.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                 //txtResend.setTextColor(getResources().getColor(android.R.color.black)); // Đổi màu văn bản về màu đen khi kết thúc
-                txtResend.setText("Resend again"); // Hiển thị lại văn bản "Resend"
+                txtResend.setText("Resend again");// Hiển thị lại văn bản "Resend"
+
+
+                txtResend.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        if (email != null && !email.isEmpty()) {
+                            ApiService.apiService.ReSendOTP(new ResendRequest(email)).enqueue(new Callback<ResendResponse>() {
+                                @Override
+                                public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
+                                    if (response.isSuccessful()) {
+                                        ResendResponse resendResponse = response.body();
+                                        String message = resendResponse.getMessage();
+                                        Toast.makeText(OtpActivity.this, message, Toast.LENGTH_SHORT).show();
+                                        startResendCountdown();
+                                    } else {
+                                        Toast.makeText(OtpActivity.this, "Resend otp failed.", Toast.LENGTH_SHORT).show();
+                                        startResendCountdown();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<ResendResponse> call, Throwable t) {
+                                    startResendCountdown();
+
+                                    Toast.makeText(OtpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(OtpActivity.this, "Email is not valid.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                });
             }
         }.start();
-    }
-
-    // Phương thức hiển thị thông báo toast
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -168,5 +209,4 @@ public class OtpActivity extends AppCompatActivity {
             countDownTimer.cancel(); // Dừng đếm ngược nếu activity bị hủy
         }
     }
-
 }

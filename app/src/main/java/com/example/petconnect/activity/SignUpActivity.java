@@ -85,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
                 picker = new DatePickerDialog(SignUpActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        String formattedDate = String.format(Locale.getDefault(), "%02d/%02d/%d", dayOfMonth, month + 1, year);
+                        String formattedDate = String.format(Locale.getDefault(), "%02d-%02d-%d", dayOfMonth, month + 1, year);
                         dob.setText(formattedDate);
                     }
                 }, year, month, day);
@@ -155,8 +155,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
-    // Phương thức tạo mã OTP
 
     public void checkPassword(String pw_to_submit, String re_pw_to_submit) {
         if (pw_to_submit.length() >= 6 && pw_to_submit.matches(passwordPattern)) {

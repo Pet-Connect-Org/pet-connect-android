@@ -12,10 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.MainActivity;
 import com.example.petconnect.manager.UserManager;
+import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.services.ApiService;
@@ -72,6 +75,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomTextfield commentBox;
         ImageButton sendButton;
         RecyclerView recyclerViewCommentList;
+        CustomAvatar post_avatar;
 
 
         public PostViewHolder(@NonNull View itemView) {
@@ -83,7 +87,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postTime = itemView.findViewById(R.id.post_time);
             commentBox = itemView.findViewById(R.id.comment_box);
             sendButton = itemView.findViewById(R.id.comment_send);
-            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList); // RecyclerView để hiển thị danh sách comment
+            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
+            post_avatar = itemView.findViewById(R.id.post_avatar);
         }
 
         public void bind(ExtendedPost post) {
@@ -95,6 +100,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 0 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
+            post_avatar.setName(post.getUser().getName());
 
             // Xử lý sự kiện khi người dùng nhấn nút sendButton để thêm comment
             sendButton.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +108,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 public void onClick(View v) {
                     String commentContent = commentBox.getText().toString();
                     String token = (new UserManager(PostListAdapter.this.context)).getAccessToken();
-                    AddCommentRequest req = new AddCommentRequest(commentContent, 16);
+                    AddCommentRequest req = new AddCommentRequest(commentContent, post.getId());
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
                     ApiService.apiService.createComment("Bearer " + token, req).enqueue(new Callback<AddCommentResponse>() {
                         @Override

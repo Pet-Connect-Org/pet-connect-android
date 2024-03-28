@@ -98,7 +98,6 @@
                 android:backgroundTint="@android:color/transparent"
                 android:drawableLeft="@drawable/facebook"
                 android:text="Continue with Facebook"
-
                 android:textColor="@android:color/black"
                 app:cornerRadius="4dp" />
         </LinearLayout>

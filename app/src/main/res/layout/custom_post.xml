@@ -21,9 +21,9 @@
 
 
             <com.example.petconnect.CustomAvatar
+                android:id="@+id/post_avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-
                 android:layout_marginRight="8dp" />
 
             <LinearLayout

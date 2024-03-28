@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+<!--            Dòng shape để cài đặt hình dạng của viền-->
+            <corners android:radius="5dp"></corners>
+            <stroke android:color="@color/white" android:width="5dp"></stroke>
+<!--            Conner là để sử dụng radius để bo góc
+stroke để đổ màu cho viền (border)-->
+        </shape>
+    </item>
+</selector>

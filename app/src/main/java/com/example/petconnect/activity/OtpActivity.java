@@ -33,6 +33,7 @@ public class OtpActivity extends AppCompatActivity {
     TextView txtWrong,txtReceive, txtResend;
     CountDownTimer countDownTimer;
     String email;
+    private boolean isCountDownRunning = false; // Biến này để kiểm tra xem CountDownTimer có đang chạy hay không
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,10 +151,12 @@ public class OtpActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                isCountDownRunning = false;
                 txtWrong.setTextColor(getResources().getColor(android.R.color.holo_red_dark)); // Đổi màu văn bản thành màu đỏ
                 txtReceive.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                 //txtResend.setTextColor(getResources().getColor(android.R.color.black)); // Đổi màu văn bản về màu đen khi kết thúc
                 txtResend.setText("Resend again");// Hiển thị lại văn bản "Resend"
+
 
                 txtResend.setOnClickListener(new View.OnClickListener() {
 

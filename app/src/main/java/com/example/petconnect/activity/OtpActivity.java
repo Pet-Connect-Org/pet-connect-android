@@ -177,7 +177,7 @@ public class OtpActivity extends AppCompatActivity {
                            public void onResponse(Call<ResendResponse> call, Response<ResendResponse> response) {
                                if (response.isSuccessful()) {
                                    ResendResponse resendResponse = response.body();
-                                   String email = resendResponse.getEmail();
+                                   String message = resendResponse.getMessage();
                                    Toast.makeText(OtpActivity.this, email, Toast.LENGTH_SHORT).show();
                                } else {
                                    Toast.makeText(OtpActivity.this, "Otp failed.", Toast.LENGTH_SHORT).show();

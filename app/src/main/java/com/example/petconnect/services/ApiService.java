@@ -1,5 +1,8 @@
 package com.example.petconnect.services;
 
+import com.example.petconnect.models.ExtendedComment;
+import com.example.petconnect.services.comment.AddCommentRequest;
+import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
 import com.example.petconnect.services.auth.OtpRequest;
@@ -10,6 +13,7 @@ import com.example.petconnect.services.post.GetPostResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -20,7 +24,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
 
 
 public interface ApiService {
@@ -39,6 +42,11 @@ public interface ApiService {
 
     @POST("auth/sign-up")
     Call<SignupRespone> signup(@Body SignupRequest signupRequest);
+
+    @POST("comment")
+    Call<AddCommentResponse> createComment(@Header("Authorization") String authorization,
+                                           @Body AddCommentRequest commentRequest);
+
 
     @POST("auth/verify_user_email")
     Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);

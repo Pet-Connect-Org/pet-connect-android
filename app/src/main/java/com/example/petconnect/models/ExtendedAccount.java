@@ -1,6 +1,7 @@
 package com.example.petconnect.models;
 
 public class ExtendedAccount extends Account {
+
     public User getUser() {
         return user;
     }

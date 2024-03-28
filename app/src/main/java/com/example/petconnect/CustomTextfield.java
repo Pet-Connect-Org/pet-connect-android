@@ -19,6 +19,8 @@ public class CustomTextfield extends LinearLayout {
     private Drawable endIconDrawable;
     private OnTextChangeListener textChangeListener;
 
+
+
     public interface OnTextChangeListener {
         void onTextChange(CharSequence text);
     }
@@ -101,4 +103,7 @@ public class CustomTextfield extends LinearLayout {
             }
         });
     }
+
+
+
 }

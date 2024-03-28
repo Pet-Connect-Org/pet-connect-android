@@ -7,6 +7,19 @@ public class Comment {
     private int post_id;
     private int user_id;
 
+    public Comment(int id, int post_id, int user_id, String content, Date created_at, Date updated_at) {
+        this.id = id;
+        this.post_id = post_id;
+        this.user_id = user_id;
+        this.content = content;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public Comment() {
+
+    }
+
     public int getId() {
         return id;
     }
@@ -55,7 +68,7 @@ public class Comment {
         this.updated_at = updated_at;
     }
 
-    private String content;
+    public String content;
     private Date created_at;
     private Date updated_at;
 }

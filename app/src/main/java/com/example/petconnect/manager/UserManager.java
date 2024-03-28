@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.petconnect.models.ExtendedAccount;
+import com.example.petconnect.models.User;
 import com.google.gson.Gson;
 
 public class UserManager {
@@ -13,7 +14,15 @@ public class UserManager {
     private static final String PERF_USER_NAME = "user_prefs";
     private SharedPreferences sharedPreferencesAccessToken;
     private SharedPreferences sharedPreferencesUser;
+    private User currentUser;
+    public User getCurrentUser() {
+        return currentUser;
+    }
 
+    // Phương thức để thiết lập thông tin người dùng hiện tại
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
     public UserManager(Context context) {
         sharedPreferencesAccessToken = context.getSharedPreferences(PREF_ACCESS_TOKEN_NAME, Context.MODE_PRIVATE);
         sharedPreferencesUser = context.getSharedPreferences(PERF_USER_NAME, Context.MODE_PRIVATE);
@@ -50,4 +59,5 @@ public class UserManager {
         editor.remove(ACCESS_TOKEN_KEY);
         editor.apply();
     }
+
 }

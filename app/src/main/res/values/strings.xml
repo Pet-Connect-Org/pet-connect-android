@@ -3,5 +3,4 @@
     <string name="title_activity_onboarding1">Onboarding1Activity</string>
     <string name="drawer_open">Drawer Open</string>
     <string name="drawer_close">Drawer Close</string>
-    <string name="home">home</string>
 </resources>

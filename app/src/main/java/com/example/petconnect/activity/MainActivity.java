@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.petconnect.R;
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         Map<String, Number> queryOptions = new HashMap<>();
         queryOptions.put("limit", 20);
         queryOptions.put("offset", 0);
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

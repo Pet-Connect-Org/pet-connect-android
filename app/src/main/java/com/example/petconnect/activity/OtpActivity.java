@@ -96,6 +96,7 @@ public class OtpActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(OtpActivity.this, "Otp failed.", Toast.LENGTH_SHORT).show();
                         }
+
                     }
 
                     @Override

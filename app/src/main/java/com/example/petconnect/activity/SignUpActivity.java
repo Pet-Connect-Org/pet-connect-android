@@ -141,6 +141,7 @@ public class SignUpActivity extends AppCompatActivity {
                             // Handle unsuccessful signup
                             Toast.makeText(SignUpActivity.this, "Signup failed.", Toast.LENGTH_SHORT).show();
                         }
+
                     }
 
                     @Override

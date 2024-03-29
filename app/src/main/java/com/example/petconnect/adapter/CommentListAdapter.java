@@ -1,12 +1,13 @@
 package com.example.petconnect.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +16,7 @@ import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
-import com.example.petconnect.models.Comment;
 import com.example.petconnect.models.ExtendedComment;
-import com.example.petconnect.models.ExtendedPost;
 
 import java.util.List;
 
@@ -28,7 +27,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     public CommentListAdapter(Context context, List<ExtendedComment> commentList) {
         this.context = context;
         this.commentList = commentList;
+
     }
+
 
     @NonNull
     @Override
@@ -40,7 +41,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     @Override
     public void onBindViewHolder(@NonNull CommentListAdapter.CommentViewHolder holder, int position) {
         ExtendedComment comment = commentList.get(position);
+
         holder.bind(comment);
+
 
     }
 
@@ -73,11 +76,12 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
             comment_author_avatar.setName(comment.getUser().getName());
             userManager = new UserManager(CommentListAdapter.this.context);
             comment_time.setText(CustomTimeAgo.toTimeAgo((comment.getCreated_at().getTime())));
-
             if (comment.getUser().getId() == userManager.getUser().getId()) {
                 comment_delete_button.setVisibility(View.VISIBLE);
                 comment_edit_button.setVisibility(View.VISIBLE);
             }
         }
+
+
     }
 }

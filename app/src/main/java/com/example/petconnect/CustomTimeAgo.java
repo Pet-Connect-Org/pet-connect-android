@@ -19,7 +19,8 @@ public class CustomTimeAgo {
     public static String toTimeAgo(Long input) {
         long duration = new Date().getTime() - input;
         if (duration < 0) {
-            return "In the future";
+//            return "In the future";
+            return "Just now";
         }
         for (int i = 0; i < times.size(); i++) {
             Long current = times.get(i);

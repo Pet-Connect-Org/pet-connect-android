@@ -52,7 +52,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         ExtendedPost post = postList.get(position);
         if (post != null) {
-            holder.bind(post);
+            holder.bind(post, position);
         }
     }
 
@@ -89,7 +89,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             commentBoxHover = itemView.findViewById(R.id.comment_box_hover);
         }
 
-        public void bind(ExtendedPost post) {
+        public void bind(ExtendedPost post, int position) {
             int likes = post.getLikes().size();
             List<ExtendedComment> comments = post.getComments();
 
@@ -114,7 +114,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 comments.add(response.body().getData());
 
 //                                // Cập nhật RecyclerView thông qua adapter
-                                notifyDataSetChanged();
+                                notifyItemChanged(position);
 //
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
@@ -132,23 +132,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     });
                 }
             });
-
-
-            //Update comment
-//            commentBoxHover.setOnHoverListener(new View.OnHoverListener() {
-//                @Override
-//                public boolean onHover(View v, MotionEvent event) {
-//                    switch (event.getAction()) {
-//                        case MotionEvent.ACTION_HOVER_ENTER:
-//                            updateButton.setVisibility(View.VISIBLE);
-//                            break;
-//                        case MotionEvent.ACTION_HOVER_EXIT:
-//                            updateButton.setVisibility(View.GONE);
-//                            break;
-//                    }
-//                    return false;
-//                }
-//            });
 
             // Phương thức cập nhật RecyclerView
             recyclerViewCommentList.setLayoutManager(new LinearLayoutManager(context));

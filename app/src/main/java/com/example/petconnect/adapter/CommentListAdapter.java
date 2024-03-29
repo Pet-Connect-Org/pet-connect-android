@@ -72,16 +72,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
 
         public void bind(ExtendedComment comment) {
-//            comment_author_name.setText(comment.getUser().getName());
+            comment_author_name.setText(comment.getUser().getName());
             comment_content.setText(comment.getContent());
-//            comment_author_avatar.setName(comment.getUser().getName());
-//            userManager = new UserManager(CommentListAdapter.this.context);
-//            comment_time.setText(CustomTimeAgo.toTimeAgo((comment.getCreated_at().getTime())));
-//            Toast.makeText(CommentListAdapter.this.context, "Added" , Toast.LENGTH_LONG).show();
-//            if (comment.getUser().getId() == userManager.getUser().getId()) {
-//                comment_delete_button.setVisibility(View.VISIBLE);
-//                comment_edit_button.setVisibility(View.VISIBLE);
-//            }
+            comment_author_avatar.setName(comment.getUser().getName());
+            userManager = new UserManager(CommentListAdapter.this.context);
+            comment_time.setText(CustomTimeAgo.toTimeAgo((comment.getCreated_at().getTime())));
+            if (comment.getUser().getId() == userManager.getUser().getId()) {
+                comment_delete_button.setVisibility(View.VISIBLE);
+                comment_edit_button.setVisibility(View.VISIBLE);
+            }
         }
 
 

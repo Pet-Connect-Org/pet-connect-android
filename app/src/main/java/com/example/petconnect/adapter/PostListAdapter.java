@@ -26,6 +26,7 @@ import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,7 +74,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         LinearLayout commentBoxHover;
         Button updateButton;
         RecyclerView recyclerViewCommentList;
-
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);

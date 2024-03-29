@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
         postListAdapter = new PostListAdapter(MainActivity.this, postList);
-//        postListAdapter.setCurrentUser(userManager.getCurrentUser()); // Thêm dòng này để thiết lập currentUser
         recyclerViewPostList.setAdapter(postListAdapter);
     }
 }

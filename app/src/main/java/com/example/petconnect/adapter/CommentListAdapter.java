@@ -45,7 +45,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         holder.bind(comment);
 
 
-
     }
 
     @Override

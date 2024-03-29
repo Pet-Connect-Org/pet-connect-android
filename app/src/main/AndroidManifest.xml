@@ -30,9 +30,6 @@
 
         </activity>
         <activity
-            android:name=".CustomTextfield"
-            android:exported="false" />
-        <activity
             android:name=".activity.SignUpActivity"
             android:exported="false" />
         <activity

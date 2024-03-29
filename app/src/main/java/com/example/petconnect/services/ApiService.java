@@ -9,6 +9,8 @@ import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
+import com.example.petconnect.services.post.LikePostRequest;
+import com.example.petconnect.services.post.LikePostResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -22,7 +24,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
-import retrofit2.http.QueryMap;
+import retrofit2.http.Path;
 
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -46,5 +48,8 @@ public interface ApiService {
 
     @POST("post")
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+    @POST("post/like/{id}")
+    Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
+
 
 }

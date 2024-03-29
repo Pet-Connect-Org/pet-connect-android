@@ -18,11 +18,6 @@ public class CustomTextfield extends LinearLayout {
     private Drawable startIconDrawable;
     private Drawable endIconDrawable;
     private OnTextChangeListener textChangeListener;
-<<<<<<< Updated upstream
-
-
-=======
->>>>>>> Stashed changes
     public interface OnTextChangeListener {
         void onTextChange(CharSequence text);
     }

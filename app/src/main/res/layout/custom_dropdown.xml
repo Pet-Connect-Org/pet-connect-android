@@ -9,7 +9,8 @@
         android:id="@+id/labelDropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Label"
+        android:text=""
+        android:paddingBottom="8dp"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -18,7 +19,6 @@
         android:id="@+id/dropdown_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@drawable/custom_rounded_neutral_bg"
         android:drawableEnd="@drawable/arrow_down"
         android:drawablePadding="16dp"

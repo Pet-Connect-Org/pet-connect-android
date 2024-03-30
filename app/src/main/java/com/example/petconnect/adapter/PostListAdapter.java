@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,10 +18,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petconnect.CustomAvatar;
+import com.example.petconnect.CustomDropdown;
 import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
+import com.example.petconnect.Item;
 import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
+import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
 
@@ -82,11 +88,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         LinearLayout commentBoxHover;
         Button updateButton;
         RecyclerView recyclerViewCommentList;
+        CustomTextfield commentBox;
+        CustomDropdown post_action_dropdown;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
-              userManager = new UserManager(PostListAdapter.this.context);
-            int likes = post.getLikes().size();
+            userManager = new UserManager(PostListAdapter.this.context);
             postLikeButton = itemView.findViewById(R.id.post_like_button);
             postUserName = itemView.findViewById(R.id.post_user_name);
             postContent = itemView.findViewById(R.id.post_content);
@@ -100,8 +107,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             updateButton = itemView.findViewById(R.id.comment_edit_button);
             sendButton = itemView.findViewById(R.id.comment_send);
             commentBox = itemView.findViewById(R.id.comment_box);
-
-
+            post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
         }
 
         public void bind(ExtendedPost post, int position) {
@@ -113,6 +119,30 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
 
+            post_action_dropdown.customizeDropdown(android.R.color.transparent, R.drawable.more, false);
+
+            ArrayList<Item> actionsList = new ArrayList<>();
+            if (post.getUser_id() ==userManager.getUser().getId()) {
+                actionsList.add(new Item("delete", "Delete"));
+                actionsList.add(new Item("update", "Update"));
+            }
+
+            post_action_dropdown.setItems(actionsList);
+
+            post_action_dropdown.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(String key) {
+                    // Xử lý sự kiện nhấn delete
+                    if (key == "delete") {
+                        Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                    }
+                    // Xử lý sự kiện nhấn update
+                    if (key == "update") {
+                        Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
             // kiểm tra trong list likes có tồn tại like của người dùng
             for (LikePost likePost : post.getLikes()) {
                 if (likePost.getUser_id() == userManager.getUser().getId()) {
@@ -122,7 +152,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     break;
                 }
             }
-          
+
             postLikeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,7 +165,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             public void onResponse(Call<LikePostResponse> call, Response<LikePostResponse> response) {
                                 if (response.isSuccessful()) {
                                     postLikeButton.setImageResource(R.drawable.footprint_primary);
-                                    postLikeText.setTextColor(R.color.primaryMain);
+                                    postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
                                     post.getLikes().add(response.body().getData());
                                     isUserLike = true;
                                     notifyItemChanged(position);

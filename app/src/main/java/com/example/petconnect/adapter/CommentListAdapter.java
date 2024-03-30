@@ -62,7 +62,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView comment_author_name, comment_time;
         EditText comment_content;
-
+        boolean isEditing = false;
         CustomAvatar comment_author_avatar;
         UserManager userManager;
         Button comment_delete_button, comment_edit_button, comment_like_button;
@@ -89,19 +89,18 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 comment_edit_button.setVisibility(View.VISIBLE);
             }
 
-            final boolean[] isEditing = {false}; // Khai báo biến isEditing là một mảng một phần tử
             comment_edit_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
-                        if (!isEditing[0]) {
+                        if (!isEditing) {
                             // if not in edit mode -> enable
                             comment_content.setEnabled(true);
                             comment_content.requestFocus();
                             comment_content.setSelection(comment_content.getText().length());
                             comment_edit_button.setText("OK");
-                            isEditing[0] = true;
+                            isEditing = true;
                         } else {
                             // if in edit mode -> disable
                             // Get the updated content from the EditText
@@ -115,7 +114,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                 // Change the "OK" button back to "Edit"
                                 comment_edit_button.setText("Edit");
                                 // Thiết lập biến isEditing thành false để chỉ ra không còn ở chế độ chỉnh sửa
-                                isEditing[0] = false;
+                                isEditing = false;
 
                                 // Call API to update the comment
                                 String token = userManager.getAccessToken();
@@ -156,7 +155,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 public boolean onTouch(View v, MotionEvent event) {
                     // Kiểm tra xem người dùng đã ở chế độ chỉnh sửa hay chưa
                     // Nếu không ở chế độ chỉnh sửa, không cho phép chỉnh sửa trên EditText
-                    return !isEditing[0]; // Trả về true để không xử lý sự kiện chạm vào EditText
+                    return isEditing; // Trả về true để không xử lý sự kiện chạm vào EditText
                     // Trả về false để xử lý sự kiện chạm vào EditText
                 }
             });

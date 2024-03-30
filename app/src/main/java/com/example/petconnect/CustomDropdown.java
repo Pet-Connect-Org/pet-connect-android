@@ -108,8 +108,6 @@ public class CustomDropdown extends LinearLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomDropdown);
 
-//        int itemsId = a.getResourceId(R.styleable.CustomDropdown_options, 0);
-
         String dropdown_initial_text = a.getString(R.styleable.CustomDropdown_labelDropdown);
 
         dropdown_menu.setText(dropdown_initial_text);

@@ -1,9 +1,4 @@
 package com.example.petconnect.services;
-
-<<<<<<< HEAD
-import com.example.petconnect.models.ExtendedComment;
-=======
->>>>>>> main
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;

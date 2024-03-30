@@ -78,7 +78,6 @@ public class CustomDropdown extends LinearLayout {
     }
 
     public void setBackground(int colorResourceId) {
-        // Assuming dropdown_menu is your dropdown menu view
         dropdown_menu.setBackgroundColor(getResources().getColor(colorResourceId));
     }
 

@@ -156,7 +156,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postLikeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String accessToken = (new UserManager(PostListAdapter.this.context)).getAccessToken();
+                    String accessToken = userManager.getAccessToken();
 
                     // kiểm tra nếu người dùng chưa like mới cho like
                     if (!isUserLike) {
@@ -190,7 +190,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 @Override
                 public void onClick(View v) {
                     String commentContent = commentBox.getText().toString();
-                    String token = (new UserManager(PostListAdapter.this.context)).getAccessToken();
+                    String token = userManager.getAccessToken();
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
                     ApiService.apiService.createComment(" Bearer " + token, new AddCommentRequest(commentContent, post.getId())).enqueue(new Callback<AddCommentResponse>() {
                         @Override

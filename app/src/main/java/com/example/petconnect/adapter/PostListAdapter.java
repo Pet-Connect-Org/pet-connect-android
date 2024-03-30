@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,14 +38,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     public PostListAdapter(Context context, List<ExtendedPost> postList) {
         this.context = context;
         this.postList = postList;
-
     }
 
     @NonNull
     @Override
     public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_post, parent, false);
-        //ImageButton postLikeButton = view.findViewById(R.id.post_like_button); // Gán giá trị cho postLikeButton
         return new PostViewHolder(view);
     }
 
@@ -67,11 +66,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         TextView postContent;
         TextView postLikeCount;
         TextView postCommentCount;
-        TextView postTime;
+        TextView postTime, postLikeText;
         RecyclerView recyclerViewCommentList;
         CustomAvatar post_avatar;
         UserManager userManager;
-        private int position;
+        boolean isUserLike = false;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,22 +82,27 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postTime = itemView.findViewById(R.id.post_time);
             recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
             post_avatar = itemView.findViewById(R.id.post_avatar);
+            postLikeText = itemView.findViewById(R.id.post_like_text);
         }
 
         public void bind(ExtendedPost post, int position) {
             userManager = new UserManager(PostListAdapter.this.context);
-            this.position = position;
             int likes = post.getLikes().size();
+            // bind dữ liệu
             List<ExtendedComment> comments = post.getComments();
             postUserName.setText(post.getUser().getName());
             postContent.setText(post.getContent());
-            postLikeCount.setText(String.valueOf(likes) + " " + (likes > 0 ? "Likes" : "Like"));
+            postLikeCount.setText(String.valueOf(likes) + " " + (likes > 1 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
             post_avatar.setName(post.getUser().getName());
+
+            // kiểm tra trong list likes có tồn tại like của người dùng
             for (LikePost likePost : post.getLikes()) {
                 if (likePost.getUser_id() == userManager.getUser().getId()) {
+                    postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
                     postLikeButton.setImageResource(R.drawable.footprint_primary);
+                    this.isUserLike = true;
                     break;
                 }
             }
@@ -109,28 +113,32 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 @Override
                 public void onClick(View v) {
                     String accessToken = (new UserManager(PostListAdapter.this.context)).getAccessToken();
-                    ApiService.apiService.likepost("Bearer " + accessToken, post.getId()).enqueue(new Callback<LikePostResponse>() {
-                        @Override
-                        public void onResponse(Call<LikePostResponse> call, Response<LikePostResponse> response) {
-                            if (response.isSuccessful()) {
-                                postLikeButton.setImageResource(R.drawable.footprint_primary);
-                                post.getLikes().add(new LikePost());
-                                postList.set(position, post);
-                                notifyItemChanged(position);
-                            } else {
-                                if (response.code() == 409) {
-                                    Toast.makeText(context.getApplicationContext(), "Already like.", Toast.LENGTH_LONG).show();
+
+                    // kiểm tra nếu người dùng chưa like mới cho like
+                    if (!isUserLike) {
+                        ApiService.apiService.likepost("Bearer " + accessToken, post.getId()).enqueue(new Callback<LikePostResponse>() {
+                            @Override
+                            public void onResponse(Call<LikePostResponse> call, Response<LikePostResponse> response) {
+                                if (response.isSuccessful()) {
+                                    postLikeButton.setImageResource(R.drawable.footprint_primary);
+                                    postLikeText.setTextColor(R.color.primaryMain);
+                                    post.getLikes().add(response.body().getData());
+                                    isUserLike = true;
+                                    notifyItemChanged(position);
                                 } else {
-                                    Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<LikePostResponse> call, Throwable t) {
-                            Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<LikePostResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(PostListAdapter.this.context, "already like", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
         }

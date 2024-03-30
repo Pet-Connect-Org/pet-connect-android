@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -86,14 +86,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomAvatar post_avatar;
         UserManager userManager;
         boolean isUserLike = false;
-        ImageButton sendButton;
-
-        CustomDropdown post_sort_comment;
-        LinearLayout commentBoxHover;
+        ImageButton sendButton, post_comment_button;
         Button updateButton;
         RecyclerView recyclerViewCommentList;
         CustomTextfield commentBox;
-        CustomDropdown post_action_dropdown;
+        CustomDropdown post_action_dropdown, post_sort_comment;
+        NestedScrollView scrollView;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,12 +105,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
             post_avatar = itemView.findViewById(R.id.post_avatar);
             postLikeText = itemView.findViewById(R.id.post_like_text);
-            commentBoxHover = itemView.findViewById(R.id.comment_box_hover);
             updateButton = itemView.findViewById(R.id.comment_edit_button);
             sendButton = itemView.findViewById(R.id.comment_send);
             commentBox = itemView.findViewById(R.id.comment_box);
             post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
+            post_comment_button = itemView.findViewById(R.id.post_comment_button);
+            scrollView = itemView.findViewById(R.id.scrollView);
             post_sort_comment = itemView.findViewById(R.id.post_sort_comment);
+
         }
 
         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
@@ -257,6 +257,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
                 }
             });
+
             // Add comment
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -270,7 +271,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             if (response.isSuccessful()) {
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
-//                               Cập nhật RecyclerView thông qua adapter
+                                //Cập nhật RecyclerView thông qua adapter
+                                updateCommentRecyclerView(comments);
                                 notifyDataSetChanged();
 //                                updateCommentRecyclerView(comments);
 //
@@ -290,8 +292,28 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     });
                 }
             });
-        }
 
+            // Scroll to comment box
+            post_comment_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Kiểm tra xem ô commentBox có focus không
+                    if (commentBox.hasFocus()) {
+                        // Nếu có, chuyển focus đi một nơi khác
+                        scrollView.requestFocus();
+                    }
+                    // vị trí của commentBox
+                    int scrollToY = commentBox.getTop();
+
+                    // Reset vị trí cuộn về 0
+                    scrollView.scrollTo(0, 0);
+
+                    // scroll xuống
+                    scrollView.smoothScrollTo(0, scrollToY);
+                    commentBox.requestFocus();
+                }
+            });
+        }
     }
 }
 

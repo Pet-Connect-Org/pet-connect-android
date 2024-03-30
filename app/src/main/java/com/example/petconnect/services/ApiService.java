@@ -10,6 +10,8 @@ import com.example.petconnect.services.auth.ResendRequest;
 import com.example.petconnect.services.auth.ResendResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
+import com.example.petconnect.services.comment.LikeCommentResponse;
+import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
@@ -56,7 +58,10 @@ public interface ApiService {
     Call<UpdateCommentResponse> updateComment(@Header("Authorization") String authorization,
                                               @Body UpdateCommentRequest commentRequest,
                                               @Path("id") int id);
-
+    @POST("comment/like/{id}")
+    Call<LikeCommentResponse> likeComment(@Header("Authorization") String authorization, @Path("id") int id);
+    @POST("comment/unlike/{id}")
+    Call<UnlikeCommentResponse> unlikeComment(@Header("Authorization") String authorization, @Path("id") int id);
     @POST("auth/verify_user_email")
     Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
 

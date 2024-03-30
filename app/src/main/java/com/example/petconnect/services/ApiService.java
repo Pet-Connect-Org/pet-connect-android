@@ -9,23 +9,24 @@ import com.example.petconnect.services.auth.ResendRequest;
 import com.example.petconnect.services.auth.ResendResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
+import com.example.petconnect.services.comment.DeleteCommentRequest;
+import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
-import com.example.petconnect.services.post.LikePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
@@ -46,6 +47,14 @@ public interface ApiService {
     @POST("auth/sign-up")
     Call<SignupRespone> signup(@Body SignupRequest signupRequest);
 
+    @POST("auth/verify_user_email")
+    Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
+
+    @POST("auth/resend_verification_code")
+    Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
+
+    //comment
+
     @POST("comment")
     Call<AddCommentResponse> createComment(@Header("Authorization") String authorization,
                                            @Body AddCommentRequest commentRequest);
@@ -54,21 +63,23 @@ public interface ApiService {
     Call<UpdateCommentResponse> updateComment(@Header("Authorization") String authorization,
                                               @Body UpdateCommentRequest commentRequest,
                                               @Path("id") int id);
+    @DELETE("comment/{id}")
+    Call<DeleteCommentResponse> deleteComment(@Header("Authorization") String authorization,
+                                              @Path("id") int id);
 
-    @POST("auth/verify_user_email")
-    Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
 
-    @POST("auth/resend_verification_code")
-    Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
 
     // POST
     @GET("posts")
-    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @HeaderMap Map<String, Number> options);
+    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization,
+                                   @HeaderMap Map<String, Number> options);
 
     @POST("post")
-    Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+    Call<CreatePostResponse> createPost(@Header("Authorization") String authorization,
+                                        @Body CreatePostRequest createPostRequest);
     @POST("post/like/{id}")
-    Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
+    Call<LikePostResponse> likepost(@Header("Authorization") String authorization,
+                                    @Path("id") int id);
 
 
 }

@@ -84,7 +84,7 @@
                 android:textColor="@color/darkNeutral"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/comment_delete_button"
@@ -97,7 +97,7 @@
                 android:textColor="@color/darkNeutral"
                 android:textSize="10sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
     <View

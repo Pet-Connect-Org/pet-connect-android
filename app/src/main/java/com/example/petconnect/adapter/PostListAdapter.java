@@ -2,14 +2,11 @@ package com.example.petconnect.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,15 +27,10 @@ import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
-import com.example.petconnect.services.comment.UpdateCommentRequest;
-import com.example.petconnect.services.comment.UpdateCommentResponse;
 
 import com.example.petconnect.models.LikePost;
-import com.example.petconnect.services.ApiService;
-import com.example.petconnect.services.post.LikePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
-import com.example.petconnect.services.comment.AddCommentRequest;
-import com.example.petconnect.services.comment.AddCommentResponse;
+import com.example.petconnect.services.post.UnlikePostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +186,28 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             }
                         });
                     } else {
-                        Toast.makeText(PostListAdapter.this.context, "already like", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PostListAdapter.this.context, "already like", Toast.LENGTH_SHORT).show();
+                        ApiService.apiService.unlikepost("Bearer "+accessToken,post.getId()).enqueue(new Callback<UnlikePostResponse>() {
+                            @Override
+                            public void onResponse(Call<UnlikePostResponse> call, Response<UnlikePostResponse> response) {
+                                if (response.isSuccessful()){
+                                    postLikeButton.setImageResource(R.drawable.footprint);
+                                    postLikeText.setTextColor(ContextCompat.getColor(context, R.color.defaultTextColor));
+                                    post.getLikes().removeIf(like -> like.getUser_id() == userManager.getUser().getId());
+                                    isUserLike = false;
+                                    notifyItemChanged(position);
+
+                                }
+                                else {
+                                    Toast.makeText(context.getApplicationContext(), "Unlike failed", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UnlikePostResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                 }

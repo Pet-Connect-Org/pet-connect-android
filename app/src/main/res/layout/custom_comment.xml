@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/custom_comment"
     android:paddingBottom="12dp">
 
     <com.example.petconnect.CustomAvatar
@@ -15,7 +16,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/comment_box_hover"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
@@ -33,12 +33,16 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/comment_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Bui Ngoc"
+                android:textSize="14dp"
+
+                android:background ="@drawable/custom_rounded_neutral_bg"
                 android:textColor="@color/black" />
+
         </LinearLayout>
 
         <LinearLayout

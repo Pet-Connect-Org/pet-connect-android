@@ -33,6 +33,7 @@ import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -53,7 +54,8 @@ public interface ApiService {
 
     @PUT("comment/{id}")
     Call<UpdateCommentResponse> updateComment(@Header("Authorization") String authorization,
-                                              @Body UpdateCommentRequest commentRequest);
+                                              @Body UpdateCommentRequest commentRequest,
+                                              @Path("id") int id);
 
     @POST("auth/verify_user_email")
     Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);

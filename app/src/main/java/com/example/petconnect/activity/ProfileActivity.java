@@ -1,10 +1,12 @@
 package com.example.petconnect.activity;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +17,8 @@ import com.example.petconnect.databinding.ActivityProfileBinding;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
+import com.example.petconnect.models.Follow;
 import com.example.petconnect.services.ApiService;
-import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class ProfileActivity extends DrawerBaseActivity {
     PostListAdapter postListAdapter;
     UserManager userManager;
     Intent intent;
-
+    Button profile_action_button;
     CustomAvatar profile_user_avatar;
     TextView profile_user_name;
 
@@ -57,7 +59,11 @@ public class ProfileActivity extends DrawerBaseActivity {
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
+        profile_action_button = findViewById(R.id.profile_action_button);
 
+        if (this.user_id == userManager.getUser().getId()) {
+            profile_action_button.setText("Edit your profile");
+        }
 
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
@@ -75,7 +81,17 @@ public class ProfileActivity extends DrawerBaseActivity {
 
                     profile_user_avatar.setName(user.getName());
                     profile_user_name.setText(user.getName());
-                    Toast.makeText(ProfileActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                    boolean isFollow = false;
+                    for (Follow follow : user.getFollowing()) {
+                        if (follow.getUser_id() == userManager.getUser().getId()) {
+                            isFollow = true;
+                            break;
+                        }
+                    }
+
+                    if (user.getId() != userManager.getUser().getId()) {
+                        profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
+                    }
 
                     return;
                 }
@@ -98,7 +114,9 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
-        postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
-        recyclerViewPostList.setAdapter(postListAdapter);
+        if (postList != null) {
+            postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
+            recyclerViewPostList.setAdapter(postListAdapter);
+        }
     }
 }

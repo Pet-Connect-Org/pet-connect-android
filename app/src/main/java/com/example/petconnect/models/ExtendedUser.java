@@ -13,4 +13,23 @@ public class ExtendedUser extends User {
     }
 
     List<ExtendedPost> posts;
+
+    public List<Follow> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<Follow> followers) {
+        this.followers = followers;
+    }
+
+    public List<Follow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<Follow> following) {
+        this.following = following;
+    }
+
+    List<Follow> followers;
+    List<Follow> following;
 }

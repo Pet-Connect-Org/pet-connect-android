@@ -149,18 +149,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     }
                 }
             });
-
             // Set OnTouchListener for comment_content
             comment_content.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    // Kiểm tra xem người dùng đã ở chế độ chỉnh sửa hay chưa
-                    // Nếu không ở chế độ chỉnh sửa, không cho phép chỉnh sửa trên EditText
-                    return isEditing; // Trả về true để không xử lý sự kiện chạm vào EditText
-                    // Trả về false để xử lý sự kiện chạm vào EditText
+                    // Chỉ cho phép chỉnh sửa khi đang ở chế độ chỉnh sửa (isEditing = true)
+                    return !isEditing;
                 }
             });
-
+//
             comment_delete_button.setOnClickListener(new View.OnClickListener(){
 
                 @Override

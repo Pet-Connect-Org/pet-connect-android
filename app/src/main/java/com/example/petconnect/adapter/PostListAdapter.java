@@ -215,7 +215,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 //                               Cập nhật RecyclerView thông qua adapter
                                 notifyItemChanged(position);
                                 updateCommentRecyclerView(comments);
-//
+                                commentBox.setText("");
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
                             } else {

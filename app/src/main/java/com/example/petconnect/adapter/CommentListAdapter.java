@@ -29,14 +29,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.CommentViewHolder> {
-    private final Context context;
-    private final List<ExtendedComment> commentList;
+    private Context context;
+    private List<ExtendedComment> commentList;
 
     public CommentListAdapter(Context context, List<ExtendedComment> commentList) {
         this.context = context;
         this.commentList = commentList;
     }
-
 
     @NonNull
     @Override
@@ -59,11 +58,9 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView comment_author_name, comment_time;
         EditText comment_content;
-//        TextView comment_author_name, comment_content, comment_time;
 
         CustomAvatar comment_author_avatar;
         UserManager userManager;
-        RecyclerView recyclerViewCommentList;
         Button comment_delete_button, comment_edit_button, comment_like_button;
 
         public CommentViewHolder(@NonNull View itemView) {
@@ -75,9 +72,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
 
             comment_delete_button = itemView.findViewById(R.id.comment_delete_button);
             comment_edit_button = itemView.findViewById(R.id.comment_edit_button);
-
-            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
-
         }
 
         public void bind(ExtendedComment comment) {
@@ -121,7 +115,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                 isEditing[0] = false;
 
                                 // Call API to update the comment
-                                String token = (new UserManager(CommentListAdapter.this.context)).getAccessToken();
+                                String token = userManager.getAccessToken();
                                 ApiService.apiService.updateComment("Bearer " + token, new UpdateCommentRequest(updatedContent, comment.getPost_id()), comment.getId()).enqueue(new Callback<UpdateCommentResponse>() {
                                     @Override
                                     public void onResponse(Call<UpdateCommentResponse> call, Response<UpdateCommentResponse> response) {
@@ -160,7 +154,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     // Kiểm tra xem người dùng đã ở chế độ chỉnh sửa hay chưa
                     // Nếu không ở chế độ chỉnh sửa, không cho phép chỉnh sửa trên EditText
                     return !isEditing[0]; // Trả về true để không xử lý sự kiện chạm vào EditText
-// Trả về false để xử lý sự kiện chạm vào EditText
+                    // Trả về false để xử lý sự kiện chạm vào EditText
                 }
             });
         }

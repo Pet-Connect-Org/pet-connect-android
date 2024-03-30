@@ -138,11 +138,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     });
                 }
             });
-
-
-
-            // tạo dialog mới , có edit text -> oldcontentComment .
-//            2 option back or update
         }
 
     }

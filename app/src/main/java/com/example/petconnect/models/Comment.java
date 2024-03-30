@@ -68,7 +68,7 @@ public class Comment {
         this.updated_at = updated_at;
     }
 
-    public String content;
+    private String content;
     private Date created_at;
     private Date updated_at;
 }

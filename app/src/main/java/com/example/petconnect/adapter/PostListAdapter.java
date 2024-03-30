@@ -1,6 +1,7 @@
 package com.example.petconnect.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +22,23 @@ import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.OtpActivity;
+import com.example.petconnect.activity.ProfileActivity;
+import com.example.petconnect.activity.SignUpActivity;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
-import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
+
+import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.post.LikePostResponse;
+import com.example.petconnect.services.post.UnlikePostResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -82,10 +90,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         Button updateButton;
         RecyclerView recyclerViewCommentList;
         CustomTextfield commentBox;
-        CustomDropdown post_action_dropdown;
+        CustomDropdown post_action_dropdown, post_sort_comment;
         NestedScrollView scrollView;
-
-        private String commentContent;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,12 +111,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
             post_comment_button = itemView.findViewById(R.id.post_comment_button);
             scrollView = itemView.findViewById(R.id.scrollView);
+            post_sort_comment = itemView.findViewById(R.id.post_sort_comment);
 
         }
 
         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            recyclerViewCommentList.setLayoutManager(layoutManager);
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
             recyclerViewCommentList.setAdapter(commentListAdapter);
         }
@@ -119,6 +124,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             int likes = post.getLikes().size();
             List<ExtendedComment> comments = post.getComments();
             postUserName.setText(post.getUser().getName());
+            post_avatar.setName(post.getUser().getName());
             postContent.setText(post.getContent());
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 1 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
@@ -127,6 +133,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             updateCommentRecyclerView(comments);
 
             post_action_dropdown.customizeDropdown(android.R.color.transparent, R.drawable.more, false);
+            post_sort_comment.customizeDropdown(android.R.color.transparent, R.drawable.sort, false);
+
+            ArrayList<Item> sortOptionList = new ArrayList<>();
+            sortOptionList.add(new Item("desc", "Oldest first"));
+            sortOptionList.add(new Item("asc", "Newest first"));
 
             ArrayList<Item> actionsList = new ArrayList<>();
             if (post.getUser_id() == userManager.getUser().getId()) {
@@ -135,6 +146,42 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             }
 
             post_action_dropdown.setItems(actionsList);
+            post_sort_comment.setItems(sortOptionList);
+            post_sort_comment.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(String key) {
+                    ArrayList<ExtendedComment> sortedComments = post.getComments();
+
+                    if (key == "desc") {
+                        Collections.sort(sortedComments, new Comparator<ExtendedComment>() {
+                            @Override
+                            public int compare(ExtendedComment comment1, ExtendedComment comment2) {
+                                return comment1.getCreated_at().compareTo(comment2.getCreated_at());
+                            }
+                        });
+                        post.setComments(sortedComments);
+                        updateCommentRecyclerView(sortedComments);
+                    } else if (key == "asc") {
+                        Collections.sort(sortedComments, new Comparator<ExtendedComment>() {
+                            @Override
+                            public int compare(ExtendedComment comment1, ExtendedComment comment2) {
+                                return comment2.getCreated_at().compareTo(comment1.getCreated_at());
+                            }
+                        });
+                        post.setComments(sortedComments);
+                        updateCommentRecyclerView(sortedComments);
+                    }
+                }
+            });
+
+            postUserName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myintent = new Intent(PostListAdapter.this.context, ProfileActivity.class);
+                    myintent.putExtra("user_id", String.valueOf(post.getUser_id()));
+                    PostListAdapter.this.context.startActivity(myintent);
+                }
+            });
 
             post_action_dropdown.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
                 @Override
@@ -174,8 +221,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeButton.setImageResource(R.drawable.footprint_primary);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
                                     post.getLikes().add(response.body().getData());
+                                    notifyDataSetChanged();
                                     isUserLike = true;
-                                    notifyItemChanged(position);
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                                 }
@@ -187,7 +234,25 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             }
                         });
                     } else {
-                        Toast.makeText(PostListAdapter.this.context, "already like", Toast.LENGTH_SHORT).show();
+                        ApiService.apiService.unlikepost("Bearer " + accessToken, post.getId()).enqueue(new Callback<UnlikePostResponse>() {
+                            @Override
+                            public void onResponse(Call<UnlikePostResponse> call, Response<UnlikePostResponse> response) {
+                                if (response.isSuccessful()) {
+                                    postLikeButton.setImageResource(R.drawable.footprint);
+                                    postLikeText.setTextColor(ContextCompat.getColor(context, R.color.defaultTextColor));
+                                    post.getLikes().removeIf(like -> like.getUser_id() == userManager.getUser().getId());
+                                    notifyDataSetChanged();
+                                    isUserLike = false;
+                                } else {
+                                    Toast.makeText(context.getApplicationContext(), "Unlike failed", Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UnlikePostResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                 }
@@ -207,8 +272,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
                                 //Cập nhật RecyclerView thông qua adapter
-                                notifyItemChanged(position);
                                 updateCommentRecyclerView(comments);
+                                notifyDataSetChanged();
+//                                updateCommentRecyclerView(comments);
+//
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
                             } else {

@@ -186,12 +186,10 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <ImageButton
+            <com.example.petconnect.CustomDropdown
                 android:id="@+id/post_sort_comment"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/sort" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

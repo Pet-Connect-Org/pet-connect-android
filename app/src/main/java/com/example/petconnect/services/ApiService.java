@@ -1,4 +1,5 @@
 package com.example.petconnect.services;
+
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;
@@ -17,6 +18,8 @@ import com.example.petconnect.services.post.CreatePostResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
+import com.example.petconnect.services.post.UnlikePostResponse;
+import com.example.petconnect.services.user.GetUserByIdResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -32,6 +35,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -66,12 +70,17 @@ public interface ApiService {
 
     // POST
     @GET("posts")
-    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @HeaderMap Map<String, Number> options);
+    Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @Query("user_id") Integer user_id, @Query("limit") Integer limit, @Query("offset") Integer offset);
+    @GET("user/{id}")
+    Call<GetUserByIdResponse> getUserById(@Header("Authorization") String authorization, @Path("id") Integer id);
 
     @POST("post")
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+
     @POST("post/like/{id}")
     Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
 
+    @POST("post/unlike/{id}")
+    Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
 
 }

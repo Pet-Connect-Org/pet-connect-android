@@ -12,4 +12,5 @@
     <color name="third">#7A7FA8</color>
     <color name="smoke">#FCFCFC</color>
     <color name="correct">#17A117</color>
+    <color name="defaultTextColor">#A6A0A0</color>
 </resources>

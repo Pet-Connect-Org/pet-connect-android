@@ -75,7 +75,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         UserManager userManager;
         Button comment_delete_button, comment_edit_button, comment_like_button;
 
-
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             comment_author_name = itemView.findViewById(R.id.comment_author_name);
@@ -136,7 +135,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                     public void onResponse(Call<UpdateCommentResponse> call, Response<UpdateCommentResponse> response) {
                                         if (response.isSuccessful()) {
                                             // Notify RecyclerView that the data has changed
-                                            notifyItemChanged(position);
+                                            notifyDataSetChanged();
                                             // Update the dataset in the RecyclerView
                                             commentList.set(position, comment);
                                             Toast.makeText(context, "Update Comment Success", Toast.LENGTH_SHORT).show();
@@ -158,7 +157,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 }
             });
 
-            // Set OnTouchListener for comment_content
             comment_content.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

@@ -33,6 +33,8 @@ import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -81,13 +83,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         UserManager userManager;
         boolean isUserLike = false;
         ImageButton sendButton;
+
+        CustomDropdown post_sort_comment;
         LinearLayout commentBoxHover;
         Button updateButton;
         RecyclerView recyclerViewCommentList;
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown;
 
-        private String commentContent;
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             userManager = new UserManager(PostListAdapter.this.context);
@@ -105,9 +108,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             sendButton = itemView.findViewById(R.id.comment_send);
             commentBox = itemView.findViewById(R.id.comment_box);
             post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
+            post_sort_comment = itemView.findViewById(R.id.post_sort_comment);
         }
 
-         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
+        private void updateCommentRecyclerView(List<ExtendedComment> comments) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerViewCommentList.setLayoutManager(layoutManager);
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
@@ -126,14 +130,47 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             updateCommentRecyclerView(comments);
 
             post_action_dropdown.customizeDropdown(android.R.color.transparent, R.drawable.more, false);
+            post_sort_comment.customizeDropdown(android.R.color.transparent, R.drawable.sort, false);
+
+            ArrayList<Item> sortOptionList = new ArrayList<>();
+            sortOptionList.add(new Item("desc", "Oldest first"));
+            sortOptionList.add(new Item("asc", "Newest first"));
 
             ArrayList<Item> actionsList = new ArrayList<>();
-            if (post.getUser_id() ==userManager.getUser().getId()) {
+            if (post.getUser_id() == userManager.getUser().getId()) {
                 actionsList.add(new Item("delete", "Delete"));
                 actionsList.add(new Item("update", "Update"));
             }
 
             post_action_dropdown.setItems(actionsList);
+            post_sort_comment.setItems(sortOptionList);
+            post_sort_comment.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(String key) {
+                    ArrayList<ExtendedComment> sortedComments = post.getComments();
+
+                    if (key == "desc") {
+                        Toast.makeText(PostListAdapter.this.context, "DESC", Toast.LENGTH_SHORT).show();
+                        Collections.sort(sortedComments, new Comparator<ExtendedComment>() {
+                            @Override
+                            public int compare(ExtendedComment comment1, ExtendedComment comment2) {
+                                return comment1.getCreated_at().compareTo(comment2.getCreated_at());
+                            }
+                        });
+                        post.setComments(sortedComments);
+                        updateCommentRecyclerView(sortedComments);
+                    } else if (key == "asc") {
+                        Collections.sort(sortedComments, new Comparator<ExtendedComment>() {
+                            @Override
+                            public int compare(ExtendedComment comment1, ExtendedComment comment2) {
+                                return comment2.getCreated_at().compareTo(comment1.getCreated_at());
+                            }
+                        });
+                        post.setComments(sortedComments);
+                        updateCommentRecyclerView(sortedComments);
+                    }
+                }
+            });
 
             post_action_dropdown.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
                 @Override

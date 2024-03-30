@@ -30,6 +30,11 @@ import java.util.ArrayList;
 public class CustomDropdown extends LinearLayout {
     Button dropdown_menu;
     TextView labelDropdown;
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
     ArrayList<Item> items;
     String selectedItemKey;
 
@@ -103,8 +108,6 @@ public class CustomDropdown extends LinearLayout {
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomDropdown);
 
-        int itemsId = a.getResourceId(R.styleable.CustomDropdown_options, 0);
-
         String dropdown_initial_text = a.getString(R.styleable.CustomDropdown_labelDropdown);
 
         dropdown_menu.setText(dropdown_initial_text);
@@ -116,18 +119,6 @@ public class CustomDropdown extends LinearLayout {
             labelDropdown.setVisibility(GONE);
         }
 
-        if (itemsId != 0) {
-            String[] itemStrings = context.getResources().getStringArray(itemsId);
-            items = new ArrayList<>();
-            for (String itemString : itemStrings) {
-                String[] keyValue = itemString.split("=");
-                if (keyValue.length == 2) {
-                    items.add(new Item(keyValue[0], keyValue[1]));
-                }
-            }
-        }
-
-
         a.recycle();
 
         dropdown_menu.setOnClickListener(new OnClickListener() {
@@ -135,20 +126,25 @@ public class CustomDropdown extends LinearLayout {
             public void onClick(View view) {
                 PopupMenu popup = new PopupMenu(context, dropdown_menu);
 
-                if (items != null) {
-                    for (Item item : items) {
-                        popup.getMenu().add(item.getValue());
-                    }
+                for (Item item : items) {
+                    popup.getMenu().add(item.getValue());
                 }
 
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        int index = item.getOrder();
+                        String selectedItemTitle = item.getTitle().toString();
+                        int index = -1;
+                        for (int i = 0; i < items.size(); i++) {
+                            if (selectedItemTitle.equals(items.get(i).getValue())) {
+                                index = i;
+                                break;
+                            }
+                        }
 
                         if (index >= 0 && index < items.size()) {
                             setSelectedItemKey(items.get(index).getKey());
                             if (canSetText) {
-                                dropdown_menu.setText(item.getTitle());
+                                dropdown_menu.setText(selectedItemTitle);
                             }
                             if (listener != null) {
                                 listener.onItemSelected(items.get(index).getKey());

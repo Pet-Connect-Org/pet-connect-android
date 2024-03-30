@@ -50,12 +50,6 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <!--            <ImageButton-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:backgroundTint="@android:color/transparent"-->
-            <!--                android:src="@drawable/more" />-->
-
             <com.example.petconnect.CustomDropdown
                 android:id="@+id/post_action_dropdown"
                 android:layout_width="wrap_content"

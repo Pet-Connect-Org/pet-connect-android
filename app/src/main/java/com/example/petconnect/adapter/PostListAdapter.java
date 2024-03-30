@@ -95,8 +95,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown;
 
-
-
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             userManager = new UserManager(PostListAdapter.this.context);
@@ -223,6 +221,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeButton.setImageResource(R.drawable.footprint_primary);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
                                     post.getLikes().add(response.body().getData());
+                                    notifyDataSetChanged();
                                     isUserLike = true;
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
@@ -242,6 +241,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeButton.setImageResource(R.drawable.footprint);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.defaultTextColor));
                                     post.getLikes().removeIf(like -> like.getUser_id() == userManager.getUser().getId());
+                                    notifyDataSetChanged();
                                     isUserLike = false;
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), "Unlike failed", Toast.LENGTH_LONG).show();
@@ -271,7 +271,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
 //                               Cập nhật RecyclerView thông qua adapter
-                                updateCommentRecyclerView(comments);
+                                notifyDataSetChanged();
+//                                updateCommentRecyclerView(comments);
 //
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();

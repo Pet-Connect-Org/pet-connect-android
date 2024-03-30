@@ -123,7 +123,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                     public void onResponse(Call<UpdateCommentResponse> call, Response<UpdateCommentResponse> response) {
                                         if (response.isSuccessful()) {
                                             // Notify RecyclerView that the data has changed
-                                            notifyItemChanged(position);
+                                            notifyDataSetChanged();
                                             // Update the dataset in the RecyclerView
                                             commentList.set(position, comment);
                                             // Hiển thị thông báo

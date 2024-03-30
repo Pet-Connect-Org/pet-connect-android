@@ -1,6 +1,7 @@
 package com.example.petconnect.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.OtpActivity;
+import com.example.petconnect.activity.ProfileActivity;
+import com.example.petconnect.activity.SignUpActivity;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
@@ -112,8 +116,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
 
         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
-            recyclerViewCommentList.setLayoutManager(layoutManager);
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
             recyclerViewCommentList.setAdapter(commentListAdapter);
         }
@@ -122,6 +124,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             int likes = post.getLikes().size();
             List<ExtendedComment> comments = post.getComments();
             postUserName.setText(post.getUser().getName());
+            post_avatar.setName(post.getUser().getName());
             postContent.setText(post.getContent());
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 1 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
@@ -171,6 +174,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 }
             });
 
+            postUserName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent myintent = new Intent(PostListAdapter.this.context, ProfileActivity.class);
+                    myintent.putExtra("user_id", String.valueOf(post.getUser_id()));
+                    PostListAdapter.this.context.startActivity(myintent);
+                }
+            });
+
             post_action_dropdown.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(String key) {
@@ -209,6 +221,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeButton.setImageResource(R.drawable.footprint_primary);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
                                     post.getLikes().add(response.body().getData());
+                                    notifyDataSetChanged();
                                     isUserLike = true;
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
@@ -228,6 +241,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeButton.setImageResource(R.drawable.footprint);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.defaultTextColor));
                                     post.getLikes().removeIf(like -> like.getUser_id() == userManager.getUser().getId());
+                                    notifyDataSetChanged();
                                     isUserLike = false;
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), "Unlike failed", Toast.LENGTH_LONG).show();
@@ -257,8 +271,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
 //                               Cập nhật RecyclerView thông qua adapter
-                                notifyItemChanged(position);
-                                updateCommentRecyclerView(comments);
+                                notifyDataSetChanged();
+//                                updateCommentRecyclerView(comments);
 //
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();

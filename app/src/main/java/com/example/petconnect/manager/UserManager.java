@@ -14,7 +14,6 @@ public class UserManager {
     private static final String PERF_USER_NAME = "user_prefs";
     private SharedPreferences sharedPreferencesAccessToken;
     private SharedPreferences sharedPreferencesUser;
-
     public UserManager(Context context) {
         sharedPreferencesAccessToken = context.getSharedPreferences(PREF_ACCESS_TOKEN_NAME, Context.MODE_PRIVATE);
         sharedPreferencesUser = context.getSharedPreferences(PERF_USER_NAME, Context.MODE_PRIVATE);

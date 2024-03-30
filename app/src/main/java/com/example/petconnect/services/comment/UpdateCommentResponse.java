@@ -1,10 +1,10 @@
+
 package com.example.petconnect.services.comment;
 
 import com.example.petconnect.models.ExtendedComment;
 
-import java.util.Date;
 
-public class AddCommentResponse {
+public class UpdateCommentResponse {
     private String message;
     private ExtendedComment data;
 
@@ -23,4 +23,6 @@ public class AddCommentResponse {
     public void setData(ExtendedComment data) {
         this.data = data;
     }
+
+    // Thêm các thuộc tính và phương thức getter và setter cho các thuộc tính mới
 }

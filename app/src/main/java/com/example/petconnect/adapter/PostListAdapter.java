@@ -25,9 +25,13 @@ import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
-import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
+import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.comment.AddCommentRequest;
+import com.example.petconnect.services.comment.AddCommentResponse;
+import com.example.petconnect.services.comment.UpdateCommentRequest;
+import com.example.petconnect.services.comment.UpdateCommentResponse;
 
 import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.ApiService;
@@ -91,6 +95,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown;
 
+        private String commentContent;
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             userManager = new UserManager(PostListAdapter.this.context);
@@ -110,6 +115,13 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
         }
 
+         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            recyclerViewCommentList.setLayoutManager(layoutManager);
+            CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
+            recyclerViewCommentList.setAdapter(commentListAdapter);
+        }
+
         public void bind(ExtendedPost post, int position) {
             int likes = post.getLikes().size();
             List<ExtendedComment> comments = post.getComments();
@@ -118,6 +130,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 1 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
+
+            updateCommentRecyclerView(comments);
 
             post_action_dropdown.customizeDropdown(android.R.color.transparent, R.drawable.more, false);
 
@@ -192,7 +206,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     String commentContent = commentBox.getText().toString();
                     String token = userManager.getAccessToken();
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
-                    ApiService.apiService.createComment(" Bearer " + token, new AddCommentRequest(commentContent, post.getId())).enqueue(new Callback<AddCommentResponse>() {
+                    ApiService.apiService.createComment("Bearer " + token, new AddCommentRequest(commentContent, post.getId())).enqueue(new Callback<AddCommentResponse>() {
                         @Override
                         public void onResponse(Call<AddCommentResponse> call, Response<AddCommentResponse> response) {
                             if (response.isSuccessful()) {
@@ -200,6 +214,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 comments.add(response.body().getData());
 //                               Cập nhật RecyclerView thông qua adapter
                                 notifyItemChanged(position);
+                                updateCommentRecyclerView(comments);
 //
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
@@ -217,12 +232,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     });
                 }
             });
-
-            // Phương thức cập nhật RecyclerView
-            recyclerViewCommentList.setLayoutManager(new LinearLayoutManager(context));
-            CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
-            recyclerViewCommentList.setAdapter(commentListAdapter);
         }
+
     }
 }
 

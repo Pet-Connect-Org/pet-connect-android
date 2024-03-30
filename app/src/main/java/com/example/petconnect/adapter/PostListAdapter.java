@@ -150,7 +150,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     ArrayList<ExtendedComment> sortedComments = post.getComments();
 
                     if (key == "desc") {
-                        Toast.makeText(PostListAdapter.this.context, "DESC", Toast.LENGTH_SHORT).show();
                         Collections.sort(sortedComments, new Comparator<ExtendedComment>() {
                             @Override
                             public int compare(ExtendedComment comment1, ExtendedComment comment2) {
@@ -211,7 +210,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
                                     post.getLikes().add(response.body().getData());
                                     isUserLike = true;
-                                    notifyItemChanged(position);
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                                 }
@@ -223,19 +221,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             }
                         });
                     } else {
-                        //Toast.makeText(PostListAdapter.this.context, "already like", Toast.LENGTH_SHORT).show();
-                        ApiService.apiService.unlikepost("Bearer "+accessToken,post.getId()).enqueue(new Callback<UnlikePostResponse>() {
+                        ApiService.apiService.unlikepost("Bearer " + accessToken, post.getId()).enqueue(new Callback<UnlikePostResponse>() {
                             @Override
                             public void onResponse(Call<UnlikePostResponse> call, Response<UnlikePostResponse> response) {
-                                if (response.isSuccessful()){
+                                if (response.isSuccessful()) {
                                     postLikeButton.setImageResource(R.drawable.footprint);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.defaultTextColor));
                                     post.getLikes().removeIf(like -> like.getUser_id() == userManager.getUser().getId());
                                     isUserLike = false;
-                                    notifyItemChanged(position);
-
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(context.getApplicationContext(), "Unlike failed", Toast.LENGTH_LONG).show();
                                 }
                             }

@@ -1,4 +1,5 @@
 package com.example.petconnect.services;
+
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;
@@ -66,10 +67,11 @@ public interface ApiService {
 
     @POST("post")
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+
     @POST("post/like/{id}")
     Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
-    @POST("post/unlike/{id}")
-    Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization,@Path("id") int id);
 
+    @POST("post/unlike/{id}")
+    Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
 
 }

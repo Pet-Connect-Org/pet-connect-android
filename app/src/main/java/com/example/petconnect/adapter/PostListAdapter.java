@@ -2,19 +2,16 @@ package com.example.petconnect.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,18 +24,11 @@ import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
-import com.example.petconnect.services.ApiService;
-import com.example.petconnect.services.comment.AddCommentRequest;
-import com.example.petconnect.services.comment.AddCommentResponse;
-import com.example.petconnect.services.comment.UpdateCommentRequest;
-import com.example.petconnect.services.comment.UpdateCommentResponse;
-
 import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.ApiService;
-import com.example.petconnect.services.post.LikePostRequest;
-import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
+import com.example.petconnect.services.post.LikePostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,14 +78,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomAvatar post_avatar;
         UserManager userManager;
         boolean isUserLike = false;
-        ImageButton sendButton;
-        LinearLayout commentBoxHover;
+        ImageButton sendButton, post_comment_button;
         Button updateButton;
         RecyclerView recyclerViewCommentList;
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown;
+        NestedScrollView scrollView;
 
         private String commentContent;
+
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             userManager = new UserManager(PostListAdapter.this.context);
@@ -108,14 +99,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
             post_avatar = itemView.findViewById(R.id.post_avatar);
             postLikeText = itemView.findViewById(R.id.post_like_text);
-            commentBoxHover = itemView.findViewById(R.id.comment_box_hover);
             updateButton = itemView.findViewById(R.id.comment_edit_button);
             sendButton = itemView.findViewById(R.id.comment_send);
             commentBox = itemView.findViewById(R.id.comment_box);
             post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
+            post_comment_button = itemView.findViewById(R.id.post_comment_button);
+            scrollView = itemView.findViewById(R.id.scrollView);
+
         }
 
-         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
+        private void updateCommentRecyclerView(List<ExtendedComment> comments) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerViewCommentList.setLayoutManager(layoutManager);
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
@@ -136,7 +129,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             post_action_dropdown.customizeDropdown(android.R.color.transparent, R.drawable.more, false);
 
             ArrayList<Item> actionsList = new ArrayList<>();
-            if (post.getUser_id() ==userManager.getUser().getId()) {
+            if (post.getUser_id() == userManager.getUser().getId()) {
                 actionsList.add(new Item("delete", "Delete"));
                 actionsList.add(new Item("update", "Update"));
             }
@@ -199,6 +192,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
                 }
             });
+
             // Add comment
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,10 +206,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             if (response.isSuccessful()) {
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
-//                               Cập nhật RecyclerView thông qua adapter
+                                //Cập nhật RecyclerView thông qua adapter
                                 notifyItemChanged(position);
                                 updateCommentRecyclerView(comments);
-//
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
                             } else {
@@ -232,8 +225,28 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     });
                 }
             });
-        }
 
+            // Scroll to comment box
+            post_comment_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Kiểm tra xem ô commentBox có focus không
+                    if (commentBox.hasFocus()) {
+                        // Nếu có, chuyển focus đi một nơi khác
+                        scrollView.requestFocus();
+                    }
+                    // vị trí của commentBox
+                    int scrollToY = commentBox.getTop();
+
+                    // Reset vị trí cuộn về 0
+                    scrollView.scrollTo(0, 0);
+
+                    // scroll xuống
+                    scrollView.smoothScrollTo(0, scrollToY);
+                    commentBox.requestFocus();
+                }
+            });
+        }
     }
 }
 

@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "PetConnect"
 include(":app")
- 

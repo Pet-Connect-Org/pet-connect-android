@@ -30,15 +30,15 @@ Running follow these simple example steps below
 
 - Authentication:
     - [x] Sign in
-    - [ ] Sign up
-    - [ ] OTP 
-    - [ ] Resend OTP
+    - [x] Sign up
+    - [x] OTP 
+    - [x] Resend OTP
     - [ ] Change password
 - Post:
-    - [ ] List post
-    - [ ] Create post
+    - [x] List post
+    - [x] Create post
     - [ ] Upload images (related to creating a post)
-    - [ ] Add comment
+    - [x] Add comment
     - [ ] Update comment
     - [ ] Delete comment
     - [ ] Sort comment by date

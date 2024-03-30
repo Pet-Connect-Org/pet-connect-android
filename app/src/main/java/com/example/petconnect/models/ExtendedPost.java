@@ -1,5 +1,7 @@
 package com.example.petconnect.models;
 
+import com.example.petconnect.R;
+
 import java.util.ArrayList;
 
 public class ExtendedPost extends Post {
@@ -19,11 +21,9 @@ public class ExtendedPost extends Post {
         this.likes = likes;
     }
 
-
     public void setUser(User user) {
         this.user = user;
     }
-
 
     public ArrayList<ExtendedComment> getComments() {
         return comments;
@@ -32,5 +32,4 @@ public class ExtendedPost extends Post {
     public void setComments(ArrayList<ExtendedComment> comments) {
         this.comments = comments;
     }
-
 }

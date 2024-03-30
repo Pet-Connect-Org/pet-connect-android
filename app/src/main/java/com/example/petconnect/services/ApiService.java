@@ -1,6 +1,9 @@
 package com.example.petconnect.services;
 
+<<<<<<< HEAD
 import com.example.petconnect.models.ExtendedComment;
+=======
+>>>>>>> main
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;
@@ -14,10 +17,10 @@ import com.example.petconnect.services.auth.SignupRespone;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
-import com.example.petconnect.services.auth.OtpRequest;
-import com.example.petconnect.services.auth.OtpResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
+import com.example.petconnect.services.post.LikePostRequest;
+import com.example.petconnect.services.post.LikePostResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -62,11 +65,15 @@ public interface ApiService {
 
     @POST("auth/resend_verification_code")
     Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
+
     // POST
     @GET("posts")
     Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @HeaderMap Map<String, Number> options);
 
     @POST("post")
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+    @POST("post/like/{id}")
+    Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
+
 
 }

@@ -7,7 +7,6 @@ public class ExtendedComment extends Comment {
     private User user;
     private ArrayList<LikeComment> likes;
 
-
     public ExtendedComment() {
         super();
 

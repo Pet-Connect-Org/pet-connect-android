@@ -1,6 +1,8 @@
 package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,13 +11,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.PostListAdapter;
+import com.example.petconnect.databinding.ActivityMainBinding;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.post.GetPostResponse;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,17 +30,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DrawerBaseActivity {
+
+    ActivityMainBinding activityMainBinding;
     RecyclerView recyclerViewPostList;
     PostListAdapter postListAdapter;
     UserManager userManager;
-
     Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(activityMainBinding.getRoot());
 
         userManager = new UserManager(this);
 
@@ -67,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
         ApiService.apiService.getPosts("Bearer " + token, queryOptions).enqueue(new Callback<GetPostResponse>() {
             @Override
             public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {
-                Toast.makeText(MainActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-
                 if (response.isSuccessful() && response.body() != null) {
                     List<ExtendedPost> postList = response.body().getPostList();
                     updateRecyclerView(postList);

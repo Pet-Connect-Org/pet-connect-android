@@ -21,7 +21,7 @@ public class UserManager {
 
     public ExtendedAccount getUser() {
         Gson gson = new Gson();
-        String json =  sharedPreferencesUser.getString(USER_KEY, null);
+        String json = sharedPreferencesUser.getString(USER_KEY, null);
         ExtendedAccount user = gson.fromJson(json, ExtendedAccount.class);
         return user;
     }

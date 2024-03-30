@@ -2,19 +2,27 @@ package com.example.petconnect.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.petconnect.CustomAvatar;
+import com.example.petconnect.CustomDropdown;
 import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
+import com.example.petconnect.Item;
 import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
@@ -25,6 +33,14 @@ import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
 
+import com.example.petconnect.models.LikePost;
+import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.post.LikePostRequest;
+import com.example.petconnect.services.post.LikePostResponse;
+import com.example.petconnect.services.comment.AddCommentRequest;
+import com.example.petconnect.services.comment.AddCommentResponse;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -53,7 +69,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         ExtendedPost post = postList.get(position);
         if (post != null) {
-            holder.bind(post);
+            holder.bind(post, position);
         }
     }
 
@@ -64,53 +80,131 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     public class PostViewHolder extends RecyclerView.ViewHolder {
         TextView postUserName;
+        ImageButton postLikeButton;
         TextView postContent;
         TextView postLikeCount;
         TextView postCommentCount;
-        TextView postTime;
-        CustomTextfield commentBox;
+        TextView postTime, postLikeText;
+        CustomAvatar post_avatar;
+        UserManager userManager;
+        boolean isUserLike = false;
         ImageButton sendButton;
+        LinearLayout commentBoxHover;
+        Button updateButton;
         RecyclerView recyclerViewCommentList;
+        CustomTextfield commentBox;
+        CustomDropdown post_action_dropdown;
 
         private String commentContent;
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+            userManager = new UserManager(PostListAdapter.this.context);
+            postLikeButton = itemView.findViewById(R.id.post_like_button);
             postUserName = itemView.findViewById(R.id.post_user_name);
             postContent = itemView.findViewById(R.id.post_content);
             postLikeCount = itemView.findViewById(R.id.post_like_count);
             postCommentCount = itemView.findViewById(R.id.post_comment_count);
             postTime = itemView.findViewById(R.id.post_time);
-            commentBox = itemView.findViewById(R.id.comment_box);
+            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList);
+            post_avatar = itemView.findViewById(R.id.post_avatar);
+            postLikeText = itemView.findViewById(R.id.post_like_text);
+            commentBoxHover = itemView.findViewById(R.id.comment_box_hover);
+            updateButton = itemView.findViewById(R.id.comment_edit_button);
             sendButton = itemView.findViewById(R.id.comment_send);
-            recyclerViewCommentList = itemView.findViewById(R.id.recyclerViewCommentList); // RecyclerView để hiển thị danh sách comment
+            commentBox = itemView.findViewById(R.id.comment_box);
+            post_action_dropdown = itemView.findViewById(R.id.post_action_dropdown);
         }
 
-        private void updateCommentRecyclerView(List<ExtendedComment> comments) {
+         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerViewCommentList.setLayoutManager(layoutManager);
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
             recyclerViewCommentList.setAdapter(commentListAdapter);
         }
 
-
-        public void bind(ExtendedPost post) {
+        public void bind(ExtendedPost post, int position) {
             int likes = post.getLikes().size();
             List<ExtendedComment> comments = post.getComments();
-
             postUserName.setText(post.getUser().getName());
             postContent.setText(post.getContent());
-            postLikeCount.setText(String.valueOf(likes) + " " + (likes > 0 ? "Likes" : "Like"));
+            postLikeCount.setText(String.valueOf(likes) + " " + (likes > 1 ? "Likes" : "Like"));
             postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
 
             updateCommentRecyclerView(comments);
 
+            post_action_dropdown.customizeDropdown(android.R.color.transparent, R.drawable.more, false);
+
+            ArrayList<Item> actionsList = new ArrayList<>();
+            if (post.getUser_id() ==userManager.getUser().getId()) {
+                actionsList.add(new Item("delete", "Delete"));
+                actionsList.add(new Item("update", "Update"));
+            }
+
+            post_action_dropdown.setItems(actionsList);
+
+            post_action_dropdown.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(String key) {
+                    // Xử lý sự kiện nhấn delete
+                    if (key == "delete") {
+                        Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                    }
+                    // Xử lý sự kiện nhấn update
+                    if (key == "update") {
+                        Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            // kiểm tra trong list likes có tồn tại like của người dùng
+            for (LikePost likePost : post.getLikes()) {
+                if (likePost.getUser_id() == userManager.getUser().getId()) {
+                    postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
+                    postLikeButton.setImageResource(R.drawable.footprint_primary);
+                    this.isUserLike = true;
+                    break;
+                }
+            }
+
+            postLikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String accessToken = userManager.getAccessToken();
+
+                    // kiểm tra nếu người dùng chưa like mới cho like
+                    if (!isUserLike) {
+                        ApiService.apiService.likepost("Bearer " + accessToken, post.getId()).enqueue(new Callback<LikePostResponse>() {
+                            @Override
+                            public void onResponse(Call<LikePostResponse> call, Response<LikePostResponse> response) {
+                                if (response.isSuccessful()) {
+                                    postLikeButton.setImageResource(R.drawable.footprint_primary);
+                                    postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
+                                    post.getLikes().add(response.body().getData());
+                                    isUserLike = true;
+                                    notifyItemChanged(position);
+                                } else {
+                                    Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<LikePostResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(PostListAdapter.this.context, "already like", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
             // Add comment
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String commentContent = commentBox.getText();
-                    String token = (new UserManager(PostListAdapter.this.context)).getAccessToken();
+                    String commentContent = commentBox.getText().toString();
+                    String token = userManager.getAccessToken();
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
                     ApiService.apiService.createComment("Bearer " + token, new AddCommentRequest(commentContent, post.getId())).enqueue(new Callback<AddCommentResponse>() {
                         @Override
@@ -118,10 +212,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             if (response.isSuccessful()) {
                                 // Thêm comment mới vào danh sách comments của post
                                 comments.add(response.body().getData());
-
-                                // Cập nhật RecyclerView thông qua adapter
-                                notifyDataSetChanged();
+//                               Cập nhật RecyclerView thông qua adapter
+                                notifyItemChanged(position);
                                 updateCommentRecyclerView(comments);
+//
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();
                             } else {

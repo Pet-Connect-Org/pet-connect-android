@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.petconnect.models.ExtendedAccount;
+import com.example.petconnect.models.User;
 import com.google.gson.Gson;
 
 public class UserManager {
@@ -21,7 +22,7 @@ public class UserManager {
 
     public ExtendedAccount getUser() {
         Gson gson = new Gson();
-        String json =  sharedPreferencesUser.getString(USER_KEY, null);
+        String json = sharedPreferencesUser.getString(USER_KEY, null);
         ExtendedAccount user = gson.fromJson(json, ExtendedAccount.class);
         return user;
     }
@@ -50,4 +51,5 @@ public class UserManager {
         editor.remove(ACCESS_TOKEN_KEY);
         editor.apply();
     }
+
 }

@@ -1,6 +1,8 @@
 package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,15 +10,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.PostListAdapter;
+import com.example.petconnect.databinding.ActivityMainBinding;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.post.GetPostResponse;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +30,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DrawerBaseActivity {
+
+    ActivityMainBinding activityMainBinding;
     RecyclerView recyclerViewPostList;
     PostListAdapter postListAdapter;
     UserManager userManager;
@@ -36,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(activityMainBinding.getRoot());
 
         userManager = new UserManager(this);
 
@@ -60,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         Map<String, Number> queryOptions = new HashMap<>();
         queryOptions.put("limit", 20);
         queryOptions.put("offset", 0);
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

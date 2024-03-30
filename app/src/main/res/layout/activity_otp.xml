@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="24dp"
     android:background="@drawable/onboarding_background"
     android:orientation="horizontal">
 
     <LinearLayout
+        android:padding="4dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="171dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="128dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_bg_with_shadow"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -58,11 +60,11 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/layoutbe"
-                android:ems="10"
-                android:maxLength="1"
                 android:backgroundTint="@color/neutral"
+                android:ems="10"
                 android:gravity="center"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="1" />
 
             <EditText
                 android:id="@+id/otp2"
@@ -71,11 +73,11 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/layoutbe"
-                android:ems="10"
-                android:maxLength="1"
                 android:backgroundTint="@color/neutral"
+                android:ems="10"
                 android:gravity="center"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="1" />
 
             <EditText
                 android:id="@+id/otp3"
@@ -84,11 +86,11 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/layoutbe"
-                android:ems="10"
-                android:maxLength="1"
                 android:backgroundTint="@color/neutral"
+                android:ems="10"
                 android:gravity="center"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="1" />
 
             <EditText
                 android:id="@+id/otp4"
@@ -96,12 +98,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background ="@drawable/layoutbe"
-                android:ems="10"
-                android:maxLength="1"
+                android:background="@drawable/layoutbe"
                 android:backgroundTint="@color/neutral"
+                android:ems="10"
                 android:gravity="center"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="1" />
 
             <EditText
                 android:id="@+id/otp5"
@@ -110,11 +112,11 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/layoutbe"
-                android:ems="10"
-                android:maxLength="1"
                 android:backgroundTint="@color/neutral"
+                android:ems="10"
                 android:gravity="center"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="1" />
 
             <EditText
                 android:id="@+id/otp6"
@@ -122,11 +124,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/layoutbe"
-                android:ems="10"
-                android:maxLength="1"
                 android:backgroundTint="@color/neutral"
+                android:ems="10"
                 android:gravity="center"
-                android:inputType="number" />
+                android:inputType="number"
+                android:maxLength="1" />
 
         </LinearLayout>
 
@@ -140,8 +142,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Wrong OTP entered"
-                android:gravity="center" />
+                android:gravity="center"
+                android:text="Wrong OTP entered" />
         </LinearLayout>
 
         <TextView
@@ -160,8 +162,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-
-
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -169,12 +169,22 @@
             android:id="@+id/btnOtp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#EDAE94"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/primaryMain"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="Submit" />
+            android:background="#EDAE94"
+            android:backgroundTint="@color/primaryMain"
+            android:text="Submit"
+            android:textColor="@color/white" />
+
+        <Button
+            android:textSize="12sp"
+            android:textColor="@color/darkNeutral"
+            android:id="@+id/toLogin"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:text="Return to login page" />
 
     </LinearLayout>
 

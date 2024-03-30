@@ -93,16 +93,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        btn_signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +141,7 @@ public class SignUpActivity extends AppCompatActivity {
                             // Handle unsuccessful signup
                             Toast.makeText(SignUpActivity.this, "Signup failed.", Toast.LENGTH_SHORT).show();
                         }
+
                     }
 
                     @Override

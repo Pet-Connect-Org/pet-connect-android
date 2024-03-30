@@ -20,6 +20,7 @@ import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -63,12 +64,11 @@ public class SignUpActivity extends AppCompatActivity {
         labelsub2 = findViewById(R.id.labelsub2);
         labelsub3 = findViewById(R.id.labelsub3);
 
+        ArrayList<Item> genderItems = new ArrayList<>();
 
-        // declare and initialize array
-        Item[] genderItems = new Item[]{
-                new Item("female", "Female"),
-                new Item("male", "Male")
-        };
+        genderItems.add(new Item("female", "Female"));
+        genderItems.add(new Item("male", "Male"));
+
         gender.setItems(genderItems);
 
         dob.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +90,13 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 }, year, month, day);
                 picker.show();
+            }
+        });
+
+        btn_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             }
         });
 

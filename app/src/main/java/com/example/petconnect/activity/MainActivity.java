@@ -36,7 +36,6 @@ public class MainActivity extends DrawerBaseActivity {
     RecyclerView recyclerViewPostList;
     PostListAdapter postListAdapter;
     UserManager userManager;
-
     Intent intent;
 
     @Override
@@ -75,8 +74,6 @@ public class MainActivity extends DrawerBaseActivity {
         ApiService.apiService.getPosts("Bearer " + token, queryOptions).enqueue(new Callback<GetPostResponse>() {
             @Override
             public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {
-                Toast.makeText(MainActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-
                 if (response.isSuccessful() && response.body() != null) {
                     List<ExtendedPost> postList = response.body().getPostList();
                     updateRecyclerView(postList);

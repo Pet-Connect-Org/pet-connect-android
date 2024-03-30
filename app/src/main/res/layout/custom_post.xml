@@ -210,7 +210,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewCommentList"
-                        android:layout_width="381dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:paddingTop="12dp"
@@ -237,7 +237,8 @@
 
             <com.example.petconnect.CustomTextfield
                 android:id="@+id/comment_box"
-                android:layout_width="293dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 app:hint="Comment . . ." />
 

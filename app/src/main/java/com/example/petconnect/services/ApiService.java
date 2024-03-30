@@ -1,4 +1,5 @@
 package com.example.petconnect.services;
+
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;
@@ -14,12 +15,11 @@ import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
-import com.example.petconnect.services.post.LikePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
+import com.example.petconnect.services.post.UnlikePostResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -67,8 +67,11 @@ public interface ApiService {
 
     @POST("post")
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
+
     @POST("post/like/{id}")
     Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
 
+    @POST("post/unlike/{id}")
+    Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
 
 }

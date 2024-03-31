@@ -24,6 +24,7 @@ import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.LikeComment;
 import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.comment.LikeCommentResponse;
 import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
@@ -224,16 +225,49 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     }
                 }
             });
-
             comment_content.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    // Kiểm tra xem người dùng đã ở chế độ chỉnh sửa hay chưa
-                    // Nếu không ở chế độ chỉnh sửa, không cho phép chỉnh sửa trên EditText
-                    return isEditing; // Trả về true để không xử lý sự kiện chạm vào EditText
-                    // Trả về false để xử lý sự kiện chạm vào EditText
+                    // Chỉ cho phép chỉnh sửa khi đang ở chế độ chỉnh sửa (isEditing = true)
+                    return !isEditing;
                 }
             });
+//
+            comment_delete_button.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        ExtendedComment commentToDelete = commentList.get(position);
+                        String token = userManager.getAccessToken();
+                        // Gọi API để xóa comment
+                        ApiService.apiService.deleteComment("Bearer " + token, commentToDelete.getId()).enqueue(new Callback<DeleteCommentResponse>() {
+                            @Override
+                            public void onResponse(Call<DeleteCommentResponse> call, Response<DeleteCommentResponse> response) {
+                                if (response.isSuccessful()) {
+                                    // Xóa comment khỏi danh sách
+                                    commentList.remove(position);
+                                    // Cập nhật RecyclerView
+                                    notifyItemRemoved(position);
+                                    // Hiển thị thông báo
+                                    Toast.makeText(context, "Delete Comment Success", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Xử lý khi gửi yêu cầu xóa comment thất bại
+                                    Toast.makeText(context, "Delete Comment Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<DeleteCommentResponse> call, Throwable t) {
+                                // Xử lý khi gửi yêu cầu xóa comment thất bại
+                                Toast.makeText(context, "Delete Comment Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                }
+            });
+
         }
 
 

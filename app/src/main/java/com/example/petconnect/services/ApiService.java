@@ -10,6 +10,8 @@ import com.example.petconnect.services.auth.ResendRequest;
 import com.example.petconnect.services.auth.ResendResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
+import com.example.petconnect.services.comment.DeleteCommentRequest;
+import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.comment.LikeCommentResponse;
 import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
@@ -29,6 +31,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
@@ -50,6 +53,14 @@ public interface ApiService {
     @POST("auth/sign-up")
     Call<SignupRespone> signup(@Body SignupRequest signupRequest);
 
+    @POST("auth/verify_user_email")
+    Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
+
+    @POST("auth/resend_verification_code")
+    Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
+
+    //comment
+
     @POST("comment")
     Call<AddCommentResponse> createComment(@Header("Authorization") String authorization,
                                            @Body AddCommentRequest commentRequest);
@@ -58,15 +69,14 @@ public interface ApiService {
     Call<UpdateCommentResponse> updateComment(@Header("Authorization") String authorization,
                                               @Body UpdateCommentRequest commentRequest,
                                               @Path("id") int id);
+    @DELETE("comment/{id}")
+    Call<DeleteCommentResponse> deleteComment(@Header("Authorization") String authorization,
+                                              @Path("id") int id);
+
     @POST("comment/like/{id}")
     Call<LikeCommentResponse> likeComment(@Header("Authorization") String authorization, @Path("id") int id);
     @POST("comment/unlike/{id}")
     Call<UnlikeCommentResponse> unlikeComment(@Header("Authorization") String authorization, @Path("id") int id);
-    @POST("auth/verify_user_email")
-    Call<OtpResponse> verifyemail(@Body OtpRequest otpRequest);
-
-    @POST("auth/resend_verification_code")
-    Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
 
     // POST
     @GET("posts")
@@ -78,7 +88,8 @@ public interface ApiService {
     Call<CreatePostResponse> createPost(@Header("Authorization") String authorization, @Body CreatePostRequest createPostRequest);
 
     @POST("post/like/{id}")
-    Call<LikePostResponse> likepost(@Header("Authorization") String authorization, @Path("id") int id);
+    Call<LikePostResponse> likepost(@Header("Authorization") String authorization,
+                                    @Path("id") int id);
 
     @POST("post/unlike/{id}")
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);

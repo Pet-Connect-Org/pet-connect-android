@@ -68,12 +68,10 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        Toast.makeText(DrawerBaseActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
 
         if (id == R.id.sidebar_home) {
             startActivity(new Intent(DrawerBaseActivity.this, MainActivity.class));
         }
-        // Xử lý nhấn item ở đây
 
         overridePendingTransition(0, 0);
         drawerLayout.closeDrawer(GravityCompat.START);

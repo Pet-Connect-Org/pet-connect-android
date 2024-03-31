@@ -92,6 +92,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown, post_sort_comment;
         NestedScrollView scrollView;
+        private String commentContent;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -274,7 +275,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 //Cập nhật RecyclerView thông qua adapter
                                 updateCommentRecyclerView(comments);
                                 notifyDataSetChanged();
-//                                updateCommentRecyclerView(comments);
 //
                                 // Hiển thị thông báo
                                 Toast.makeText(context, "Comment Added", Toast.LENGTH_SHORT).show();

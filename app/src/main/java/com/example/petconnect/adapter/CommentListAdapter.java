@@ -75,6 +75,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         UserManager userManager;
         Button comment_delete_button, comment_edit_button, comment_like_button;
 
+
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             comment_author_name = itemView.findViewById(R.id.comment_author_name);
@@ -100,6 +101,75 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 comment_edit_button.setVisibility(View.VISIBLE);
             }
 
+            // kiểm tra trong list likes có tồn tại like của người dùng
+            for (LikeComment likeComment : comment.getLikes()) {
+                if (likeComment.getUser_id() == userManager.getUser().getId()) {
+                    comment_like_button.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
+                    this.isUserLike = true;
+                    break;
+                }
+            }
+            comment_like_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String accessToken = userManager.getAccessToken();
+
+                    // Kiểm tra nếu người dùng chưa like mới cho like
+                    if (!isUserLike) {
+                        ApiService.apiService.likeComment("Bearer " + accessToken, comment.getId()).enqueue(new Callback<LikeCommentResponse>() {
+                            @Override
+                            public void onResponse(Call<LikeCommentResponse> call, Response<LikeCommentResponse> response) {
+                                if (response.isSuccessful()) {
+                                    // Đổi màu cho nút like
+                                    comment_like_button.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
+
+                                    // Thêm like mới vào danh sách likes của comment
+                                    LikeComment newLike = response.body().getData();
+                                    comment.getLikes().add(newLike);
+
+                                    // Cập nhật trạng thái là đã like
+                                    isUserLike = true;
+
+                                    // Thông báo adapter cập nhật lại item tại vị trí position
+                                    notifyItemChanged(position);
+                                } else {
+                                    Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<LikeCommentResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        ApiService.apiService.unlikeComment("Bearer " + accessToken, comment.getId()).enqueue(new Callback<UnlikeCommentResponse>() {
+                            @Override
+                            public void onResponse(Call<UnlikeCommentResponse> call, Response<UnlikeCommentResponse> response) {
+                                if (response.isSuccessful()) {
+                                    // Đổi màu cho nút like về mặc định
+                                    comment_like_button.setTextColor(ContextCompat.getColor(context, R.color.darkNeutral));
+
+                                    // Xóa like khỏi danh sách likes của comment
+                                    LikeComment removedLike = response.body().getData();
+                                    comment.getLikes().remove(removedLike);
+
+                                    // Cập nhật trạng thái là chưa like
+                                    isUserLike = false;
+
+                                } else {
+                                    Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UnlikeCommentResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
 
             // update comment
             comment_edit_button.setOnClickListener(new View.OnClickListener() {
@@ -134,8 +204,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                     @Override
                                     public void onResponse(Call<UpdateCommentResponse> call, Response<UpdateCommentResponse> response) {
                                         if (response.isSuccessful()) {
-                                            // Notify RecyclerView that the data has changed
-                                            notifyDataSetChanged();
                                             // Update the dataset in the RecyclerView
                                             commentList.set(position, comment);
                                             Toast.makeText(context, "Update Comment Success", Toast.LENGTH_SHORT).show();

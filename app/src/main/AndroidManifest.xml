@@ -40,7 +40,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.OtpActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".activity.Onboarding1Activity"
             android:exported="false"

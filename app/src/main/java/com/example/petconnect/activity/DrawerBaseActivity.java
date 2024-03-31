@@ -14,8 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.petconnect.ProfileActivity;
 import com.example.petconnect.R;
+import com.example.petconnect.manager.UserManager;
 import com.google.android.material.navigation.NavigationView;
 
 public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +26,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
     @Override
     public void setContentView(View view) {
+        UserManager userManager = new UserManager(getBaseContext());
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_base, null);
         FrameLayout container = drawerLayout.findViewById(R.id.activityContainer);
         container.addView(view);
@@ -43,7 +44,7 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
         TextView headerTextView = headerView.findViewById(R.id.sidebar_username);
 
-        headerTextView.setText("BUI NGOC");
+        headerTextView.setText(userManager.getUser().getName());
 
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +68,10 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        Toast.makeText(DrawerBaseActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
 
         if (id == R.id.sidebar_home) {
             startActivity(new Intent(DrawerBaseActivity.this, MainActivity.class));
         }
-        // Xử lý nhấn item ở đây
 
         overridePendingTransition(0, 0);
         drawerLayout.closeDrawer(GravityCompat.START);

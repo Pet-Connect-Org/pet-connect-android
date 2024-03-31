@@ -1,12 +1,12 @@
-
 package com.example.petconnect.services.comment;
 
 import com.example.petconnect.models.ExtendedComment;
+import com.example.petconnect.models.LikeComment;
+import com.example.petconnect.models.LikePost;
 
-
-public class UpdateCommentResponse {
+public class LikeCommentResponse {
     private String message;
-    private ExtendedComment data;
+    private LikeComment data;
 
     public String getMessage() {
         return message;
@@ -16,11 +16,11 @@ public class UpdateCommentResponse {
         this.message = message;
     }
 
-    public ExtendedComment getData() {
+    public LikeComment getData() {
         return data;
     }
 
-    public void setData(ExtendedComment data) {
+    public void setData(LikeComment data) {
         this.data = data;
     }
 }

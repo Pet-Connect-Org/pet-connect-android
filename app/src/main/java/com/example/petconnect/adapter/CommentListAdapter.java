@@ -204,8 +204,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                     @Override
                                     public void onResponse(Call<UpdateCommentResponse> call, Response<UpdateCommentResponse> response) {
                                         if (response.isSuccessful()) {
-                                            // Notify RecyclerView that the data has changed
-                                            notifyDataSetChanged();
                                             // Update the dataset in the RecyclerView
                                             commentList.set(position, comment);
                                             Toast.makeText(context, "Update Comment Success", Toast.LENGTH_SHORT).show();

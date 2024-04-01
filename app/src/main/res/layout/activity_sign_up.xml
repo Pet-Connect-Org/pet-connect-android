@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:endIcon="@drawable/calendar"
-                    app:hint="DD/MM/YYYY"
+                    app:hint="DD-MM-YYYY"
                     app:labelText="Date of Birth" />
             </LinearLayout>
 

@@ -181,13 +181,11 @@ public class OtpActivity extends AppCompatActivity {
                                         startResendCountdown();
                                     } else {
                                         Toast.makeText(OtpActivity.this, "Resend otp failed.", Toast.LENGTH_SHORT).show();
-                                        startResendCountdown();
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResendResponse> call, Throwable t) {
-                                    startResendCountdown();
 
                                     Toast.makeText(OtpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }

@@ -10,7 +10,6 @@ import com.example.petconnect.services.auth.ResendRequest;
 import com.example.petconnect.services.auth.ResendResponse;
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
-import com.example.petconnect.services.comment.DeleteCommentRequest;
 import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.comment.LikeCommentResponse;
 import com.example.petconnect.services.comment.UnlikeCommentResponse;

@@ -34,6 +34,7 @@ import com.example.petconnect.services.comment.AddCommentResponse;
 
 import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.comment.DeleteCommentResponse;
+import com.example.petconnect.services.post.DeletePostResponse;
 import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
 
@@ -129,7 +130,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             post_avatar.setName(post.getUser().getName());
             postContent.setText(post.getContent());
             postLikeCount.setText(String.valueOf(likes) + " " + (likes > 1 ? "Likes" : "Like"));
-            postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 0 ? "Comments" : "Comment"));
+            postCommentCount.setText(String.valueOf(comments.size()) + " " + (comments.size() > 1 ? "Comments" : "Comment"));
             postTime.setText(CustomTimeAgo.toTimeAgo((post.getCreated_at().getTime())));
 
             updateCommentRecyclerView(comments);
@@ -189,18 +190,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 @Override
                 public void onItemSelected(String key) {
                     // Xử lý sự kiện nhấn delete
-                    //so snanh noi dung cua chuoi
                     if ("delete".equals(key)) {
                         String accessToken = userManager.getAccessToken();
-                        ApiService.apiService.deletePost("Bearer"+ accessToken, post.getId()).enqueue(new Callback<DeleteCommentResponse>(){
-
+                        ApiService.apiService.deletePost("Bearer "+ accessToken, post.getId()).enqueue(new Callback<DeletePostResponse>(){
                             @Override
-                            public void onResponse(Call<DeleteCommentResponse> call, Response<DeleteCommentResponse> response) {
+                            public void onResponse(Call<DeletePostResponse> call, Response<DeletePostResponse> response) {
                                 if(response.isSuccessful()){
-                                    postList.remove(position); // Xóa bài viết khỏi danh sách
-                                    notifyItemRemoved(position); // Cập nhật RecyclerView
+                                    postList.remove(position);
+                                    notifyItemRemoved(position);
                                     notifyItemRangeChanged(position, postList.size()); // Cập nhật số lượng item trong RecyclerView
-                                    Toast.makeText(PostListAdapter.this.context, "Post deleted", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(PostListAdapter.this.context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                                 else{
                                     Toast.makeText(PostListAdapter.this.context, "Delete failed", Toast.LENGTH_SHORT).show();
@@ -208,7 +207,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                             }
 
                             @Override
-                            public void onFailure(Call<DeleteCommentResponse> call, Throwable t) {
+                            public void onFailure(Call<DeletePostResponse> call, Throwable t) {
                                 Toast.makeText(PostListAdapter.this.context, "Delete failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });

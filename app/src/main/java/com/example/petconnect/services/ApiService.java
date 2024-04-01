@@ -17,6 +17,7 @@ import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
+import com.example.petconnect.services.post.DeletePostResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
@@ -95,6 +96,6 @@ public interface ApiService {
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
 
     @DELETE("post/{id}")
-    Call<DeleteCommentResponse> deletePost(@Header("Authorization") String authorizatiom, @Path("id") int id);
+    Call<DeletePostResponse> deletePost(@Header("Authorization") String authorizatiom, @Path("id") int id);
 
 }

@@ -33,6 +33,7 @@ import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 
 import com.example.petconnect.models.LikePost;
+import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
 
@@ -188,9 +189,32 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 @Override
                 public void onItemSelected(String key) {
                     // Xử lý sự kiện nhấn delete
-                    if (key == "delete") {
-                        Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                    //so snanh noi dung cua chuoi
+                    if ("delete".equals(key)) {
+                        String accessToken = userManager.getAccessToken();
+                        ApiService.apiService.deletePost("Bearer"+ accessToken, post.getId()).enqueue(new Callback<DeleteCommentResponse>(){
+
+                            @Override
+                            public void onResponse(Call<DeleteCommentResponse> call, Response<DeleteCommentResponse> response) {
+                                if(response.isSuccessful()){
+                                    postList.remove(position); // Xóa bài viết khỏi danh sách
+                                    notifyItemRemoved(position); // Cập nhật RecyclerView
+                                    notifyItemRangeChanged(position, postList.size()); // Cập nhật số lượng item trong RecyclerView
+                                    Toast.makeText(PostListAdapter.this.context, "Post deleted", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(PostListAdapter.this.context, "Delete failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<DeleteCommentResponse> call, Throwable t) {
+                                Toast.makeText(PostListAdapter.this.context, "Delete failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
+
+
                     // Xử lý sự kiện nhấn update
                     if (key == "update") {
                         Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();

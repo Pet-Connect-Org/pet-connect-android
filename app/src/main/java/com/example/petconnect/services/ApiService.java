@@ -94,4 +94,7 @@ public interface ApiService {
     @POST("post/unlike/{id}")
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
 
+    @DELETE("post/{id}")
+    Call<DeleteCommentResponse> deletePost(@Header("Authorization") String authorizatiom, @Path("id") int id);
+
 }

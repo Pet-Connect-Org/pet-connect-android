@@ -6,6 +6,15 @@ public class Follow {
     int id, following_user_id, user_id;
     private Date created_at;
 
+
+    public Follow(int id, int following_user_id, int user_id, Date created_at, Date updated_at) {
+        this.id = id;
+        this.following_user_id = following_user_id;
+        this.user_id = user_id;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
     public int getId() {
         return id;
     }
@@ -21,7 +30,6 @@ public class Follow {
     public void setFollowing_user_id(int following_user_id) {
         this.following_user_id = following_user_id;
     }
-
     public int getUser_id() {
         return user_id;
     }

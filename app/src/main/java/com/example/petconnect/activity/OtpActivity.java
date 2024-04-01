@@ -68,6 +68,7 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isAnyTextViewNull()) {
+                    txtWrong.setVisibility(View.VISIBLE);
                     return;
                 }
 
@@ -94,7 +95,6 @@ public class OtpActivity extends AppCompatActivity {
                             startActivity(intent);
                         } else {
                             Toast.makeText(OtpActivity.this, "Otp failed.", Toast.LENGTH_SHORT).show();
-                            startResendCountdown(); // Khởi động lại đếm ngược để gửi lại OTP
                         }
 
                     }
@@ -102,7 +102,6 @@ public class OtpActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<OtpResponse> call, Throwable t) {
                         Toast.makeText(OtpActivity.this, "Otp failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                        startResendCountdown();
                     }
                 });
             }
@@ -168,6 +167,7 @@ public class OtpActivity extends AppCompatActivity {
 
 
                 txtResend.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
                         if (email != null && !email.isEmpty()) {
@@ -181,16 +181,19 @@ public class OtpActivity extends AppCompatActivity {
                                         startResendCountdown();
                                     } else {
                                         Toast.makeText(OtpActivity.this, "Resend otp failed.", Toast.LENGTH_SHORT).show();
-                                        startResendCountdown(); // Khởi động lại đếm ngược để gửi lại OTP
+                                        startResendCountdown();
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<ResendResponse> call, Throwable t) {
+                                    startResendCountdown();
+
                                     Toast.makeText(OtpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                                    startResendCountdown(); // Khởi động lại đếm ngược để gửi lại OTP
                                 }
                             });
+                        } else {
+                            Toast.makeText(OtpActivity.this, "Email is not valid.", Toast.LENGTH_SHORT).show();
                         }
                     }
 

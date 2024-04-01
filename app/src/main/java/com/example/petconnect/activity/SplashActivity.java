@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.example.petconnect.R;
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int SPLASH_DURATION = 5000; // 2 seconds
+    private static final int SPLASH_DURATION = 2500;
     private View splashView;
 
     @Override

@@ -129,7 +129,7 @@
 
                 <ImageButton
                     android:id="@+id/post_comment_button"
-                    android:layout_width="28dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="28dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/chat" />
@@ -186,12 +186,10 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <ImageButton
+            <com.example.petconnect.CustomDropdown
                 android:id="@+id/post_sort_comment"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/sort" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -212,7 +210,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewCommentList"
-                        android:layout_width="381dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:paddingTop="12dp"
@@ -239,7 +237,8 @@
 
             <com.example.petconnect.CustomTextfield
                 android:id="@+id/comment_box"
-                android:layout_width="293dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 app:hint="Comment . . ." />
 

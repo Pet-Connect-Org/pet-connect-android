@@ -22,11 +22,11 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
     protected DrawerLayout drawerLayout;
     protected NavigationView navigationView;
     protected Toolbar toolbar;
-
+    UserManager userManager;
 
     @Override
     public void setContentView(View view) {
-        UserManager userManager = new UserManager(getBaseContext());
+        userManager = new UserManager(getBaseContext());
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_drawer_base, null);
         FrameLayout container = drawerLayout.findViewById(R.id.activityContainer);
         container.addView(view);
@@ -71,6 +71,12 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
         if (id == R.id.sidebar_home) {
             startActivity(new Intent(DrawerBaseActivity.this, MainActivity.class));
+        }
+
+        if (id == R.id.sidebar_logout) {
+            userManager.clearAccessToken();
+            startActivity(new Intent(getBaseContext(), LoginActivity.class));
+            finish();
         }
 
         overridePendingTransition(0, 0);

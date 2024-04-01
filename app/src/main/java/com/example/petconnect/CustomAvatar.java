@@ -31,7 +31,7 @@ public class CustomAvatar extends LinearLayout {
         UserManager userManager = new UserManager(context);
         ExtendedAccount user = userManager.getUser();
 
-        if (user != null  && user.getName() != null) {
+        if (user != null && user.getName() != null) {
             setName(user.getName());
         }
     }

@@ -22,6 +22,8 @@ import com.example.petconnect.services.post.CreatePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
+import com.example.petconnect.services.user.UpdateUserRequest;
+import com.example.petconnect.services.user.UpdateUserResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,6 +37,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -59,6 +62,12 @@ public interface ApiService {
     @POST("auth/resend_verification_code")
     Call<ResendResponse> ReSendOTP(@Body ResendRequest resendOtp);
 
+    @POST("user")
+    Call<UpdateUserResponse> updateUser(
+            @Header("Authorization") String authorization,
+            @Body UpdateUserRequest updateUserRequest
+    );
+
     //comment
 
     @POST("comment")
@@ -69,18 +78,21 @@ public interface ApiService {
     Call<UpdateCommentResponse> updateComment(@Header("Authorization") String authorization,
                                               @Body UpdateCommentRequest commentRequest,
                                               @Path("id") int id);
+
     @DELETE("comment/{id}")
     Call<DeleteCommentResponse> deleteComment(@Header("Authorization") String authorization,
                                               @Path("id") int id);
 
     @POST("comment/like/{id}")
     Call<LikeCommentResponse> likeComment(@Header("Authorization") String authorization, @Path("id") int id);
+
     @POST("comment/unlike/{id}")
     Call<UnlikeCommentResponse> unlikeComment(@Header("Authorization") String authorization, @Path("id") int id);
 
     // POST
     @GET("posts")
     Call<GetPostResponse> getPosts(@Header("Authorization") String authorization, @Query("user_id") Integer user_id, @Query("limit") Integer limit, @Query("offset") Integer offset);
+
     @GET("user/{id}")
     Call<GetUserByIdResponse> getUserById(@Header("Authorization") String authorization, @Path("id") Integer id);
 
@@ -95,6 +107,6 @@ public interface ApiService {
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
 
     @DELETE("post/{id}")
-    Call<DeletePostResponse> deletePost(@Header("Authorization") String authorizatiom, @Path("id") int id);
+    Call<DeletePostResponse> deletePost(@Header("Authorization") String authorization, @Path("id") int id);
 
 }

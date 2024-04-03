@@ -1,5 +1,7 @@
 package com.example.petconnect.services;
 
+import com.example.petconnect.services.auth.ChangePasswordRequest;
+import com.example.petconnect.services.auth.ChangePasswordResponse;
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
 import com.example.petconnect.services.auth.LoginRequest;
@@ -67,6 +69,11 @@ public interface ApiService {
             @Header("Authorization") String authorization,
             @Body UpdateUserRequest updateUserRequest
     );
+
+    @POST("account/change_password/{id}")
+    Call<ChangePasswordResponse> changePassword(@Header("Authorization") String authorization,
+                                                @Path("id") Integer id,
+                                                @Body ChangePasswordRequest changePasswordRequest);
 
     //comment
 

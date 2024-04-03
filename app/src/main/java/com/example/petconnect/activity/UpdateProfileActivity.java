@@ -1,11 +1,13 @@
 package com.example.petconnect.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.petconnect.CustomDropdown;
@@ -19,6 +21,8 @@ import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedAccount;
 import com.example.petconnect.models.User;
 import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.auth.ChangePasswordRequest;
+import com.example.petconnect.services.auth.ChangePasswordResponse;
 import com.example.petconnect.services.user.UpdateUserRequest;
 import com.example.petconnect.services.user.UpdateUserResponse;
 
@@ -34,23 +38,56 @@ import retrofit2.Response;
 
 public class UpdateProfileActivity extends DrawerBaseActivity {
     ActivityUpdateProfileBinding activityUpdateProfileBinding;
-    CustomTextfield name, dob, email, address;
+    CustomTextfield name, dob, email, address, pw_input_box, pw_re_new_input_box, pw_new_input_box;
     CustomDropdown gender;
     UserManager userManager;
+    TextView tick1, tick2, tick3;
+    TextView labelsub1, labelsub2, labelsub3;
     Intent intent;
-    Button updateProfile, updatePasswword;
+    Button updateProfile, updatePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityUpdateProfileBinding = ActivityUpdateProfileBinding.inflate(getLayoutInflater());
         setContentView(activityUpdateProfileBinding.getRoot());
+        userManager = new UserManager(this);
 
         initView();
 
         setInitialData();
 
-        userManager = new UserManager(this);
+        Toast.makeText(UpdateProfileActivity.this, String.valueOf(userManager.getUser().getAccount_id()), Toast.LENGTH_SHORT).show();
+
+        updatePassword.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Boolean canUpdate = !pw_input_box.getText().isEmpty() && !pw_new_input_box.getText().isEmpty() && !pw_re_new_input_box.getText().isEmpty();
+
+                if (canUpdate && checkPassword(pw_new_input_box.getText(), pw_re_new_input_box.getText())) {
+                    ApiService.apiService.changePassword("Bearer " + userManager.getAccessToken(), userManager.getUser().getAccount_id(), new ChangePasswordRequest(pw_input_box.getText(), pw_new_input_box.getText(), pw_re_new_input_box.getText())).enqueue(new Callback<ChangePasswordResponse>() {
+                        @Override
+                        public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(UpdateProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                pw_input_box.setText("");
+                                pw_new_input_box.setText("");
+                                pw_re_new_input_box.setText("");
+                            } else {
+                                Toast.makeText(UpdateProfileActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+                            Toast.makeText(UpdateProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+            }
+        });
 
         updateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +124,6 @@ public class UpdateProfileActivity extends DrawerBaseActivity {
                                 userManager.saveUser(account);
 
                                 Toast.makeText(UpdateProfileActivity.this, message, Toast.LENGTH_SHORT).show();
-                                refreshActivity();
-
                             } else {
                                 Toast.makeText(UpdateProfileActivity.this, "NOT success " + response.code(), Toast.LENGTH_SHORT).show();
                             }
@@ -115,11 +150,6 @@ public class UpdateProfileActivity extends DrawerBaseActivity {
                 || !gender.getSelectedItemKey().equals(userManager.getUser().getSex());
     }
 
-    public void refreshActivity() {
-        recreate();
-        setInitialData();
-    }
-
     public void setInitialData() {
         name.setText(userManager.getUser().getName());
         dob.setText((new SimpleDateFormat("dd-MM-yyyy")).format(userManager.getUser().getBirthday()));
@@ -135,7 +165,19 @@ public class UpdateProfileActivity extends DrawerBaseActivity {
         email = findViewById(R.id.email_input_box);
         address = findViewById(R.id.address_input_box);
         updateProfile = findViewById(R.id.button_update_profile);
-        updatePasswword = findViewById(R.id.button_update_password);
+        updatePassword = findViewById(R.id.button_update_password);
+        pw_input_box = findViewById(R.id.pw_input_box);
+        pw_re_new_input_box = findViewById(R.id.pw_re_new_input_box);
+        pw_new_input_box = findViewById(R.id.pw_new_input_box);
+
+        tick1 = findViewById(R.id.tick1);
+        tick2 = findViewById(R.id.tick2);
+        tick3 = findViewById(R.id.tick3);
+
+
+        labelsub1 = findViewById(R.id.labelsub1);
+        labelsub2 = findViewById(R.id.labelsub2);
+        labelsub3 = findViewById(R.id.labelsub3);
 
         ArrayList<Item> genderItems = new ArrayList<>();
 
@@ -143,5 +185,36 @@ public class UpdateProfileActivity extends DrawerBaseActivity {
         genderItems.add(new Item("male", "Male"));
 
         gender.setItems(genderItems);
+    }
+
+    public Boolean checkPassword(String pw_to_submit, String re_pw_to_submit) {
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d).+";
+        Boolean pass = true;
+
+        if (pw_to_submit.length() >= 6 && pw_to_submit.matches(passwordPattern)) {
+            labelsub1.setTextColor(ContextCompat.getColor(UpdateProfileActivity.this, R.color.correct));
+            tick1.setBackgroundTintList(ContextCompat.getColorStateList(UpdateProfileActivity.this, R.color.correct));
+            labelsub2.setTextColor(ContextCompat.getColor(UpdateProfileActivity.this, R.color.correct));
+            tick2.setBackgroundTintList(ContextCompat.getColorStateList(UpdateProfileActivity.this, R.color.correct));
+        } else {
+            pass = false;
+            labelsub1.setTextColor(ContextCompat.getColor(UpdateProfileActivity.this, R.color.third));
+            tick1.setBackgroundTintList(ContextCompat.getColorStateList(UpdateProfileActivity.this, R.color.third));
+            labelsub2.setTextColor(ContextCompat.getColor(UpdateProfileActivity.this, R.color.third));
+            tick2.setBackgroundTintList(ContextCompat.getColorStateList(UpdateProfileActivity.this, R.color.third));
+
+        }
+
+        if (pw_to_submit.equals(re_pw_to_submit)) {
+            labelsub3.setTextColor(ContextCompat.getColor(UpdateProfileActivity.this, R.color.correct));
+            tick3.setBackgroundTintList(ContextCompat.getColorStateList(UpdateProfileActivity.this, R.color.correct));
+
+        } else {
+            pass = false;
+
+            labelsub3.setTextColor(ContextCompat.getColor(UpdateProfileActivity.this, R.color.third));
+            tick3.setBackgroundTintList(ContextCompat.getColorStateList(UpdateProfileActivity.this, R.color.third));
+        }
+        return pass;
     }
 }

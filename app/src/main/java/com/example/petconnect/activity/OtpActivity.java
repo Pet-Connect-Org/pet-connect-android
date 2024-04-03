@@ -52,7 +52,6 @@ public class OtpActivity extends AppCompatActivity {
         Intent myintent = getIntent();
         email = myintent.getStringExtra("email");
 
-
         // goi phuong thuc dich chuyen thoi gian sau khi chuyen man hinh otp
         startResendCountdown();
 

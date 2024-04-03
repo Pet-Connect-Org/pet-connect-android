@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,6 @@ public class ProfileActivity extends DrawerBaseActivity {
     Button profile_action_button;
     CustomAvatar profile_user_avatar;
     TextView profile_user_name;
-
     ExtendedUser user;
 
     int user_id;
@@ -63,6 +63,13 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
+            profile_action_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(ProfileActivity.this, UpdateProfileActivity.class));
+                }
+            });
+
         }
 
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

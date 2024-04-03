@@ -107,12 +107,12 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
                 String email_to_submit = email.getText().trim();
-                String pw_to_submit = pw.getText();
-                String re_pw_to_submit = re_pw.getText();
-                String name_to_submit = name.getText();
+                String pw_to_submit = pw.getText().trim();
+                String re_pw_to_submit = re_pw.getText().trim();
+                String name_to_submit = name.getText().trim();
                 String gender_to_submit = gender.getSelectedItemKey();
-                String dob_to_submit = dob.getText();
-                String address_to_submit = address.getText();
+                String dob_to_submit = dob.getText().replaceAll("/", "-").trim();
+                String address_to_submit = address.getText().trim();
 
                 if (name_to_submit.isEmpty() || email_to_submit.isEmpty() || pw_to_submit.isEmpty() || re_pw_to_submit.isEmpty() || gender_to_submit.isEmpty() || dob_to_submit.isEmpty() || address_to_submit.isEmpty()) {
                     Toast.makeText(SignUpActivity.this, "Please fill in all the details", Toast.LENGTH_SHORT).show();

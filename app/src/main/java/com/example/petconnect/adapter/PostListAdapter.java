@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +27,7 @@ import com.example.petconnect.R;
 import com.example.petconnect.activity.OtpActivity;
 import com.example.petconnect.activity.ProfileActivity;
 import com.example.petconnect.activity.SignUpActivity;
+import com.example.petconnect.fragment.EditPostFragment;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
@@ -76,7 +79,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         return postList.size();
     }
 
+
+
     public class PostViewHolder extends RecyclerView.ViewHolder {
+
         TextView postUserName;
         ImageButton postLikeButton;
         TextView postContent;
@@ -92,6 +98,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown, post_sort_comment;
         NestedScrollView scrollView;
+
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,6 +126,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             CommentListAdapter commentListAdapter = new CommentListAdapter(context, comments);
             recyclerViewCommentList.setAdapter(commentListAdapter);
         }
+
 
         public void bind(ExtendedPost post, int position) {
             int likes = post.getLikes().size();
@@ -193,6 +201,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     // Xử lý sự kiện nhấn update
                     if (key == "update") {
                         Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                        EditPostFragment editPostFragment = EditPostFragment.newInstance(post);
+                        FragmentManager fragmentManager = editPostFragment.getChildFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragment_container,editPostFragment).addToBackStack(null).commit();
+
+
+
+
+
+
+
                     }
                 }
             });
@@ -313,7 +331,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     commentBox.requestFocus();
                 }
             });
+
         }
+
     }
+
+
 }
+
 

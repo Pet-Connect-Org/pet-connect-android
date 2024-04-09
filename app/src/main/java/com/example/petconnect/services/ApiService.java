@@ -15,6 +15,8 @@ import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
+import com.example.petconnect.services.post.UpdatePostRequest;
+import com.example.petconnect.services.post.UpdatePostResponse;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
@@ -23,15 +25,12 @@ import com.example.petconnect.services.user.GetUserByIdResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -82,5 +81,6 @@ public interface ApiService {
 
     @POST("post/unlike/{id}")
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
-
+    @PUT("post/{id}")
+    Call<UpdatePostResponse> updatepost(@Header("Authorization") String authorization, @Body UpdatePostRequest updatePostRequest,@Path("id") int id);
 }

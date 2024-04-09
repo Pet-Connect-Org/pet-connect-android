@@ -1,6 +1,7 @@
 package com.example.petconnect.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,10 +16,12 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.petconnect.R;
+import com.example.petconnect.fragment.EditPostFragment;
 import com.example.petconnect.manager.UserManager;
+import com.example.petconnect.services.post.UpdatePostResponse;
 import com.google.android.material.navigation.NavigationView;
 
-public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DrawerBaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     protected DrawerLayout drawerLayout;
     protected NavigationView navigationView;
     protected Toolbar toolbar;
@@ -80,4 +83,5 @@ public class DrawerBaseActivity extends AppCompatActivity implements NavigationV
 
         return true;
     }
+
 }

@@ -23,7 +23,9 @@ import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
 import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
+import com.example.petconnect.services.user.FollowResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
+import com.example.petconnect.services.user.UnFollowResponse;
 import com.example.petconnect.services.user.UpdateUserRequest;
 import com.example.petconnect.services.user.UpdateUserResponse;
 import com.google.gson.Gson;
@@ -115,5 +117,13 @@ public interface ApiService {
 
     @DELETE("post/{id}")
     Call<DeletePostResponse> deletePost(@Header("Authorization") String authorization, @Path("id") int id);
+
+    @POST("follow/user/{id}")
+    Call<FollowResponse> followUser(@Header("Authorization") String authorization,
+                                    @Path("id") int id);
+
+    @POST("unfollow/user/{id}")
+    Call<UnFollowResponse> unfollowUser(@Header("Authorization") String authorization,
+                                        @Path("id") int id);
 
 }

@@ -1,33 +1,30 @@
 package com.example.petconnect.activity;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.R;
-import com.example.petconnect.activity.LoginActivity;
-import com.example.petconnect.adapter.FollowerListAdapter;
-import com.example.petconnect.adapter.FollowingListAdapter;
 import com.example.petconnect.adapter.PostListAdapter;
-import com.example.petconnect.adapter.ViewPagerFragmentAdapter;
+import com.example.petconnect.adapter.ViewPagerAdapter;
 import com.example.petconnect.databinding.ActivityProfileBinding;
-import com.example.petconnect.fragment.Follower;
-import com.example.petconnect.fragment.Following;
+import com.example.petconnect.fragment.FollowerFragment;
+import com.example.petconnect.fragment.FollowingFragment;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.user.GetUserByIdResponse;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -48,26 +45,18 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profile_user_name;
 
     ExtendedUser user;
-
-    ViewPagerFragmentAdapter viewPagerFragmentAdapter;
     TabLayout tabLayout;
     ViewPager2 viewPager2;
-    Fragment followerFragment;
-    Fragment followingFragment;
 
-    FollowerListAdapter followerListAdapter;
-    FollowingListAdapter followingListAdapter;
     int user_id;
-    List<Follow> followerList;
-    List<Follow> followingList;
 
-    private  String[] titles = new String[] {"Followers", "Following"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityProfileBinding = ActivityProfileBinding.inflate(getLayoutInflater());
-        setContentView(activityProfileBinding.getRoot());
+        setContentView(R.layout.activity_profile);
+//        activityProfileBinding = ActivityProfileBinding.inflate(getLayoutInflater());
+//        setContentView(activityProfileBinding.getRoot());
 
         userManager = new UserManager(this);
 
@@ -77,51 +66,24 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             this.user_id = userManager.getUser().getId();
         }
-
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
+        recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
         profile_action_button = findViewById(R.id.profile_action_button);
 
-        // Thêm ViewPager và TabLayout vào layout
         viewPager2 = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setVisibility(View.VISIBLE);
-        followerFragment = new Follower();
-        followingFragment = new Following();
 
-        // Gọi các phương thức của Fragment để hiển thị
-        getSupportFragmentManager().beginTransaction().replace(R.id.recycler_view_follower, followerFragment).commit();
-        getSupportFragmentManager().beginTransaction().replace(R.id.recycler_view_following, followingFragment).commit();
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        adapter.addFragment(new FollowerFragment(), "Follower");
+        adapter.addFragment(new FollowingFragment(), "Following");
 
-// Khởi tạo Adapter cho RecyclerView trong Fragment Follower
-        FollowerListAdapter followerListAdapter = new FollowerListAdapter(ProfileActivity.this, followerList);
-
-
-// Khởi tạo Adapter cho RecyclerView trong Fragment Following
-        FollowingListAdapter followingListAdapter = new FollowingListAdapter(ProfileActivity.this, followingList);
-
-
-
-        viewPagerFragmentAdapter = new ViewPagerFragmentAdapter(this);
-        viewPager2.setAdapter(viewPagerFragmentAdapter);
+        viewPager2.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager2,
-                (tab, position) -> tab.setText(titles[position])).attach();
-
-
-//        // Cập nhật dữ liệu follower và following
-//        followerList = user.getFollowers();
-//        followingList = user.getFollowing();
-//
-//        // Cập nhật adapter và thông báo cho RecyclerView cập nhật dữ liệu
-//        ((Follower) followerFragment).recyclerView.setAdapter(followerListAdapter);
-//        ((Following) followingFragment).recyclerView.setAdapter(followingListAdapter);
-//
-//
-//        followerListAdapter.notifyDataSetChanged();
-//        followingListAdapter.notifyDataSetChanged();
-
+                (tab, position) -> tab.setText(adapter.getPageTitle(position))
+        ).attach();
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
@@ -130,9 +92,6 @@ public class ProfileActivity extends AppCompatActivity {
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         fetchPosts();
-
-
-
     }
 
     private void fetchPosts() {
@@ -143,8 +102,6 @@ public class ProfileActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     ExtendedUser user = response.body().getData();
                     updateRecyclerView(user.getPosts());
-
-
 
                     profile_user_avatar.setName(user.getName());
                     profile_user_name.setText(user.getName());
@@ -159,6 +116,17 @@ public class ProfileActivity extends AppCompatActivity {
                     if (user.getId() != userManager.getUser().getId()) {
                         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
                     }
+                    // Truyền danh sách người theo dõi sang FollowerFragment
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("followerList", user.getFollowers());
+                    FollowerFragment followerFragment = new FollowerFragment();
+                    followerFragment.setArguments(bundle);
+
+                    // Truyền danh sách người đang theo dõi sang FollowingFragment
+                    Bundle followingBundle = new Bundle();
+                    followingBundle.putParcelableArrayList("followingList", user.getFollowing());
+                    FollowingFragment followingFragment = new FollowingFragment();
+                    followingFragment.setArguments(followingBundle);
 
                     return;
                 }

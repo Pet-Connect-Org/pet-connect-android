@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingVertical="8dp">
-
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:padding="12dp"
@@ -12,34 +9,26 @@
         android:gravity="center">
 
         <com.example.petconnect.CustomAvatar
-            android:id="@+id/following_ava"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:id="@+id/following_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginRight="12dp" />
 
         <TextView
             android:id="@+id/following_name"
-            android:layout_width="205dp"
+            android:layout_width="231dp"
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/following_btn"
-            android:layout_width="100dp"
-            android:layout_height="37dp"
-            android:background="@drawable/border_button"
+            android:id="@+id/following_button"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@drawable/custom_rounded_neutral_bg"
             android:backgroundTint="@color/secondaryMain"
             android:text="Following"
             android:textAllCaps="false"
             android:textColor="@color/white" />
-
-
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/neutral" />
-
 </LinearLayout>

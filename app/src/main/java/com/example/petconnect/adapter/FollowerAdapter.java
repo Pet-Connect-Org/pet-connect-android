@@ -37,11 +37,17 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Follow follower = followerList.get(position);
-        // Set follower's name
+
         holder.follower_name.setText(follower.getUser_id());
-        // Handle button click here
-        holder.threeDot.setOnClickListener(v -> {
-            // Handle button click here
+
+        holder.customDropdown.setOnItemSelectedListener(new CustomDropdown.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(String key) {
+                // Xử lý sự kiện nhấn delete
+                if (key == "delete follower") {
+                    Toast.makeText(FollowerAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
@@ -53,13 +59,13 @@ public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CustomAvatar follower_avatar;
         TextView follower_name;
-        ImageButton threeDot;
+        CustomDropdown customDropdown;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             follower_avatar = itemView.findViewById(R.id.follower_avatar);
             follower_name = itemView.findViewById(R.id.follower_name);
-            threeDot = itemView.findViewById(R.id.three_dot_btn);
+            customDropdown = itemView.findViewById(R.id.follow_action_dropdown);
         }
     }
 }

@@ -22,12 +22,11 @@
             android:text="TextView"
             android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/three_dot_btn"
-            android:layout_width="40dp"
-            android:backgroundTint="@color/neutral"
-            android:layout_height="wrap_content"
-            android:src="@drawable/three_dot"/>
+        <com.example.petconnect.CustomDropdown
+            android:id="@+id/follow_action_dropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </LinearLayout>

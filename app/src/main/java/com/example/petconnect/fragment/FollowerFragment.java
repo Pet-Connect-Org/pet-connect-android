@@ -41,7 +41,7 @@ public class FollowerFragment extends Fragment {
             if (followerArrayList != null) {
                 followerList.addAll(followerArrayList);
                 // Khởi tạo adapter và thiết lập cho RecyclerView
-                adapter = new FollowerAdapter(followerList);
+                adapter = new FollowerAdapter(getContext(), followerList);
                 recyclerView.setAdapter(adapter);
             }
         }

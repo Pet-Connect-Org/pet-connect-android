@@ -1,15 +1,18 @@
 package com.example.petconnect.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.CustomAvatar;
+import com.example.petconnect.CustomDropdown;
 import com.example.petconnect.R;
 import com.example.petconnect.models.Follow;
 
@@ -17,8 +20,10 @@ import java.util.List;
 
 public class FollowerAdapter extends RecyclerView.Adapter<FollowerAdapter.ViewHolder> {
     private List<Follow> followerList;
+    private Context context;
 
-    public FollowerAdapter(List<Follow> followerList) {
+    public FollowerAdapter(Context context,List<Follow> followerList) {
+        this.context = context;
         this.followerList = followerList;
     }
 

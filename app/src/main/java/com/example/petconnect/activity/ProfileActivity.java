@@ -116,13 +116,13 @@ public class ProfileActivity extends AppCompatActivity {
                     if (user.getId() != userManager.getUser().getId()) {
                         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
                     }
-                    // Truyền danh sách người theo dõi sang FollowerFragment
+                    // Truyền danh sách follower sang FollowerFragment
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("followerList", user.getFollowers());
                     FollowerFragment followerFragment = new FollowerFragment();
                     followerFragment.setArguments(bundle);
 
-                    // Truyền danh sách người đang theo dõi sang FollowingFragment
+                    // Truyền danh sách following sang FollowingFragment
                     Bundle followingBundle = new Bundle();
                     followingBundle.putParcelableArrayList("followingList", user.getFollowing());
                     FollowingFragment followingFragment = new FollowingFragment();

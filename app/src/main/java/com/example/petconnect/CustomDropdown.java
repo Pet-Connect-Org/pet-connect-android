@@ -159,4 +159,19 @@ public class CustomDropdown extends LinearLayout {
             }
         });
     }
+
+    public void setDefaultItem(String defaultKey) {
+        for (Item item : items) {
+            if (item.getKey().equals(defaultKey)) {
+                setSelectedItemKey(defaultKey);
+                if (canSetText) {
+                    dropdown_menu.setText(item.getValue());
+                }
+                if (listener != null) {
+                    listener.onItemSelected(defaultKey);
+                }
+                return;
+            }
+        }
+    }
 }

@@ -12,10 +12,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class CustomAppbar extends LinearLayout{
+import java.util.ArrayList;
 
-    DrawerLayout sidebar;
-
+public class CustomAppbar extends LinearLayout {
+    CustomDropdown appbar_user;
 
     public CustomAppbar(Context context) {
         super(context);
@@ -30,7 +30,6 @@ public class CustomAppbar extends LinearLayout{
     private void initializeViews(Context context, AttributeSet attrs) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.custom_appbar, this);
-
     }
 
 }

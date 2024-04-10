@@ -1,5 +1,7 @@
 package com.example.petconnect.models;
 
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,22 +16,21 @@ public class ExtendedUser extends User {
 
     List<ExtendedPost> posts;
 
-    public List<Follow> getFollowers() {
+    public ArrayList<ExtendedFollow> getFollowers() {
         return followers;
     }
-
-    public void setFollowers(List<Follow> followers) {
+    public void setFollowers(ArrayList<ExtendedFollow> followers) {
         this.followers = followers;
     }
 
-    public List<Follow> getFollowing() {
+    public ArrayList<ExtendedFollow> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<Follow> following) {
+    public void setFollowing(ArrayList<ExtendedFollow> following) {
         this.following = following;
     }
 
-    List<Follow> followers;
-    List<Follow> following;
+    ArrayList<ExtendedFollow> followers;
+    ArrayList<ExtendedFollow> following;
 }

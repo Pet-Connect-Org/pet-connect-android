@@ -15,6 +15,7 @@ import com.example.petconnect.databinding.ActivityMainBinding;
 
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedPost;
+import com.example.petconnect.models.Post;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.UpdatePostResponse;
@@ -86,6 +87,7 @@ public class MainActivity extends DrawerBaseActivity  {
                 Toast.makeText(MainActivity.this, "Bearer " + token, Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {

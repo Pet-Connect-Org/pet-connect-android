@@ -23,11 +23,4 @@ public class UpdatePostResponse {
         this.data = data;
     }
 
-    public UpdatePostResponse() {
-    }
-
-    public UpdatePostResponse(String message, ExtendedPost data) {
-        this.message = message;
-        this.data = data;
-    }
 }

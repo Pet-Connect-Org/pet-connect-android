@@ -82,5 +82,7 @@ public interface ApiService {
     @POST("post/unlike/{id}")
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
     @PUT("post/{id}")
-    Call<UpdatePostResponse> updatepost(@Header("Authorization") String authorization, @Body UpdatePostRequest updatePostRequest,@Path("id") int id);
+    Call<UpdatePostResponse> updatepost(@Header("Authorization") String authorization,
+                                        @Body UpdatePostRequest updatePostRequest,
+                                    @Path("id") int id);
 }

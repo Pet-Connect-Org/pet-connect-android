@@ -74,5 +74,4 @@ public class Post {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
-
 }

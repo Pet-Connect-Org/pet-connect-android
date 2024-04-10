@@ -106,17 +106,17 @@ public class ProfileActivity extends DrawerBaseActivity {
                 }
             });
         } else {
+            for (Follow follow : user.getFollowing()) {
+                if (follow.getFollowing_user_id() == userManager.getUser().getId()) {
+                    isFollow = true;
+                    break;
+                }
+            }
             updateFollowButton();
         }
     }
     private void updateFollowButton() {
-        for (Follow follow : user.getFollowing()) {
-            if (follow.getUser_id() == userManager.getUser().getId()) {
-                profile_action_button.setText("Following");
-                isFollow = true;
-                break;
-            }
-        }
+
         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
         profile_action_button.setOnClickListener(new View.OnClickListener() {
             String token = userManager.getAccessToken();
@@ -129,6 +129,8 @@ public class ProfileActivity extends DrawerBaseActivity {
                             if(response.isSuccessful()){
                                 profile_action_button.setText("Following");
                                 isFollow = true;
+                                Toast.makeText(ProfileActivity.this, "Follow success", Toast.LENGTH_SHORT).show();
+
                             }
                         }
                         @Override
@@ -136,20 +138,20 @@ public class ProfileActivity extends DrawerBaseActivity {
                             Toast.makeText(ProfileActivity.this, "Error when following user", Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 } else {
-
                     ApiService.apiService.unfollowUser("Bearer " + token, user.getId()).enqueue(new Callback<UnFollowResponse>() {
                         @Override
                         public void onResponse(Call<UnFollowResponse> call, Response<UnFollowResponse> response) {
                             if(response.isSuccessful()){
                                 profile_action_button.setText("Follow " + user.getName());
+                                Toast.makeText(ProfileActivity.this, "Unfollow success", Toast.LENGTH_SHORT).show();
+
                                 isFollow = false;
                             }
                         }
                         @Override
                         public void onFailure(Call<UnFollowResponse> call, Throwable t) {
-                            Toast.makeText(ProfileActivity.this, "Error when unfollowing user", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ProfileActivity.this, "Error when unfollow user", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

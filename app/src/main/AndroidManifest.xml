@@ -16,6 +16,7 @@
         android:theme="@style/Theme.PetConnect"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".activity.UpdateProfileActivity"
             android:exported="false" />

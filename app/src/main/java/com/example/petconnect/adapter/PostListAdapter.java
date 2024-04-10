@@ -13,8 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +27,12 @@ import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.EditPostActivity;
+import com.example.petconnect.activity.MainActivity;
 import com.example.petconnect.activity.OtpActivity;
 import com.example.petconnect.activity.ProfileActivity;
 import com.example.petconnect.activity.SignUpActivity;
-import com.example.petconnect.fragment.EditPostFragment;
+
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
@@ -72,6 +77,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         if (post != null) {
             holder.bind(post, position);
         }
+
+    }
+    public void replaceFragment(Fragment newFragment, String tag) {
+        //FragmentManager fragmentManager = context.getSupportFragmentManager();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.fragment_container, newFragment, tag);
+//        transaction.addToBackStack(null); // (Tuỳ chọn) Cho phép người dùng quay lại fragment trước đó bằng nút back
+//        transaction.commit();
     }
 
     @Override
@@ -195,15 +208,17 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 @Override
                 public void onItemSelected(String key) {
                     // Xử lý sự kiện nhấn delete
-                    if (key == "delete") {
+                    if ("delete".equals(key)) {
                         Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
                     }
                     // Xử lý sự kiện nhấn update
-                    if (key == "update") {
+                    if ("update".equals(key)) {
                         Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
-                        EditPostFragment editPostFragment = EditPostFragment.newInstance(post);
-                        FragmentManager fragmentManager = editPostFragment.getChildFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.fragment_container,editPostFragment).addToBackStack(null).commit();
+                        Intent intent = new Intent(context.getApplicationContext(), EditPostActivity.class);
+
+                        intent.putExtra("datapost",post.toString());
+                        context.startActivity(intent);
+
 
 
 

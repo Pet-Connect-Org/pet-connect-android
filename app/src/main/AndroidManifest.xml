@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.EditPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
@@ -52,7 +55,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="PetConnect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

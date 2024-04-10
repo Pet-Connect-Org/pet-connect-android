@@ -1,5 +1,7 @@
 package com.example.petconnect.models;
 
+import com.google.gson.Gson;
+
 import java.util.Date;
 
 public class Post {
@@ -66,6 +68,11 @@ public class Post {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

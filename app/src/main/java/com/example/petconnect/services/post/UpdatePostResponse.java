@@ -1,10 +1,11 @@
 package com.example.petconnect.services.post;
 
+import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.Post;
 
 public class UpdatePostResponse {
     String message;
-    Post data;
+    ExtendedPost data;
 
     public String getMessage() {
         return message;
@@ -18,14 +19,14 @@ public class UpdatePostResponse {
         return data;
     }
 
-    public void setData(Post data) {
+    public void setData(ExtendedPost data) {
         this.data = data;
     }
 
     public UpdatePostResponse() {
     }
 
-    public UpdatePostResponse(String message, Post data) {
+    public UpdatePostResponse(String message, ExtendedPost data) {
         this.message = message;
         this.data = data;
     }

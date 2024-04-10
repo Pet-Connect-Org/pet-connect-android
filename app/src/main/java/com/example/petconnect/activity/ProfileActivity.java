@@ -20,7 +20,9 @@ import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
 import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.user.FollowResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
+import com.example.petconnect.services.user.UnFollowResponse;
 
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class ProfileActivity extends DrawerBaseActivity {
     ExtendedUser user;
 
     int user_id;
+
+    boolean isFollow = false;  // Khởi tạo biến isFollow
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,38 @@ public class ProfileActivity extends DrawerBaseActivity {
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
         profile_action_button = findViewById(R.id.profile_action_button);
 
+
+        recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        fetchUserDetails();
+
+        fetchPosts();
+    }
+    private void fetchUserDetails() {
+        String token = userManager.getAccessToken();
+        ApiService.apiService.getUserById("Bearer " + token, this.user_id).enqueue(new Callback<GetUserByIdResponse>() {
+            @Override
+            public void onResponse(Call<GetUserByIdResponse> call, Response<GetUserByIdResponse> response) {
+                if (response.isSuccessful()) {
+                    user = response.body().getData();
+                    displayUserData();
+                } else if (response.code() == 401) {
+                    handleUnauthorized();
+                } else {
+                    Toast.makeText(ProfileActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetUserByIdResponse> call, Throwable t) {
+                Toast.makeText(ProfileActivity.this, "Error retrieving user data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void displayUserData() {
+        profile_user_avatar.setName(user.getName());
+        profile_user_name.setText(user.getName());
+
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
             profile_action_button.setOnClickListener(new View.OnClickListener() {
@@ -69,13 +105,60 @@ public class ProfileActivity extends DrawerBaseActivity {
                     startActivity(new Intent(ProfileActivity.this, UpdateProfileActivity.class));
                 }
             });
-
+        } else {
+            for (Follow follow : user.getFollowing()) {
+                if (follow.getFollowing_user_id() == userManager.getUser().getId()) {
+                    isFollow = true;
+                    break;
+                }
+            }
+            updateFollowButton();
         }
-
-        recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
-        fetchPosts();
     }
+    private void updateFollowButton() {
+
+        profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
+        profile_action_button.setOnClickListener(new View.OnClickListener() {
+            String token = userManager.getAccessToken();
+            @Override
+            public void onClick(View view) {
+                if (!isFollow) {
+                    ApiService.apiService.followUser("Bearer " + token, user.getId()).enqueue(new Callback<FollowResponse>() {
+                        @Override
+                        public void onResponse(Call<FollowResponse> call, Response<FollowResponse> response) {
+                            if(response.isSuccessful()){
+                                profile_action_button.setText("Following");
+                                isFollow = true;
+                                Toast.makeText(ProfileActivity.this, "Follow success", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<FollowResponse> call, Throwable t) {
+                            Toast.makeText(ProfileActivity.this, "Error when following user", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    ApiService.apiService.unfollowUser("Bearer " + token, user.getId()).enqueue(new Callback<UnFollowResponse>() {
+                        @Override
+                        public void onResponse(Call<UnFollowResponse> call, Response<UnFollowResponse> response) {
+                            if(response.isSuccessful()){
+                                profile_action_button.setText("Follow " + user.getName());
+                                Toast.makeText(ProfileActivity.this, "Unfollow success", Toast.LENGTH_SHORT).show();
+
+                                isFollow = false;
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<UnFollowResponse> call, Throwable t) {
+                            Toast.makeText(ProfileActivity.this, "Error when unfollow user", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
 
     private void fetchPosts() {
         String token = userManager.getAccessToken();
@@ -83,12 +166,12 @@ public class ProfileActivity extends DrawerBaseActivity {
             @Override
             public void onResponse(Call<GetUserByIdResponse> call, Response<GetUserByIdResponse> response) {
                 if (response.isSuccessful()) {
-                    ExtendedUser user = response.body().getData();
+                    user = response.body().getData();
                     updateRecyclerView(user.getPosts());
 
                     profile_user_avatar.setName(user.getName());
                     profile_user_name.setText(user.getName());
-                    boolean isFollow = false;
+                    isFollow = false;
                     for (Follow follow : user.getFollowing()) {
                         if (follow.getUser_id() == userManager.getUser().getId()) {
                             isFollow = true;
@@ -118,6 +201,12 @@ public class ProfileActivity extends DrawerBaseActivity {
                 Toast.makeText(ProfileActivity.this, "Bearer " + token, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void handleUnauthorized() {
+        Toast.makeText(ProfileActivity.this, "You need to login again. Someone has logged into your account.", Toast.LENGTH_SHORT).show();
+        intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {

@@ -1,0 +1,108 @@
+[33mcommit 272b3f6bc0c04baae60b577bd1d95e48bcedebd1[m[33m ([m[1;36mHEAD -> [m[1;32mfeat/add-comment[m[33m, [m[1;31morigin/feat/add-comment[m[33m)[m
+Author: Quyendo3012 <quyendo3012@gmail.com>
+Date:   Fri Mar 29 02:54:06 2024 +0700
+
+    update code add cmt
+
+[33mcommit 9ab698efec63fd6083bde7012c84456c36401361[m
+Author: Quyendo3012 <quyendo3012@gmail.com>
+Date:   Fri Mar 29 02:49:54 2024 +0700
+
+    update code add comment
+
+[33mcommit ef7d404aa0b86732696297a5eb12ededa3934428[m
+Merge: 721b4c0 f7587fa
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Fri Mar 29 01:04:58 2024 +0700
+
+    feat: update
+
+[33mcommit 721b4c03d9e22b99de4b9dabf7205f80471f0f8e[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Fri Mar 29 01:00:32 2024 +0700
+
+    feat: update
+
+[33mcommit 0a88aa5bba629c6d1d7372ba1f7a0eddd91efbdf[m
+Author: Quyendo3012 <quyendo3012@gmail.com>
+Date:   Fri Mar 29 00:51:21 2024 +0700
+
+    update
+
+[33mcommit f7587faa6029ab8fa4348915b1eda0f5c2835aef[m
+Author: Bùi Thúy Ngọc <90141097+ngoc2003@users.noreply.github.com>
+Date:   Thu Mar 28 23:32:59 2024 +0700
+
+    Resend otp (#6)
+
+[33mcommit d3054cc301eb452f7d58e5042aca8085017f97a7[m
+Author: PhuongVy03 <161202334+PhuongVy03@users.noreply.github.com>
+Date:   Thu Mar 28 21:15:47 2024 +0700
+
+    Phuong vy dev create new post (#1)
+
+[33mcommit 6942bffd904bd7e0cad6b7fa9d33334e811a5532[m
+Author: Quyendo3012 <quyendo3012@gmail.com>
+Date:   Thu Mar 28 17:19:35 2024 +0700
+
+    pull code again
+
+[33mcommit 12ed37fc2eb4221541234c03466dba16c80ae103[m
+Author: ThanhXuan2003 <126340798+ThanhXuan2003@users.noreply.github.com>
+Date:   Wed Mar 27 17:00:15 2024 +0700
+
+    Otp (#3)
+
+[33mcommit d77401fd44190bda4d08e4dedf3610c1d5d8079b[m
+Author: Bùi Thúy Ngọc <90141097+ngoc2003@users.noreply.github.com>
+Date:   Wed Mar 27 16:32:36 2024 +0700
+
+    feat: list comment features (#5)
+
+[33mcommit b915f6f1741f2dcbc5d1625dd3e8a865de34fb23[m
+Author: Bùi Thúy Ngọc <90141097+ngoc2003@users.noreply.github.com>
+Date:   Sat Mar 23 18:30:47 2024 +0700
+
+    feat: list post (#4)
+
+[33mcommit 9c07b69ca16a3bf5880dd6606422626c4a4a91e1[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Sat Mar 23 18:26:41 2024 +0700
+
+    feat: update navigate to sign in avtivity
+
+[33mcommit 68e4f6ad1ca30d6cc87e6f75a7e75f266630d8a7[m
+Author: Quyendo3012 <125750476+Quyendo3012@users.noreply.github.com>
+Date:   Thu Mar 21 02:18:38 2024 +0700
+
+    signup feature
+
+[33mcommit 4932a82f211045492dc13e7440d268fc2f1a25fd[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Wed Mar 20 19:14:17 2024 +0700
+
+    feat: user SharedPreferencesto store information and add dropdown component
+
+[33mcommit eb57724e9e9ad253f24f820819cff1f39395f55f[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Wed Mar 13 13:45:21 2024 +0700
+
+    feat: update readme
+
+[33mcommit a1165b86dad465bb270c0913e30fdc953bd2d991[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Mon Mar 11 13:58:32 2024 +0700
+
+    feat: complete log in features with email and password
+
+[33mcommit 40f6c4471b7b75f5ce2ef54ec4f987cf2fb0855d[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Sat Mar 9 22:33:35 2024 +0700
+
+    feat: onboarding UI
+
+[33mcommit c85032336b4c137785e7c2a29de48241726008c8[m
+Author: buithuyngoc <buithuyngoc1@gmail.com>
+Date:   Wed Mar 6 02:28:40 2024 +0700
+
+    first commit

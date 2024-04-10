@@ -18,6 +18,9 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".activity.UpdateProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
@@ -44,16 +47,16 @@
             android:exported="false" />
         <activity
             android:name=".activity.Onboarding1Activity"
-            android:exported="false"
-            android:label="@string/title_activity_onboarding1"
-            android:theme="@style/Theme.PetConnect" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.PetConnect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

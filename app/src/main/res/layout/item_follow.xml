@@ -23,15 +23,15 @@
             android:text="TextView"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/follow_button"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:background="@drawable/custom_rounded_neutral_bg"
-            android:backgroundTint="@color/secondaryMain"
-            android:text="Following"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+<!--        <Button-->
+<!--            android:id="@+id/follow_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="36dp"-->
+<!--            android:background="@drawable/custom_rounded_neutral_bg"-->
+<!--            android:backgroundTint="@color/secondaryMain"-->
+<!--            android:text="Following"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/white" />-->
 
     </LinearLayout>
 

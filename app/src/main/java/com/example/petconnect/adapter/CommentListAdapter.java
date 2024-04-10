@@ -1,6 +1,7 @@
 package com.example.petconnect.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.ProfileActivity;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.LikeComment;
@@ -63,7 +65,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
 
     @Override
-    public  int getItemCount() {
+    public int getItemCount() {
         return commentList.size();
     }
 
@@ -91,7 +93,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
 
         public void bind(ExtendedComment comment, int position) {
-
             comment_author_name.setText(comment.getUser().getName());
             comment_content.setText(comment.getContent());
             comment_author_avatar.setName(comment.getUser().getName());
@@ -179,7 +180,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         if (!isEditing) {
-                            // if not in edit mode -> enable
                             comment_content.setEnabled(true);
                             comment_content.requestFocus();
                             comment_content.setSelection(comment_content.getText().length());
@@ -232,8 +232,15 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     return !isEditing;
                 }
             });
-//
-            comment_delete_button.setOnClickListener(new View.OnClickListener(){
+
+            comment_author_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CommentListAdapter.this.context.startActivity(new Intent(CommentListAdapter.this.context, ProfileActivity.class).putExtra("user_id", String.valueOf(comment.getUser().getId())));
+                }
+            });
+
+            comment_delete_button.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
@@ -257,6 +264,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                     Toast.makeText(context, "Delete Comment Failed", Toast.LENGTH_SHORT).show();
                                 }
                             }
+
                             @Override
                             public void onFailure(Call<DeleteCommentResponse> call, Throwable t) {
                                 // Xử lý khi gửi yêu cầu xóa comment thất bại

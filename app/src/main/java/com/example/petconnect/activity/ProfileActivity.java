@@ -2,6 +2,8 @@ package com.example.petconnect.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,11 +23,14 @@ import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
 import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.user.FollowResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
 import com.google.android.material.tabs.TabLayout;
+import com.example.petconnect.services.user.UnFollowResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +53,7 @@ public class ProfileActivity extends DrawerBaseActivity {
 
     ArrayList<ExtendedFollow> followerList, followingList;
 
+    boolean isFollow = false;  // Khởi tạo biến isFollow
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,37 +106,90 @@ public class ProfileActivity extends DrawerBaseActivity {
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
         }
-
-        fetchPosts();
+        fetchUserDetails();
     }
 
-    private void fetchPosts() {
+    private void displayUserData() {
+        profile_user_avatar.setName(user.getName());
+        profile_user_name.setText(user.getName());
+
+        followerList = user.getFollowers();
+        followingList = user.getFollowing();
+        updateRecyclerFollowView(user.getFollowers());
+
+        updateRecyclerView(user.getPosts());
+
+        if (this.user_id == userManager.getUser().getId()) {
+            profile_action_button.setText("Edit your profile");
+            profile_action_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(ProfileActivity.this, UpdateProfileActivity.class));
+                }
+            });
+        } else {
+            for (Follow follow : user.getFollowers()) {
+                if (follow.getUser_id() == userManager.getUser().getId()) {
+                    isFollow = true;
+                    break;
+                }
+            }
+            updateFollowButton();
+        }
+    }
+    private void updateFollowButton() {
+
+        profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
+        profile_action_button.setOnClickListener(new View.OnClickListener() {
+            String token = userManager.getAccessToken();
+            @Override
+            public void onClick(View view) {
+                if (!isFollow) {
+                    ApiService.apiService.followUser("Bearer " + token, user.getId()).enqueue(new Callback<FollowResponse>() {
+                        @Override
+                        public void onResponse(Call<FollowResponse> call, Response<FollowResponse> response) {
+                            if(response.isSuccessful()){
+                                profile_action_button.setText("Following");
+                                isFollow = true;
+                                Toast.makeText(ProfileActivity.this, "Follow success", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<FollowResponse> call, Throwable t) {
+                            Toast.makeText(ProfileActivity.this, "Error when following user", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    ApiService.apiService.unfollowUser("Bearer " + token, user.getId()).enqueue(new Callback<UnFollowResponse>() {
+                        @Override
+                        public void onResponse(Call<UnFollowResponse> call, Response<UnFollowResponse> response) {
+                            if(response.isSuccessful()){
+                                profile_action_button.setText("Follow " + user.getName());
+                                Toast.makeText(ProfileActivity.this, "Unfollow success", Toast.LENGTH_SHORT).show();
+
+                                isFollow = false;
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<UnFollowResponse> call, Throwable t) {
+                            Toast.makeText(ProfileActivity.this, "Error when unfollow user", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    private void fetchUserDetails() {
         String token = userManager.getAccessToken();
         ApiService.apiService.getUserById("Bearer " + token, this.user_id).enqueue(new Callback<GetUserByIdResponse>() {
             @Override
             public void onResponse(Call<GetUserByIdResponse> call, Response<GetUserByIdResponse> response) {
                 if (response.isSuccessful()) {
-                    ExtendedUser user = response.body().getData();
-                    updateRecyclerView(user.getPosts());
-                    followerList = user.getFollowers();
-                    followingList = user.getFollowing();
-                    updateRecyclerFollowView(user.getFollowers());
-
-                    profile_user_avatar.setName(user.getName());
-                    profile_user_name.setText(user.getName());
-                    boolean isFollow = false;
-                    for (Follow follow : user.getFollowing()) {
-                        if (follow.getUser_id() == userManager.getUser().getId()) {
-                            isFollow = true;
-                            break;
-                        }
-                    }
-
-                    if (user.getId() != userManager.getUser().getId()) {
-                        profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
-                    }
-
-                    return;
+                    user = response.body().getData();
+                    displayUserData();
                 }
                 if (response.code() == 401) {
                     Toast.makeText(ProfileActivity.this, "You need to login again. Someone has login to your account.", Toast.LENGTH_SHORT).show();
@@ -149,14 +208,12 @@ public class ProfileActivity extends DrawerBaseActivity {
             }
         });
     }
-
     private void updateRecyclerView(List<ExtendedPost> postList) {
         if (postList != null) {
             postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
             recyclerViewPostList.setAdapter(postListAdapter);
         }
     }
-
     private void updateRecyclerFollowView(List<ExtendedFollow> followList) {
         if (followList != null) {
             followListAdapter = new FollowAdapter(ProfileActivity.this, followList);

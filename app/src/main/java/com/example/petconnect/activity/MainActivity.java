@@ -48,18 +48,6 @@ public class MainActivity extends DrawerBaseActivity {
     private void fetchPosts() {
         String token = userManager.getAccessToken();
 
-        Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userManager.clearAccessToken();
-                intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
         ApiService.apiService.getPosts("Bearer " + token, null, 20, 0).enqueue(new Callback<GetPostResponse>() {
             @Override
             public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {

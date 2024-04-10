@@ -69,10 +69,10 @@ public class MainActivity extends DrawerBaseActivity {
                     return;
                 }
                 if (response.code() == 401) {
-                    Toast.makeText(MainActivity.this, "You need to login again. Someone has login to your account.", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
+//                    Toast.makeText(MainActivity.this, "You need to login again. Someone has login to your account.", Toast.LENGTH_SHORT).show();
+//                    intent = new Intent(MainActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                    finish();
                 } else {
                     Toast.makeText(MainActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }

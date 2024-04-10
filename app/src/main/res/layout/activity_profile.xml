@@ -91,63 +91,41 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:background="@color/white">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Follow"
-                android:layout_weight="0.5"
-                android:textColor="@android:color/black"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <EditText
                 android:id="@+id/search_box"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/custom_rounded_neutral_bg"
                 android:drawableEnd="@drawable/search"
-                android:padding="12dp"
                 android:hint="Search something"
+                android:padding="12dp"
                 android:textAllCaps="false"
-                android:textSize="13dp"
-                android:textColorHint="@color/third" />
+                android:textColorHint="@color/third"
+                android:textSize="13dp" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabBackground="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewFollow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabBackground="@color/white">
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_follower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabGravity="fill" />
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabGravity="fill" />
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"/>
         <com.example.petconnect.CustomPostBox
-            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPostList"

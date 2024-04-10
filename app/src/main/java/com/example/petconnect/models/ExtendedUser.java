@@ -16,21 +16,21 @@ public class ExtendedUser extends User {
 
     List<ExtendedPost> posts;
 
-    public ArrayList<Follow> getFollowers() {
+    public ArrayList<ExtendedFollow> getFollowers() {
         return followers;
     }
-    public void setFollowers(ArrayList<Follow> followers) {
+    public void setFollowers(ArrayList<ExtendedFollow> followers) {
         this.followers = followers;
     }
 
-    public ArrayList<Follow> getFollowing() {
+    public ArrayList<ExtendedFollow> getFollowing() {
         return following;
     }
 
-    public void setFollowing(ArrayList<Follow> following) {
+    public void setFollowing(ArrayList<ExtendedFollow> following) {
         this.following = following;
     }
 
-    ArrayList<Follow> followers;
-    ArrayList<Follow> following;
+    ArrayList<ExtendedFollow> followers;
+    ArrayList<ExtendedFollow> following;
 }

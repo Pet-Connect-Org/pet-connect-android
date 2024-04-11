@@ -113,11 +113,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabBackground="@color/white" />
+            <!-- Layout "No data founded" -->
+            <include layout="@layout/show_no_data" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewFollow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
 
         </LinearLayout>
 
@@ -126,6 +129,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp" />
+        <!-- Layout "No data founded" -->
+        <include layout="@layout/show_no_data"
+            android:id="@+id/postNodata" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewPostList"

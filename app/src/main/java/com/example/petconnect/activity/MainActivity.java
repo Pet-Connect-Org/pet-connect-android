@@ -1,13 +1,12 @@
 package com.example.petconnect.activity;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.PostListAdapter;
@@ -73,9 +72,16 @@ public class MainActivity extends DrawerBaseActivity {
             }
         });
     }
-
     private void updateRecyclerView(List<ExtendedPost> postList) {
         postListAdapter = new PostListAdapter(MainActivity.this, postList);
         recyclerViewPostList.setAdapter(postListAdapter);
+
+        if (postList != null && !postList.isEmpty()) {
+            // Ẩn layout "No data founded" nếu có dữ liệu
+            findViewById(R.id.NoData).setVisibility(View.GONE);
+        } else {
+            // Hiển thị layout "No data founded" nếu không có dữ liệu
+            findViewById(R.id.NoData).setVisibility(View.VISIBLE);
+        }
     }
 }

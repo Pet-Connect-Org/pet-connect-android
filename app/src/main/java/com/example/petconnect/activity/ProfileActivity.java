@@ -116,6 +116,33 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         updateRecyclerView(user.getPosts());
 
+        // Kiểm tra và hiển thị danh sách following
+        if (tabLayout.getSelectedTabPosition() == 0) { // Nếu tab hiện tại là "Follower"
+            updateRecyclerFollowView(followerList);
+            if (followerList.isEmpty()) {
+                findViewById(R.id.NoData).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.NoData).setVisibility(View.GONE);
+            }
+        } else { // Nếu tab hiện tại là "Following"
+            updateRecyclerFollowView(followingList);
+            if (followingList.isEmpty()) {
+                findViewById(R.id.NoData).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.NoData).setVisibility(View.GONE);
+            }
+        }
+
+        // Kiểm tra và hiển thị danh sách bài đăng
+        if (user.getPosts() != null && !user.getPosts().isEmpty()) {
+            findViewById(R.id.postNodata).setVisibility(View.GONE);
+            recyclerViewPostList.setVisibility(View.VISIBLE);
+            updateRecyclerView(user.getPosts());
+        } else {
+            findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
+            recyclerViewPostList.setVisibility(View.GONE);
+        }
+
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
             profile_action_button.setOnClickListener(new View.OnClickListener() {

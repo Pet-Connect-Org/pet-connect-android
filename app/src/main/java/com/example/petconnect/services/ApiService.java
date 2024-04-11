@@ -17,6 +17,9 @@ import com.example.petconnect.services.comment.LikeCommentResponse;
 import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
+import com.example.petconnect.services.pet.CreateNewPetProfileRequest;
+import com.example.petconnect.services.pet.CreateNewPetProfileResponse;
+import com.example.petconnect.services.petType.GetPetTypeListResponse;
 import com.example.petconnect.services.post.CreatePostResponse;
 import com.example.petconnect.services.post.DeletePostResponse;
 import com.example.petconnect.services.post.GetPostResponse;
@@ -126,4 +129,9 @@ public interface ApiService {
     Call<UnFollowResponse> unfollowUser(@Header("Authorization") String authorization,
                                         @Path("id") int id);
 
+    @GET("pet_type")
+    Call<GetPetTypeListResponse> getPetTypeList(@Header("Authorization") String authorization);
+
+    @POST("pet_profile")
+    Call<CreateNewPetProfileResponse> createPetProfile(@Header("Authorization") String authorization, @Body CreateNewPetProfileRequest createNewPetProfileRequest);
 }

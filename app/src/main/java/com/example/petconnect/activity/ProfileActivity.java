@@ -40,7 +40,7 @@ public class ProfileActivity extends DrawerBaseActivity {
     FollowAdapter followListAdapter;
     UserManager userManager;
     Intent intent;
-    Button profile_action_button;
+    Button profile_action_button, button_create_new_pet;
     CustomAvatar profile_user_avatar;
     TextView profile_user_name;
     ExtendedUser user;
@@ -71,6 +71,7 @@ public class ProfileActivity extends DrawerBaseActivity {
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
         profile_action_button = findViewById(R.id.profile_action_button);
+        button_create_new_pet = findViewById(R.id.button_create_new_pet);
 
         tabLayout = findViewById(R.id.tab_layout);
 
@@ -101,7 +102,17 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
+            button_create_new_pet.setVisibility(View.VISIBLE);
+
         }
+
+        button_create_new_pet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ProfileActivity.this, CreateNewPetActivity.class));
+            }
+        });
+
         fetchUserDetails();
     }
 
@@ -170,6 +181,7 @@ public class ProfileActivity extends DrawerBaseActivity {
                                 isFollow = false;
                             }
                         }
+
                         @Override
                         public void onFailure(Call<UnFollowResponse> call, Throwable t) {
                             Toast.makeText(ProfileActivity.this, "Error when unfollow user", Toast.LENGTH_SHORT).show();

@@ -9,7 +9,7 @@
     android:elevation="5dp">
 
     <LinearLayout
-
+        android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -237,6 +237,7 @@
 
             <com.example.petconnect.CustomTextfield
                 android:id="@+id/comment_box"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"

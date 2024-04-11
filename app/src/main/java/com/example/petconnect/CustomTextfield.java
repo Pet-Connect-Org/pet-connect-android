@@ -19,6 +19,9 @@ public class CustomTextfield extends LinearLayout {
     private Drawable endIconDrawable;
     private OnTextChangeListener textChangeListener;
 
+    public void setOnEditorActionListener(TextView.OnEditorActionListener listener) {
+        inputEditText.setOnEditorActionListener(listener);
+    }
     public interface OnTextChangeListener {
         void onTextChange(CharSequence text);
     }
@@ -85,7 +88,7 @@ public class CustomTextfield extends LinearLayout {
         return inputEditText.getText().toString();
     }
 
-    private void setupTextChangeListener() {
+    public void setupTextChangeListener() {
         inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

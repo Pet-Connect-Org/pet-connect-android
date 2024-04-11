@@ -37,7 +37,6 @@ public class ProfileActivity extends DrawerBaseActivity {
     ActivityProfileBinding activityProfileBinding;
     RecyclerView recyclerViewPostList, recyclerViewFollow;
     PostListAdapter postListAdapter;
-
     FollowAdapter followListAdapter;
     UserManager userManager;
     Intent intent;
@@ -161,24 +160,27 @@ public class ProfileActivity extends DrawerBaseActivity {
             updateFollowButton();
         }
     }
+
     private void updateFollowButton() {
 
         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
         profile_action_button.setOnClickListener(new View.OnClickListener() {
             String token = userManager.getAccessToken();
+
             @Override
             public void onClick(View view) {
                 if (!isFollow) {
                     ApiService.apiService.followUser("Bearer " + token, user.getId()).enqueue(new Callback<FollowResponse>() {
                         @Override
                         public void onResponse(Call<FollowResponse> call, Response<FollowResponse> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 profile_action_button.setText("Following");
                                 isFollow = true;
                                 Toast.makeText(ProfileActivity.this, "Follow success", Toast.LENGTH_SHORT).show();
 
                             }
                         }
+
                         @Override
                         public void onFailure(Call<FollowResponse> call, Throwable t) {
                             Toast.makeText(ProfileActivity.this, "Error when following user", Toast.LENGTH_SHORT).show();
@@ -188,7 +190,7 @@ public class ProfileActivity extends DrawerBaseActivity {
                     ApiService.apiService.unfollowUser("Bearer " + token, user.getId()).enqueue(new Callback<UnFollowResponse>() {
                         @Override
                         public void onResponse(Call<UnFollowResponse> call, Response<UnFollowResponse> response) {
-                            if(response.isSuccessful()){
+                            if (response.isSuccessful()) {
                                 profile_action_button.setText("Follow " + user.getName());
                                 Toast.makeText(ProfileActivity.this, "Unfollow success", Toast.LENGTH_SHORT).show();
 
@@ -232,12 +234,14 @@ public class ProfileActivity extends DrawerBaseActivity {
             }
         });
     }
+
     private void updateRecyclerView(List<ExtendedPost> postList) {
         if (postList != null) {
             postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
             recyclerViewPostList.setAdapter(postListAdapter);
         }
     }
+
     private void updateRecyclerFollowView(List<ExtendedFollow> followList) {
         if (followList != null) {
             followListAdapter = new FollowAdapter(ProfileActivity.this, followList);

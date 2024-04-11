@@ -39,12 +39,22 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ExtendedFollow follower = followerList.get(position);
-        holder.follower_name.setText(follower.getUser().getName());
-        holder.follower_avatar.setName(follower.getUser().getName());
+
+        if (follower.getUser() != null) {
+            holder.name = (follower.getUser().getName());
+            holder.id = follower.getUser_id();
+        } else if (follower.getFollowing() != null) {
+            holder.name = (follower.getFollowing().getName());
+            holder.id = follower.getFollowing_user_id();
+        }
+        holder.follower_name.setText(holder.name);
+        holder.follower_avatar.setName(holder.name);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FollowAdapter.this.context.startActivity(new Intent(FollowAdapter.this.context, ProfileActivity.class).putExtra("user_id", String.valueOf(follower.getUser().getId())));
+                if (holder.id != null) {
+                    FollowAdapter.this.context.startActivity(new Intent(FollowAdapter.this.context, ProfileActivity.class).putExtra("user_id", String.valueOf(holder.id)));
+                }
             }
         });
     }
@@ -57,6 +67,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CustomAvatar follower_avatar;
         TextView follower_name;
+        String name = "";
+        Integer id = null;
 //        Button follow_button;
 
         public ViewHolder(@NonNull View itemView) {

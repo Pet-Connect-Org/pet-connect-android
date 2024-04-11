@@ -33,30 +33,42 @@ Running follow these simple example steps below
     - [x] Sign up
     - [x] OTP 
     - [x] Resend OTP
-    - [ ] Change password
+    - [x] Change password
+    - [x] Logout
 - Post:
     - [x] List post
     - [x] Create post
-    - [ ] Upload images (related to creating a post)
+    - [x] Edit post
+    - [x] Delete post
+    - [x] Like post
+    - [x] Unlike post
+    - [x] List comment
     - [x] Add comment
-    - [ ] Update comment
-    - [ ] Delete comment
-    - [ ] Sort comment by date
-    - [ ] Like post
+    - [x] Update comment
+    - [x] Delete comment
+    - [x] Sort comment by date
+    - [ ] Upload images (related to creating a post)
     - [ ] Share post
-    - [ ] Unlike post
 - User:
-    - [ ] Show profile
-    - [ ] Update profile
-    - [ ] Unfollow user
-    - [ ] Follow user
-    - [ ] List follower
-    - [ ] List following
+    - [x] Show profile
+    - [x] Update profile
+    - [x] Unfollow user
+    - [x] Follow user
+    - [x] List follower
+    - [x] List following
 - Pet:
+    - [ ] List pet
     - [ ] Create new pet
     - [ ] Delete pet
     - [ ] Update pet
     - [ ] Search
+- Layout
+    - [x] Onboarding 1
+    - [x] Onboarding 2
+    - [x] Splash screen
+    - [x] No data found
+    - [x] Topbar layout
+    - [x] Sidebar layout
 
 ## Contributing
 
@@ -74,3 +86,6 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 
 Bui Ngoc - [Facebook](https://www.facebook.com/Bui.Ngoc.1302/)
+Do Quyen - [Facebook](https://www.facebook.com/Bui.Ngoc.1302/)
+Phuong Vy - [Facebook](https://www.facebook.com/Bui.Ngoc.1302/)
+Thanh Xuan - [Facebook](https://www.facebook.com/Bui.Ngoc.1302/)

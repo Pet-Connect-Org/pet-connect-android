@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.FollowAdapter;
-import com.example.petconnect.adapter.PetListAdapter;
 import com.example.petconnect.adapter.PostListAdapter;
 import com.example.petconnect.databinding.ActivityProfileBinding;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedFollow;
-import com.example.petconnect.models.ExtendedPet;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
@@ -37,7 +35,7 @@ import retrofit2.Response;
 
 public class ProfileActivity extends DrawerBaseActivity {
     ActivityProfileBinding activityProfileBinding;
-    RecyclerView recyclerViewPostList, recyclerViewFollow, recyclerViewPet;
+    RecyclerView recyclerViewPostList, recyclerViewFollow;
     PostListAdapter postListAdapter;
     FollowAdapter followListAdapter;
     UserManager userManager;
@@ -60,14 +58,7 @@ public class ProfileActivity extends DrawerBaseActivity {
         setContentView(activityProfileBinding.getRoot());
 
         userManager = new UserManager(this);
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("addPetToList")) {
-            boolean addPetToList = intent.getBooleanExtra("addPetToList", false);
-            if (addPetToList) {
-                ExtendedPet newPet = intent.getParcelableExtra("newPet");
-                addNewPetToList(newPet);
-            }
-        }
+
         Intent myintent = getIntent();
         if (myintent.hasExtra("user_id")) {
             this.user_id = Integer.parseInt(myintent.getStringExtra("user_id"));
@@ -76,7 +67,6 @@ public class ProfileActivity extends DrawerBaseActivity {
         }
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
         recyclerViewFollow = findViewById(R.id.recyclerViewFollow);
-        recyclerViewPet = findViewById(R.id.recyclerViewPet);
 
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
@@ -136,11 +126,6 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         updateRecyclerView(user.getPosts());
 
-        // Check if user's pet list is not null
-        if (user.getPets() != null) {
-            updateRecyclerViewPet(user.getPets());
-        }
-
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
             profile_action_button.setOnClickListener(new View.OnClickListener() {
@@ -159,26 +144,7 @@ public class ProfileActivity extends DrawerBaseActivity {
             updateFollowButton();
         }
     }
-    // Thêm pet mới vào danh sách pet
-    private void addNewPetToList(ExtendedPet newPet) {
-        // Kiểm tra xem danh sách pet có tồn tại không
-        if (user.getPets() == null) {
-            user.setPets(new ArrayList<>());
-        }
-        // Thêm pet mới vào danh sách
-        user.getPets().add(newPet);
-        // Cập nhật RecyclerView để hiển thị pet mới
-        updateRecyclerViewPet(user.getPets());
-    }
 
-    private void updateRecyclerViewPet(List<ExtendedPet> petList) {
-        if (petList != null) {
-            PetListAdapter petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
-            recyclerViewPet.setAdapter(petListAdapter);
-            petListAdapter.notifyDataSetChanged();
-            updateRecyclerViewPet(user.getPets());
-        }
-    }
     private void updateFollowButton() {
 
         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());

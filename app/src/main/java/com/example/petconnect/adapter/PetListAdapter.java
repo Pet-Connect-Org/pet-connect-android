@@ -52,7 +52,6 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.ViewHold
                 Context context = view.getContext();
                 // Tạo intent để mở CreateNewPetActivity
                 Intent intent = new Intent(context, CreateNewPetActivity.class);
-
                 context.startActivity(intent);
             }
         });
@@ -62,7 +61,6 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.ViewHold
     public int getItemCount() {
         return petList.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView petImage;
         TextView petName;

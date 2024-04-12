@@ -21,10 +21,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <!-- Layout "No data founded" -->
+            <include layout="@layout/show_no_data" />
+
             <RelativeLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewPostList"
                     android:layout_width="match_parent"

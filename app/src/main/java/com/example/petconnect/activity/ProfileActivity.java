@@ -50,16 +50,15 @@ public class ProfileActivity extends DrawerBaseActivity {
     ExtendedUser user;
     TabLayout tabLayout;
     int user_id;
-
     ArrayList<ExtendedFollow> followerList, followingList;
-
-    boolean isFollow = false;  // Khởi tạo biến isFollow
+    boolean isFollow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityProfileBinding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(activityProfileBinding.getRoot());
+        findViewById(R.id.postNodata).setVisibility(View.GONE);
 
         userManager = new UserManager(this);
 
@@ -132,6 +131,19 @@ public class ProfileActivity extends DrawerBaseActivity {
         updateRecyclerView(user.getPosts());
         updateRecyclerPet(user.getPets());
 
+        if (user.getPosts() != null && !user.getPosts().isEmpty()) {
+            recyclerViewPostList.setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
+            recyclerViewPostList.setVisibility(View.GONE);
+        }
+
+        if (user.getPets() != null && !user.getPets().isEmpty()) {
+            recyclerViewPet.setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.petNoData).setVisibility(View.VISIBLE);
+            recyclerViewPet.setVisibility(View.GONE);
+        }
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
@@ -153,7 +165,6 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateFollowButton() {
-
         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
         profile_action_button.setOnClickListener(new View.OnClickListener() {
             String token = userManager.getAccessToken();
@@ -168,7 +179,6 @@ public class ProfileActivity extends DrawerBaseActivity {
                                 profile_action_button.setText("Following");
                                 isFollow = true;
                                 Toast.makeText(ProfileActivity.this, "Follow success", Toast.LENGTH_SHORT).show();
-
                             }
                         }
 
@@ -184,7 +194,6 @@ public class ProfileActivity extends DrawerBaseActivity {
                             if (response.isSuccessful()) {
                                 profile_action_button.setText("Follow " + user.getName());
                                 Toast.makeText(ProfileActivity.this, "Unfollow success", Toast.LENGTH_SHORT).show();
-
                                 isFollow = false;
                             }
                         }
@@ -198,7 +207,6 @@ public class ProfileActivity extends DrawerBaseActivity {
             }
         });
     }
-
 
     private void fetchUserDetails() {
         String token = userManager.getAccessToken();
@@ -217,7 +225,6 @@ public class ProfileActivity extends DrawerBaseActivity {
                 } else {
                     Toast.makeText(ProfileActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -228,21 +235,33 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
-        if (postList != null) {
-            postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
-            recyclerViewPostList.setAdapter(postListAdapter);
+        postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
+        recyclerViewPostList.setAdapter(postListAdapter);
+        if (postList != null && !postList.isEmpty()) {
+            findViewById(R.id.postNodata).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
         }
     }
 
     private void updateRecyclerFollowView(List<ExtendedFollow> followList) {
-        if (followList != null) {
-            followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
-            recyclerViewFollow.setAdapter(followListAdapter);
+        followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
+        recyclerViewFollow.setAdapter(followListAdapter);
+        if (followList != null && !followList.isEmpty()) {
+            findViewById(R.id.NoDataFollow).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.NoDataFollow).setVisibility(View.VISIBLE);
         }
-    } private void updateRecyclerPet(List<ExtendedPet> petList) {
-        if (petList != null) {
-            petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
-            recyclerViewPet.setAdapter(petListAdapter);
+    }
+
+    private void updateRecyclerPet(List<ExtendedPet> petList) {
+        petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
+        recyclerViewPet.setAdapter(petListAdapter);
+
+        if (petList != null && !petList.isEmpty()) {
+            findViewById(R.id.petNoData).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.petNoData).setVisibility(View.VISIBLE);
         }
     }
 }

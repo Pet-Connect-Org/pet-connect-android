@@ -1,13 +1,12 @@
 package com.example.petconnect.activity;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.PostListAdapter;
@@ -17,6 +16,7 @@ import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.post.GetPostResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,12 +36,11 @@ public class MainActivity extends DrawerBaseActivity {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
-
+        findViewById(R.id.NoData).setVisibility(View.GONE);
         userManager = new UserManager(this);
 
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         fetchPosts();
     }
 
@@ -75,7 +74,14 @@ public class MainActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
+        // Cập nhật dữ liệu cho PostListAdapter
         postListAdapter = new PostListAdapter(MainActivity.this, postList);
         recyclerViewPostList.setAdapter(postListAdapter);
+
+        if (postList != null && postList.size() == 0) {
+            findViewById(R.id.NoData).setVisibility(View.VISIBLE); // Hiện khi không có dữ liệu
+        } else {
+            findViewById(R.id.NoData).setVisibility(View.GONE); // Ẩn khi có dữ liệu
+        }
     }
 }

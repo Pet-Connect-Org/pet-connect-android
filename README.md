@@ -57,11 +57,10 @@ Running follow these simple example steps below
     - [x] List follower
     - [x] List following
 - Pet:
-    - [ ] List pet
-    - [ ] Create new pet
+    - [x] List pet
+    - [x] Create new pet
     - [ ] Delete pet
     - [ ] Update pet
-    - [ ] Search
 - Layout
     - [x] Onboarding 1
     - [x] Onboarding 2

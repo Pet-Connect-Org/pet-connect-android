@@ -136,7 +136,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             post_comment_button = itemView.findViewById(R.id.post_comment_button);
             scrollView = itemView.findViewById(R.id.scrollView);
             post_sort_comment = itemView.findViewById(R.id.post_sort_comment);
-            noDataView = itemView.findViewById(R.id.postNodata);
+            noDataView = itemView.findViewById(R.id.NoData);
         }
 
         private void updateCommentRecyclerView(List<ExtendedComment> comments) {

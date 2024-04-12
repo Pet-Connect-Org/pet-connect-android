@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.FollowAdapter;
+import com.example.petconnect.adapter.PetListAdapter;
 import com.example.petconnect.adapter.PostListAdapter;
 import com.example.petconnect.databinding.ActivityProfileBinding;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedFollow;
+import com.example.petconnect.models.ExtendedPet;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
@@ -51,7 +53,7 @@ public class ProfileActivity extends DrawerBaseActivity {
 
     ArrayList<ExtendedFollow> followerList, followingList;
 
-    boolean isFollow = false;  // Khởi tạo biến isFollow
+    boolean isFollow = false;
     boolean isInitial = false;
     private boolean isFollowerDataAvailable = false;
     private boolean isFollowingDataAvailable = false;
@@ -133,33 +135,28 @@ public class ProfileActivity extends DrawerBaseActivity {
         updateRecyclerView(user.getPosts());
         updateRecyclerPet(user.getPets());
 
-
-// Kiểm tra và hiển thị danh sách follower
         if (tabLayout.getSelectedTabPosition() == 0) {
             updateRecyclerFollowView(followerList);
-            if (followerList.isEmpty()) {
-                findViewById(R.id.NoData).setVisibility(View.VISIBLE);
-            } else {
-                findViewById(R.id.NoData).setVisibility(View.GONE);
-            }
-        } else { // Kiểm tra và hiển thị danh sách following
+        } else {
             updateRecyclerFollowView(followingList);
-            if (followingList.isEmpty()) {
-                findViewById(R.id.NoData).setVisibility(View.VISIBLE);
-            } else {
-                findViewById(R.id.NoData).setVisibility(View.GONE);
-            }
         }
 
-        // Kiểm tra và hiển thị danh sách bài đăng
         if (user.getPosts() != null && !user.getPosts().isEmpty()) {
-            findViewById(R.id.postNodata).setVisibility(View.GONE);
             recyclerViewPostList.setVisibility(View.VISIBLE);
             updateRecyclerView(user.getPosts());
         } else {
             findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
             recyclerViewPostList.setVisibility(View.GONE);
         }
+
+        if (user.getPets() != null && !user.getPets().isEmpty()) {
+            recyclerViewPet.setVisibility(View.VISIBLE);
+            updateRecyclerPet(user.getPets());
+        } else {
+            findViewById(R.id.petNoData).setVisibility(View.VISIBLE);
+            recyclerViewPet.setVisibility(View.GONE);
+        }
+
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
             profile_action_button.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +177,6 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateFollowButton() {
-
         profile_action_button.setText(isFollow ? "Following" : "Follow " + user.getName());
         profile_action_button.setOnClickListener(new View.OnClickListener() {
             String token = userManager.getAccessToken();
@@ -195,7 +191,6 @@ public class ProfileActivity extends DrawerBaseActivity {
                                 profile_action_button.setText("Following");
                                 isFollow = true;
                                 Toast.makeText(ProfileActivity.this, "Follow success", Toast.LENGTH_SHORT).show();
-
                             }
                         }
 
@@ -211,10 +206,10 @@ public class ProfileActivity extends DrawerBaseActivity {
                             if (response.isSuccessful()) {
                                 profile_action_button.setText("Follow " + user.getName());
                                 Toast.makeText(ProfileActivity.this, "Unfollow success", Toast.LENGTH_SHORT).show();
-
                                 isFollow = false;
                             }
                         }
+
                         @Override
                         public void onFailure(Call<UnFollowResponse> call, Throwable t) {
                             Toast.makeText(ProfileActivity.this, "Error when unfollow user", Toast.LENGTH_SHORT).show();
@@ -224,7 +219,6 @@ public class ProfileActivity extends DrawerBaseActivity {
             }
         });
     }
-
 
     private void fetchUserDetails() {
         String token = userManager.getAccessToken();
@@ -250,7 +244,6 @@ public class ProfileActivity extends DrawerBaseActivity {
                 } else {
                     Toast.makeText(ProfileActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
@@ -261,10 +254,6 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
-//        if (postList != null) {
-//            postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
-//            recyclerViewPostList.setAdapter(postListAdapter);
-//        }
         if (isInitial) {
             if (postList != null && !postList.isEmpty()) {
                 postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
@@ -277,23 +266,26 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerFollowView(List<ExtendedFollow> followList) {
-//        if (followList != null) {
-//            followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
-//            recyclerViewFollow.setAdapter(followListAdapter);
-//        }
-        if (isInitial) {
-            if (followList != null && !followList.isEmpty()) {
-                followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
-                recyclerViewFollow.setAdapter(followListAdapter);
-                findViewById(R.id.NoData).setVisibility(View.GONE);
+        if (followList != null && !followList.isEmpty()) {
+            followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
+            recyclerViewFollow.setAdapter(followListAdapter);
+            findViewById(R.id.NoDataFollow).setVisibility(View.GONE);
+        } else {
+            if (isFollowingDataAvailable || isFollowerDataAvailable) {
+                findViewById(R.id.NoDataFollow).setVisibility(View.VISIBLE);
             } else {
-                findViewById(R.id.NoData).setVisibility(View.VISIBLE);
+                findViewById(R.id.NoDataFollow).setVisibility(View.GONE);
             }
         }
-    } private void updateRecyclerPet(List<ExtendedPet> petList) {
-        if (petList != null) {
+    }
+
+    private void updateRecyclerPet(List<ExtendedPet> petList) {
+        if (petList != null && !petList.isEmpty()) {
             petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
             recyclerViewPet.setAdapter(petListAdapter);
+            findViewById(R.id.petNoData).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.petNoData).setVisibility(View.VISIBLE);
         }
     }
 }

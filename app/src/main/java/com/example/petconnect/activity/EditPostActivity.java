@@ -8,11 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.petconnect.R;
 import com.example.petconnect.manager.UserManager;
@@ -28,33 +24,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditPostActivity extends AppCompatActivity {
+    TextView closeeditpost, editpostusername;
+    UserManager userManager;
     private EditText editPost;
     private Button btnEditPost;
     private ExtendedPost originalPost;
-    TextView closeeditpost,editpostusername;
-    UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_edit_post);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-
-        });
         userManager = new UserManager(EditPostActivity.this);
 
         addControl();
         addEvent();
         editpostusername.setText(userManager.getUser().getName());
-        Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
+        Bundle bundle = getIntent().getExtras(); // bundle lớp hỗ trợ truyền dữ liệu giữa các thành phần trong android
+        if (bundle != null) { // getIntent là lấy activity hiện tại, getEtras là lấy PutExtra truyền qua intent
+
             String postString = bundle.getString("datapost");
             Gson gson = new Gson();
-            originalPost = gson.fromJson(postString,ExtendedPost.class);
+            originalPost = gson.fromJson(postString, ExtendedPost.class); // ép kiểu chuỗi string json về dạng đối tượng kiểu ExtendPost
             editPost.setText(originalPost.getContent());
         }
     }
@@ -63,28 +53,17 @@ public class EditPostActivity extends AppCompatActivity {
         btnEditPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String updateContent = editPost.getText().toString();
-
+                updatePost();
             }
+        });
 
-
-         });
         closeeditpost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        btnEditPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePost();
-            }
-        });
-
     }
-
-
 
     private void addControl() {
         editPost = findViewById(R.id.txtstatus_editpost);
@@ -94,31 +73,50 @@ public class EditPostActivity extends AppCompatActivity {
     }
 
 
-    private void updatePost(){
+    private void updatePost() {
+        // Lấy nội dung mới từ EditText
+        String updatedContent = editPost.getText().toString();
+        // Kiểm tra nếu nội dung mới không trống và originalPost không null
+        if (!updatedContent.trim().isEmpty() && originalPost != null) {
+            // Cập nhật nội dung của originalPost
+            originalPost.setContent(updatedContent);
+            // Lấy token của người dùng hiện tại
+            String token = userManager.getAccessToken();
 
-        String token =userManager.getAccessToken();
-        String content =editPost.getText().toString();
-        ApiService.apiService.updatepost("Bearer "+token,new UpdatePostRequest(content,originalPost.getId()), originalPost.getUser_id()).enqueue(new Callback<UpdatePostResponse>() {
-            @Override
-            public void onResponse(Call<UpdatePostResponse> call, Response<UpdatePostResponse> response) {
-                if (response.isSuccessful()){
-                    UpdatePostResponse updatePostResponse = response.body();
-                    if (updatePostResponse!=null){
-                        Toast.makeText(EditPostActivity.this,"Update post successfully.",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(EditPostActivity.this, MainActivity.class);
+            // Gọi API để cập nhật bài đăng                                                                                 lấy id của post mình đang sửa
+            ApiService.apiService.updatepost("Bearer " + token, new UpdatePostRequest(updatedContent), originalPost.getId()).enqueue(new Callback<UpdatePostResponse>() {
+                @Override
+                public void onResponse(Call<UpdatePostResponse> call, Response<UpdatePostResponse> response) {
+                    if (response.isSuccessful()) {
+                        UpdatePostResponse updateResponse = response.body();
+                        // Lấy dữ liệu post được cập nhật từ response
+                        Post updatedPost = updateResponse.getData();
+                        // Hiển thị thông báo cập nhật thành công
+                        Toast.makeText(EditPostActivity.this, "Update post successfully.", Toast.LENGTH_LONG).show();
+                        // Cập nhật EditText với nội dung mới
+                        editPost.setText(updatedContent);
+                        // Cập nhật thành công
+                        Intent intent = new Intent(EditPostActivity.this,MainActivity.class);
+                       // intent.putExtra("updated_post", new Gson().toJson(updatedPost));
+                        //intent.putExtra("updated_post", updatedPost.toString());
+                        // Gửi Intent và kết thúc EditPostActivity
+                        //setResult(RESULT_OK, intent);
                         startActivity(intent);
-                        finish();
+                       // finish();
+
+                    } else {
+                        Toast.makeText(EditPostActivity.this, "Not authorized to update this post.", Toast.LENGTH_LONG).show();
                     }
                 }
-                else {
-                    Toast.makeText(EditPostActivity.this,"Not authorized to update this post.",Toast.LENGTH_LONG).show();
+
+                @Override
+                public void onFailure(Call<UpdatePostResponse> call, Throwable t) {
+                    Toast.makeText(EditPostActivity.this, "Update post failed: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<UpdatePostResponse> call, Throwable t) {
-                Toast.makeText(EditPostActivity.this,"Post not found.",Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }}
+            });
+        } else {
+            // Nếu nội dung mới trống hoặc originalPost null, hiển thị thông báo tương ứng
+            Toast.makeText(EditPostActivity.this, "Post content cannot be empty or post not found.", Toast.LENGTH_LONG).show();
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676151610396",
+    "project_id": "petconnect-d3ffe",
+    "storage_bucket": "petconnect-d3ffe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676151610396:android:426a842f79580bc75123d9",
+        "android_client_info": {
+          "package_name": "com.example.petconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwl_7wOX9q5UHNkd1jbt5ZFaKsD9yzt20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

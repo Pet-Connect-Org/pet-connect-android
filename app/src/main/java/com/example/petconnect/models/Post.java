@@ -71,8 +71,8 @@ public class Post {
     }
     @Override
     public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
+        Gson gson = new Gson(); // tạo ra 1 đối tượng gson
+        return gson.toJson(this); // ép đối tượng đấy thành chuỗi json
     }
 
 }

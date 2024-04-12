@@ -68,6 +68,7 @@ public class MainActivity extends DrawerBaseActivity  {
                 if (response.isSuccessful() && response.body() != null) {
                     List<ExtendedPost> postList = response.body().getPostList();
                     updateRecyclerView(postList);
+                    postListAdapter.notifyDataSetChanged();
                     return;
                 }
                 if (response.code() == 401) {

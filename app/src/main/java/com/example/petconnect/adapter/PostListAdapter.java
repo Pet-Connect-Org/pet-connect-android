@@ -79,13 +79,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
 
     }
-    public void replaceFragment(Fragment newFragment, String tag) {
-        //FragmentManager fragmentManager = context.getSupportFragmentManager();
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.replace(R.id.fragment_container, newFragment, tag);
-//        transaction.addToBackStack(null); // (Tuỳ chọn) Cho phép người dùng quay lại fragment trước đó bằng nút back
-//        transaction.commit();
-    }
+
 
     @Override
     public int getItemCount() {
@@ -215,10 +209,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     if ("update".equals(key)) {
                         Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context.getApplicationContext(), EditPostActivity.class);
-
+// post là 1 đối tượng nhung putEtra ko cho truyền đối tượng nên
                         intent.putExtra("datapost",post.toString());
-                        context.startActivity(intent);
 
+                        context.startActivity(intent);
+                        notifyDataSetChanged();
 
 
 
@@ -231,6 +226,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             });
 
             // kiểm tra trong list likes có tồn tại like của người dùng
+
+            //kiểm tra người dùng hiện tại co like bài viết này hay không
             for (LikePost likePost : post.getLikes()) {
                 if (likePost.getUser_id() == userManager.getUser().getId()) {
                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
@@ -274,7 +271,16 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                     postLikeButton.setImageResource(R.drawable.footprint);
                                     postLikeText.setTextColor(ContextCompat.getColor(context, R.color.defaultTextColor));
                                     post.getLikes().removeIf(like -> like.getUser_id() == userManager.getUser().getId());
-                                    notifyDataSetChanged();
+//                                    int currentUserId = userManager.getUser().getId();
+//                                    List<LikePost> likes = post.getLikes();
+//                                    for (int i = 0; i < likes.size(); i++) {
+//                                        LikePost like = likes.get(i);
+//                                        if (like.getUser_id()==(currentUserId)) {
+//                                            likes.remove(i);
+//                                            i--; // Điều này đảm bảo rằng không bỏ qua phần tử tiếp theo sau khi xóa
+//                                        }
+//                                    }
+                                    notifyDataSetChanged(); //thông báo cho adapter rằng csdl thay đổi và cập nhật lại giao diện 
                                     isUserLike = false;
                                 } else {
                                     Toast.makeText(context.getApplicationContext(), "Unlike failed", Toast.LENGTH_LONG).show();

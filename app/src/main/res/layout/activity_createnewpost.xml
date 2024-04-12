@@ -79,6 +79,12 @@
         android:paddingLeft="20dp"
         android:textColorHint="#C2C3C4" />
 
+    <ImageView
+        android:id="@+id/uploadPicture1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_transparent" />
+
     <TextView
         android:id="@+id/textView8"
         android:layout_width="match_parent"
@@ -88,7 +94,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/uploadImage"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:drawableLeft="@drawable/camera"

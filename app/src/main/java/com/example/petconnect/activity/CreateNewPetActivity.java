@@ -165,7 +165,7 @@ public class CreateNewPetActivity extends DrawerBaseActivity {
                     @Override
                     public void onResponse(Call<CreateNewPetProfileResponse> call, Response<CreateNewPetProfileResponse> response) {
                         Toast.makeText(CreateNewPetActivity.this, "Create new pet profile success", Toast.LENGTH_SHORT).show();
-                        finish();
+                        startActivity(new Intent(CreateNewPetActivity.this, ProfileActivity.class));
                     }
 
                     @Override

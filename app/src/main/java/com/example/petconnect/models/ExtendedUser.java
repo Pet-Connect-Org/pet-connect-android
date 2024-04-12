@@ -33,4 +33,14 @@ public class ExtendedUser extends User {
 
     ArrayList<ExtendedFollow> followers;
     ArrayList<ExtendedFollow> following;
+
+    ArrayList<ExtendedPet> pets;
+
+    public ArrayList<ExtendedPet> getPets() {
+        return pets;
+    }
+
+    public void setPets(ArrayList<ExtendedPet> pets) {
+        this.pets = pets;
+    }
 }

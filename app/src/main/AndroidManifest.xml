@@ -16,7 +16,9 @@
         android:theme="@style/Theme.PetConnect"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".activity.CreateNewPetActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.UpdateProfileActivity"
             android:exported="false" />
@@ -59,12 +61,9 @@
             android:theme="@style/Theme.PetConnect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>

@@ -78,13 +78,45 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/white"
+            android:orientation="vertical"
             android:padding="8dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PET "
-                android:textAlignment="center" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pet"
+                    android:textAlignment="viewStart"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/button_create_new_pet"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:text="New"
+                    android:textColor="@color/primaryMain" />
+
+            </LinearLayout>
+            <!-- Layout "No data founded" -->
+            <include layout="@layout/show_no_data" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewPet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:scrollbars="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+
 
         </LinearLayout>
 

@@ -35,12 +35,14 @@ import retrofit2.Response;
 
 public class ProfileActivity extends DrawerBaseActivity {
     ActivityProfileBinding activityProfileBinding;
-    RecyclerView recyclerViewPostList, recyclerViewFollow;
+    RecyclerView recyclerViewPostList, recyclerViewFollow, recyclerViewPet;
     PostListAdapter postListAdapter;
     FollowAdapter followListAdapter;
+
+    PetListAdapter petListAdapter;
     UserManager userManager;
     Intent intent;
-    Button profile_action_button;
+    Button profile_action_button, button_create_new_pet;
     CustomAvatar profile_user_avatar;
     TextView profile_user_name;
     ExtendedUser user;
@@ -70,10 +72,12 @@ public class ProfileActivity extends DrawerBaseActivity {
         }
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
         recyclerViewFollow = findViewById(R.id.recyclerViewFollow);
+        recyclerViewPet = findViewById(R.id.recyclerViewPet);
 
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
         profile_action_button = findViewById(R.id.profile_action_button);
+        button_create_new_pet = findViewById(R.id.button_create_new_pet);
 
         tabLayout = findViewById(R.id.tab_layout);
 
@@ -101,10 +105,20 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewFollow.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewPet.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
+            button_create_new_pet.setVisibility(View.VISIBLE);
         }
+
+        button_create_new_pet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ProfileActivity.this, CreateNewPetActivity.class));
+            }
+        });
+
         fetchUserDetails();
     }
 
@@ -117,6 +131,9 @@ public class ProfileActivity extends DrawerBaseActivity {
         updateRecyclerFollowView(user.getFollowers());
 
         updateRecyclerView(user.getPosts());
+        updateRecyclerPet(user.getPets());
+
+
 // Kiểm tra và hiển thị danh sách follower
         if (tabLayout.getSelectedTabPosition() == 0) {
             updateRecyclerFollowView(followerList);
@@ -272,6 +289,11 @@ public class ProfileActivity extends DrawerBaseActivity {
             } else {
                 findViewById(R.id.NoData).setVisibility(View.VISIBLE);
             }
+        }
+    } private void updateRecyclerPet(List<ExtendedPet> petList) {
+        if (petList != null) {
+            petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
+            recyclerViewPet.setAdapter(petListAdapter);
         }
     }
 }

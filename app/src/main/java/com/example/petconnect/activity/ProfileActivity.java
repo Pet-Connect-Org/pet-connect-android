@@ -50,11 +50,8 @@ public class ProfileActivity extends DrawerBaseActivity {
     ExtendedUser user;
     TabLayout tabLayout;
     int user_id;
-
     ArrayList<ExtendedFollow> followerList, followingList;
-
     boolean isFollow = false;
-    boolean isInitial = false;
     private boolean isFollowerDataAvailable = false;
     private boolean isFollowingDataAvailable = false;
 
@@ -63,6 +60,7 @@ public class ProfileActivity extends DrawerBaseActivity {
         super.onCreate(savedInstanceState);
         activityProfileBinding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(activityProfileBinding.getRoot());
+        findViewById(R.id.postNodata).setVisibility(View.GONE);
 
         userManager = new UserManager(this);
 
@@ -227,7 +225,6 @@ public class ProfileActivity extends DrawerBaseActivity {
             public void onResponse(Call<GetUserByIdResponse> call, Response<GetUserByIdResponse> response) {
                 if (response.isSuccessful()) {
                     user = response.body().getData();
-                    isInitial = true;
                     if (user.getFollowers() != null && !user.getFollowers().isEmpty()) {
                         isFollowerDataAvailable = true;
                     }
@@ -254,14 +251,12 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
-        if (isInitial) {
-            if (postList != null && !postList.isEmpty()) {
-                postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
-                recyclerViewPostList.setAdapter(postListAdapter);
-                findViewById(R.id.postNodata).setVisibility(View.GONE);
-            } else {
-                findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
-            }
+        if (postList != null && !postList.isEmpty()) {
+            postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
+            recyclerViewPostList.setAdapter(postListAdapter);
+            findViewById(R.id.postNodata).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
         }
     }
 

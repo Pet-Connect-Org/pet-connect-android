@@ -30,14 +30,13 @@ public class MainActivity extends DrawerBaseActivity {
     PostListAdapter postListAdapter;
     UserManager userManager;
     Intent intent;
-    boolean isInitial = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
-
+        findViewById(R.id.NoData).setVisibility(View.GONE);
         userManager = new UserManager(this);
 
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
@@ -53,7 +52,6 @@ public class MainActivity extends DrawerBaseActivity {
             public void onResponse(Call<GetPostResponse> call, Response<GetPostResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<ExtendedPost> postList = response.body().getPostList();
-                    isInitial = true;
                     updateRecyclerView(postList);
                     return;
                 }
@@ -74,18 +72,15 @@ public class MainActivity extends DrawerBaseActivity {
             }
         });
     }
+
     private void updateRecyclerView(List<ExtendedPost> postList) {
-//        postListAdapter = new PostListAdapter(MainActivity.this, postList);
-//        recyclerViewPostList.setAdapter(postListAdapter);
         // Cập nhật dữ liệu cho PostListAdapter
-        if (isInitial) {
-            if (postList != null && postList.size() == 0) {
-                findViewById(R.id.NoData).setVisibility(View.VISIBLE); // Hiện khi không có dữ liệu
-            } else {
-                findViewById(R.id.NoData).setVisibility(View.GONE); // Ẩn khi có dữ liệu
-                postListAdapter = new PostListAdapter(MainActivity.this, postList);
-                recyclerViewPostList.setAdapter(postListAdapter);
-            }
+        if (postList != null && postList.size() == 0) {
+            findViewById(R.id.NoData).setVisibility(View.VISIBLE); // Hiện khi không có dữ liệu
+        } else {
+            findViewById(R.id.NoData).setVisibility(View.GONE); // Ẩn khi có dữ liệu
+            postListAdapter = new PostListAdapter(MainActivity.this, postList);
+            recyclerViewPostList.setAdapter(postListAdapter);
         }
     }
 }

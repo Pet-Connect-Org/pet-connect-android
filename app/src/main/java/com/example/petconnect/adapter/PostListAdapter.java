@@ -1,19 +1,24 @@
 package com.example.petconnect.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.CustomAvatar;
@@ -22,18 +27,14 @@ import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
-import com.example.petconnect.activity.OtpActivity;
 import com.example.petconnect.activity.ProfileActivity;
-import com.example.petconnect.activity.SignUpActivity;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
+import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
-
-import com.example.petconnect.models.LikePost;
-import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.post.DeletePostResponse;
 import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
@@ -50,8 +51,8 @@ import retrofit2.Response;
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
     private Context context;
     private List<ExtendedPost> postList;
-    private boolean isInitial = false;
-    private View noDataView;
+
+
     public PostListAdapter(Context context, List<ExtendedPost> postList) {
         this.context = context;
         this.postList = postList;
@@ -67,31 +68,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
-//        ExtendedPost post = postList.get(position);
-//        if (post != null) {
-//            holder.bind(post, position);
-//        }
-        if (isInitial && postList.isEmpty()) {
-            // Nếu dữ liệu đã được load ban đầu và danh sách rỗng, hiển thị "NoData"
-            holder.showNoDataView();
-        } else {
-            // Nếu không, hiển thị dữ liệu bình thường
-            ExtendedPost post = postList.get(position);
-            if (post != null) {
-                holder.bind(post, position);
-            }
+        ExtendedPost post = postList.get(position);
+        if (post != null) {
+            holder.bind(post, position);
         }
     }
-    // Method to update data and isInitial
-//    public void updateData(List<ExtendedPost> postList) {
-//        if (!isInitial && postList != null && !postList.isEmpty()) {
-//            // Đánh dấu rằng dữ liệu đã được load ban đầu
-//            isInitial = true;
-//        }
-//        this.postList = postList;
-//        notifyDataSetChanged();
-//    }
-
 
     @Override
     public int getItemCount() {
@@ -114,8 +95,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomTextfield commentBox;
         CustomDropdown post_action_dropdown, post_sort_comment;
         NestedScrollView scrollView;
-        private String commentContent;
-
+        LinearLayout parentLayout;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -136,7 +116,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             post_comment_button = itemView.findViewById(R.id.post_comment_button);
             scrollView = itemView.findViewById(R.id.scrollView);
             post_sort_comment = itemView.findViewById(R.id.post_sort_comment);
-            noDataView = itemView.findViewById(R.id.NoData);
+            parentLayout = itemView.findViewById(R.id.parentLayout);
         }
 
         private void updateCommentRecyclerView(List<ExtendedComment> comments) {
@@ -144,6 +124,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             recyclerViewCommentList.setAdapter(commentListAdapter);
         }
 
+
+
+        @SuppressLint("ClickableViewAccessibility")
         public void bind(ExtendedPost post, int position) {
             int likes = post.getLikes().size();
             List<ExtendedComment> comments = post.getComments();
@@ -280,6 +263,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                         });
                     } else {
                         ApiService.apiService.unlikepost("Bearer " + accessToken, post.getId()).enqueue(new Callback<UnlikePostResponse>() {
+
                             @Override
                             public void onResponse(Call<UnlikePostResponse> call, Response<UnlikePostResponse> response) {
                                 if (response.isSuccessful()) {
@@ -307,6 +291,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     String commentContent = commentBox.getText().toString();
                     String token = userManager.getAccessToken();
                     // Gửi yêu cầu tạo mới comment đến server với content và post_id
@@ -324,14 +309,34 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                                 // Xử lý khi gửi yêu cầu tạo mới comment thất bại
                                 Toast.makeText(context, "Comment Failed", Toast.LENGTH_SHORT).show();
                             }
+
+                            commentBox.clearFocus();
                         }
 
                         @Override
                         public void onFailure(Call<AddCommentResponse> call, Throwable t) {
                             // Xử lý khi gửi yêu cầu tạo mới comment thất bại
                             Toast.makeText(context, "Create comment failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            // Xóa focus khỏi commentBox
+                            commentBox.clearFocus();
                         }
                     });
+                    // Ẩn bàn phím ảo
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            });
+            // nhấn enter gửi comment
+            commentBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                        // Gọi sự kiện onClick của nút gửi comment
+                        sendButton.performClick();
+                        return true; // Trả về true để chỉ ra rằng sự kiện đã được xử lý
+                    }
+                    return false;
                 }
             });
 
@@ -355,11 +360,69 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                     commentBox.requestFocus();
                 }
             });
-        }
-        public void showNoDataView() {
-            if (noDataView != null) {
-                noDataView.setVisibility(View.VISIBLE);
-            }
+
+            parentLayout.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // Lấy Context từ parentLayout
+                    Context context = v.getContext();
+
+                    // Lấy tọa độ chạm
+                    float touchX = event.getRawX();
+                    float touchY = event.getRawY();
+
+                    // Lấy tọa độ của commentBox trong cửa sổ của ứng dụng
+                    int[] location = new int[2];
+                    commentBox.getLocationInWindow(location);
+                    int commentBoxX = location[0];
+                    int commentBoxY = location[1];
+
+                    // Kiểm tra xem vị trí chạm có nằm trong commentBox hay không
+                    if (touchX < commentBoxX || touchX > commentBoxX + commentBox.getWidth() ||
+                            touchY < commentBoxY || touchY > commentBoxY + commentBox.getHeight()) {
+                        commentBox.clearFocus();
+
+                        // Ẩn bàn phím ảo
+                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(commentBox.getWindowToken(), 0);
+                    }
+                    return false;
+                }
+            });
+
+            // khi ấn ra ngoài commentBox thì clear focus, tắt bàn phím ảo
+            recyclerViewCommentList.setOnTouchListener(new View.OnTouchListener() {
+                @SuppressLint("ClickableViewAccessibility")
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // Lấy Context từ RecyclerView
+                    Context context = v.getContext();
+
+                    // Lấy tọa độ chạm
+                    float touchX = event.getRawX();
+                    float touchY = event.getRawY();
+
+                    // Lấy tọa độ của commentBox trong cửa sổ của ứng dụng
+                    int[] location = new int[2];
+                    commentBox.getLocationInWindow(location);
+                    int commentBoxX = location[0];
+                    int commentBoxY = location[1];
+
+                    // Kiểm tra xem vị trí chạm có nằm trong commentBox hay không
+                    if (touchX < commentBoxX || touchX > commentBoxX + commentBox.getWidth() ||
+                            touchY < commentBoxY || touchY > commentBoxY + commentBox.getHeight()) {
+                        // Nếu không, xóa focus khỏi commentBox để con trỏ chuột biến mất
+                        commentBox.clearFocus();
+
+                        // Ẩn bàn phím ảo
+                        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(commentBox.getWindowToken(), 0);
+                    }
+
+                    // Trả về false để cho phép các sự kiện khác (nếu có)
+                    return false;
+                }
+            });
         }
     }
 }

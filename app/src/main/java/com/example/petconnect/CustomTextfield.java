@@ -18,6 +18,10 @@ public class CustomTextfield extends LinearLayout {
     private Drawable startIconDrawable;
     private Drawable endIconDrawable;
     private OnTextChangeListener textChangeListener;
+
+    public void setOnEditorActionListener(TextView.OnEditorActionListener listener) {
+        inputEditText.setOnEditorActionListener(listener);
+    }
     public interface OnTextChangeListener {
         void onTextChange(CharSequence text);
     }
@@ -49,6 +53,7 @@ public class CustomTextfield extends LinearLayout {
             String labelText = a.getString(R.styleable.CustomTextfield_labelText);
             String inputText = a.getString(R.styleable.CustomTextfield_inputText);
             String hint = a.getString(R.styleable.CustomTextfield_hint);
+            Boolean enable = a.getBoolean(R.styleable.CustomTextfield_enable, true);
             startIconDrawable = a.getDrawable(R.styleable.CustomTextfield_startIcon);
             endIconDrawable = a.getDrawable(R.styleable.CustomTextfield_endIcon);
 
@@ -65,6 +70,7 @@ public class CustomTextfield extends LinearLayout {
             if (hint != null) {
                 inputEditText.setHint(hint);
             }
+            inputEditText.setEnabled(enable);
             inputEditText.setCompoundDrawablesWithIntrinsicBounds(startIconDrawable, null, endIconDrawable, null);
         }
         setupTextChangeListener();
@@ -82,7 +88,7 @@ public class CustomTextfield extends LinearLayout {
         return inputEditText.getText().toString();
     }
 
-    private void setupTextChangeListener() {
+    public void setupTextChangeListener() {
         inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

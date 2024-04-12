@@ -20,6 +20,12 @@
             android:name=".activity.EditPostActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.CreateNewPetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.UpdateProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.ProfileActivity"
             android:exported="false" />
         <activity
@@ -37,7 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".activity.Onboarding2Activity"
             android:exported="false" />
@@ -46,19 +52,18 @@
             android:exported="false" />
         <activity
             android:name=".activity.Onboarding1Activity"
-            android:exported="false"
-            android:label="@string/title_activity_onboarding1"
-            android:theme="@style/Theme.PetConnect" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
-            android:label="PetConnect">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.PetConnect">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

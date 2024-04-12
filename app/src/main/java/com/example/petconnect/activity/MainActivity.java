@@ -1,13 +1,12 @@
 package com.example.petconnect.activity;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.PostListAdapter;
@@ -20,6 +19,7 @@ import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.UpdatePostResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,29 +39,16 @@ public class MainActivity extends DrawerBaseActivity  {
         super.onCreate(savedInstanceState);
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
-
+        findViewById(R.id.NoData).setVisibility(View.GONE);
         userManager = new UserManager(this);
 
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
         fetchPosts();
     }
 
     private void fetchPosts() {
         String token = userManager.getAccessToken();
-
-        Button button2 = findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userManager.clearAccessToken();
-                intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
 
         ApiService.apiService.getPosts("Bearer " + token, null, 20, 0).enqueue(new Callback<GetPostResponse>() {
             @Override
@@ -91,8 +78,15 @@ public class MainActivity extends DrawerBaseActivity  {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
+        // Cập nhật dữ liệu cho PostListAdapter
         postListAdapter = new PostListAdapter(MainActivity.this, postList);
         recyclerViewPostList.setAdapter(postListAdapter);
+
+        if (postList != null && postList.size() == 0) {
+            findViewById(R.id.NoData).setVisibility(View.VISIBLE); // Hiện khi không có dữ liệu
+        } else {
+            findViewById(R.id.NoData).setVisibility(View.GONE); // Ẩn khi có dữ liệu
+        }
     }
 
 

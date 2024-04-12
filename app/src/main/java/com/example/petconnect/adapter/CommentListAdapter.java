@@ -1,6 +1,7 @@
 package com.example.petconnect.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.ProfileActivity;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.LikeComment;
 import com.example.petconnect.models.LikePost;
 import com.example.petconnect.services.ApiService;
+import com.example.petconnect.services.comment.DeleteCommentResponse;
 import com.example.petconnect.services.comment.LikeCommentResponse;
 import com.example.petconnect.services.comment.UnlikeCommentResponse;
 import com.example.petconnect.services.comment.UpdateCommentRequest;
@@ -62,7 +65,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
 
     @Override
-    public  int getItemCount() {
+    public int getItemCount() {
         return commentList.size();
     }
 
@@ -74,6 +77,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         CustomAvatar comment_author_avatar;
         UserManager userManager;
         Button comment_delete_button, comment_edit_button, comment_like_button;
+
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,7 +93,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         }
 
         public void bind(ExtendedComment comment, int position) {
-
             comment_author_name.setText(comment.getUser().getName());
             comment_content.setText(comment.getContent());
             comment_author_avatar.setName(comment.getUser().getName());
@@ -100,6 +103,75 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                 comment_edit_button.setVisibility(View.VISIBLE);
             }
 
+            // kiểm tra trong list likes có tồn tại like của người dùng
+            for (LikeComment likeComment : comment.getLikes()) {
+                if (likeComment.getUser_id() == userManager.getUser().getId()) {
+                    comment_like_button.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
+                    this.isUserLike = true;
+                    break;
+                }
+            }
+            comment_like_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String accessToken = userManager.getAccessToken();
+
+                    // Kiểm tra nếu người dùng chưa like mới cho like
+                    if (!isUserLike) {
+                        ApiService.apiService.likeComment("Bearer " + accessToken, comment.getId()).enqueue(new Callback<LikeCommentResponse>() {
+                            @Override
+                            public void onResponse(Call<LikeCommentResponse> call, Response<LikeCommentResponse> response) {
+                                if (response.isSuccessful()) {
+                                    // Đổi màu cho nút like
+                                    comment_like_button.setTextColor(ContextCompat.getColor(context, R.color.primaryMain));
+
+                                    // Thêm like mới vào danh sách likes của comment
+                                    LikeComment newLike = response.body().getData();
+                                    comment.getLikes().add(newLike);
+
+                                    // Cập nhật trạng thái là đã like
+                                    isUserLike = true;
+
+                                    // Thông báo adapter cập nhật lại item tại vị trí position
+                                    notifyItemChanged(position);
+                                } else {
+                                    Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<LikeCommentResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        ApiService.apiService.unlikeComment("Bearer " + accessToken, comment.getId()).enqueue(new Callback<UnlikeCommentResponse>() {
+                            @Override
+                            public void onResponse(Call<UnlikeCommentResponse> call, Response<UnlikeCommentResponse> response) {
+                                if (response.isSuccessful()) {
+                                    // Đổi màu cho nút like về mặc định
+                                    comment_like_button.setTextColor(ContextCompat.getColor(context, R.color.darkNeutral));
+
+                                    // Xóa like khỏi danh sách likes của comment
+                                    LikeComment removedLike = response.body().getData();
+                                    comment.getLikes().remove(removedLike);
+
+                                    // Cập nhật trạng thái là chưa like
+                                    isUserLike = false;
+
+                                } else {
+                                    Toast.makeText(context.getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UnlikeCommentResponse> call, Throwable t) {
+                                Toast.makeText(context.getApplicationContext(), "Failed. Please try again", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
 
             // update comment
             comment_edit_button.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +180,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         if (!isEditing) {
-                            // if not in edit mode -> enable
                             comment_content.setEnabled(true);
                             comment_content.requestFocus();
                             comment_content.setSelection(comment_content.getText().length());
@@ -134,8 +205,6 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                                     @Override
                                     public void onResponse(Call<UpdateCommentResponse> call, Response<UpdateCommentResponse> response) {
                                         if (response.isSuccessful()) {
-                                            // Notify RecyclerView that the data has changed
-                                            notifyDataSetChanged();
                                             // Update the dataset in the RecyclerView
                                             commentList.set(position, comment);
                                             Toast.makeText(context, "Update Comment Success", Toast.LENGTH_SHORT).show();
@@ -156,16 +225,57 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
                     }
                 }
             });
-
             comment_content.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    // Kiểm tra xem người dùng đã ở chế độ chỉnh sửa hay chưa
-                    // Nếu không ở chế độ chỉnh sửa, không cho phép chỉnh sửa trên EditText
-                    return isEditing; // Trả về true để không xử lý sự kiện chạm vào EditText
-                    // Trả về false để xử lý sự kiện chạm vào EditText
+                    // Chỉ cho phép chỉnh sửa khi đang ở chế độ chỉnh sửa (isEditing = true)
+                    return !isEditing;
                 }
             });
+
+            comment_author_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CommentListAdapter.this.context.startActivity(new Intent(CommentListAdapter.this.context, ProfileActivity.class).putExtra("user_id", String.valueOf(comment.getUser().getId())));
+                }
+            });
+
+            comment_delete_button.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        ExtendedComment commentToDelete = commentList.get(position);
+                        String token = userManager.getAccessToken();
+                        // Gọi API để xóa comment
+                        ApiService.apiService.deleteComment("Bearer " + token, commentToDelete.getId()).enqueue(new Callback<DeleteCommentResponse>() {
+                            @Override
+                            public void onResponse(Call<DeleteCommentResponse> call, Response<DeleteCommentResponse> response) {
+                                if (response.isSuccessful()) {
+                                    // Xóa comment khỏi danh sách
+                                    commentList.remove(position);
+                                    // Cập nhật RecyclerView
+                                    notifyItemRemoved(position);
+                                    // Hiển thị thông báo
+                                    Toast.makeText(context, "Delete Comment Success", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Xử lý khi gửi yêu cầu xóa comment thất bại
+                                    Toast.makeText(context, "Delete Comment Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<DeleteCommentResponse> call, Throwable t) {
+                                // Xử lý khi gửi yêu cầu xóa comment thất bại
+                                Toast.makeText(context, "Delete Comment Failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                }
+            });
+
         }
 
 

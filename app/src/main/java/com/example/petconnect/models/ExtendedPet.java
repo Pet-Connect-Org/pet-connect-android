@@ -10,4 +10,6 @@ public class ExtendedPet extends Pet{
     public void setPet_type(PetType pet_type) {
         this.pet_type = pet_type;
     }
+    
+    
 }

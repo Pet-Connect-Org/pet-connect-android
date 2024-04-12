@@ -52,8 +52,6 @@ public class ProfileActivity extends DrawerBaseActivity {
     int user_id;
     ArrayList<ExtendedFollow> followerList, followingList;
     boolean isFollow = false;
-    private boolean isFollowerDataAvailable = false;
-    private boolean isFollowingDataAvailable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +130,6 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         updateRecyclerView(user.getPosts());
         updateRecyclerPet(user.getPets());
-
-        if (tabLayout.getSelectedTabPosition() == 0) {
-            updateRecyclerFollowView(followerList);
-        } else {
-            updateRecyclerFollowView(followingList);
-        }
 
         if (user.getPosts() != null && !user.getPosts().isEmpty()) {
             recyclerViewPostList.setVisibility(View.VISIBLE);
@@ -225,12 +217,6 @@ public class ProfileActivity extends DrawerBaseActivity {
             public void onResponse(Call<GetUserByIdResponse> call, Response<GetUserByIdResponse> response) {
                 if (response.isSuccessful()) {
                     user = response.body().getData();
-                    if (user.getFollowers() != null && !user.getFollowers().isEmpty()) {
-                        isFollowerDataAvailable = true;
-                    }
-                    if (user.getFollowing() != null && !user.getFollowing().isEmpty()) {
-                        isFollowingDataAvailable = true;
-                    }
                     displayUserData();
                 }
                 if (response.code() == 401) {
@@ -261,23 +247,20 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerFollowView(List<ExtendedFollow> followList) {
+        followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
+        recyclerViewFollow.setAdapter(followListAdapter);
         if (followList != null && !followList.isEmpty()) {
-            followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
-            recyclerViewFollow.setAdapter(followListAdapter);
             findViewById(R.id.NoDataFollow).setVisibility(View.GONE);
         } else {
-            if (isFollowingDataAvailable || isFollowerDataAvailable) {
-                findViewById(R.id.NoDataFollow).setVisibility(View.VISIBLE);
-            } else {
-                findViewById(R.id.NoDataFollow).setVisibility(View.GONE);
-            }
+            findViewById(R.id.NoDataFollow).setVisibility(View.VISIBLE);
         }
     }
 
     private void updateRecyclerPet(List<ExtendedPet> petList) {
+        petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
+        recyclerViewPet.setAdapter(petListAdapter);
+
         if (petList != null && !petList.isEmpty()) {
-            petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
-            recyclerViewPet.setAdapter(petListAdapter);
             findViewById(R.id.petNoData).setVisibility(View.GONE);
         } else {
             findViewById(R.id.petNoData).setVisibility(View.VISIBLE);

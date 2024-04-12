@@ -133,7 +133,6 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         if (user.getPosts() != null && !user.getPosts().isEmpty()) {
             recyclerViewPostList.setVisibility(View.VISIBLE);
-            updateRecyclerView(user.getPosts());
         } else {
             findViewById(R.id.postNodata).setVisibility(View.VISIBLE);
             recyclerViewPostList.setVisibility(View.GONE);
@@ -141,7 +140,6 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         if (user.getPets() != null && !user.getPets().isEmpty()) {
             recyclerViewPet.setVisibility(View.VISIBLE);
-            updateRecyclerPet(user.getPets());
         } else {
             findViewById(R.id.petNoData).setVisibility(View.VISIBLE);
             recyclerViewPet.setVisibility(View.GONE);
@@ -237,9 +235,9 @@ public class ProfileActivity extends DrawerBaseActivity {
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
+        postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
+        recyclerViewPostList.setAdapter(postListAdapter);
         if (postList != null && !postList.isEmpty()) {
-            postListAdapter = new PostListAdapter(ProfileActivity.this, postList);
-            recyclerViewPostList.setAdapter(postListAdapter);
             findViewById(R.id.postNodata).setVisibility(View.GONE);
         } else {
             findViewById(R.id.postNodata).setVisibility(View.VISIBLE);

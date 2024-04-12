@@ -75,12 +75,13 @@ public class MainActivity extends DrawerBaseActivity {
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
         // Cập nhật dữ liệu cho PostListAdapter
+        postListAdapter = new PostListAdapter(MainActivity.this, postList);
+        recyclerViewPostList.setAdapter(postListAdapter);
+
         if (postList != null && postList.size() == 0) {
             findViewById(R.id.NoData).setVisibility(View.VISIBLE); // Hiện khi không có dữ liệu
         } else {
             findViewById(R.id.NoData).setVisibility(View.GONE); // Ẩn khi có dữ liệu
-            postListAdapter = new PostListAdapter(MainActivity.this, postList);
-            recyclerViewPostList.setAdapter(postListAdapter);
         }
     }
 }

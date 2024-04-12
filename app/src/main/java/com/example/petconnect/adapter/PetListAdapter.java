@@ -40,21 +40,9 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ExtendedPet pet = petList.get(position);
-
         holder.petName.setText(pet.getName());
-        holder.petType.setText(getPetTypeString(pet.getPet_type().getId()));
+        holder.petType.setText(pet.getPet_type().getName());
         Picasso.with(context).load(pet.getImage()).fit().into(holder.petImage);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Lấy context từ view
-                Context context = view.getContext();
-                // Tạo intent để mở CreateNewPetActivity
-                Intent intent = new Intent(context, CreateNewPetActivity.class);
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -74,14 +62,4 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.ViewHold
         }
     }
 
-    private String getPetTypeString(int petTypeId) {
-        switch (petTypeId) {
-            case 1:
-                return "Dog";
-            case 2:
-                return "Cat";
-            default:
-                return "Unknown";
-        }
-    }
 }

@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.FollowAdapter;
+import com.example.petconnect.adapter.PetListAdapter;
 import com.example.petconnect.adapter.PostListAdapter;
 import com.example.petconnect.databinding.ActivityProfileBinding;
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedFollow;
+import com.example.petconnect.models.ExtendedPet;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
@@ -35,9 +37,11 @@ import retrofit2.Response;
 
 public class ProfileActivity extends DrawerBaseActivity {
     ActivityProfileBinding activityProfileBinding;
-    RecyclerView recyclerViewPostList, recyclerViewFollow;
+    RecyclerView recyclerViewPostList, recyclerViewFollow, recyclerViewPet;
     PostListAdapter postListAdapter;
     FollowAdapter followListAdapter;
+
+    PetListAdapter petListAdapter;
     UserManager userManager;
     Intent intent;
     Button profile_action_button, button_create_new_pet;
@@ -67,6 +71,7 @@ public class ProfileActivity extends DrawerBaseActivity {
         }
         recyclerViewPostList = findViewById(R.id.recyclerViewPostList);
         recyclerViewFollow = findViewById(R.id.recyclerViewFollow);
+        recyclerViewPet = findViewById(R.id.recyclerViewPet);
 
         profile_user_name = findViewById(R.id.profile_user_name);
         profile_user_avatar = findViewById(R.id.profile_user_avatar);
@@ -99,11 +104,11 @@ public class ProfileActivity extends DrawerBaseActivity {
 
         recyclerViewPostList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewFollow.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerViewPet.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
             button_create_new_pet.setVisibility(View.VISIBLE);
-
         }
 
         button_create_new_pet.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +130,8 @@ public class ProfileActivity extends DrawerBaseActivity {
         updateRecyclerFollowView(user.getFollowers());
 
         updateRecyclerView(user.getPosts());
+        updateRecyclerPet(user.getPets());
+
 
         if (this.user_id == userManager.getUser().getId()) {
             profile_action_button.setText("Edit your profile");
@@ -231,6 +238,11 @@ public class ProfileActivity extends DrawerBaseActivity {
         if (followList != null) {
             followListAdapter = new FollowAdapter(ProfileActivity.this, followList);
             recyclerViewFollow.setAdapter(followListAdapter);
+        }
+    } private void updateRecyclerPet(List<ExtendedPet> petList) {
+        if (petList != null) {
+            petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
+            recyclerViewPet.setAdapter(petListAdapter);
         }
     }
 }

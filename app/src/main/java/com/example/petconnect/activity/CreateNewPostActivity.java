@@ -76,7 +76,6 @@ public class CreateNewPostActivity extends AppCompatActivity {
                             Toast.makeText(CreateNewPostActivity.this, "Post created successfully.", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(CreateNewPostActivity.this, MainActivity.class);
                             startActivity(intent);
-                            finish();
                         }
 
                     } else {

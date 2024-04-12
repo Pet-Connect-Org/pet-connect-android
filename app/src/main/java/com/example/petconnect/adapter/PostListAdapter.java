@@ -79,21 +79,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         }
 
     }
-    public void replaceFragment(Fragment newFragment, String tag) {
-        //FragmentManager fragmentManager = context.getSupportFragmentManager();
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.replace(R.id.fragment_container, newFragment, tag);
-//        transaction.addToBackStack(null); // (Tuỳ chọn) Cho phép người dùng quay lại fragment trước đó bằng nút back
-//        transaction.commit();
-    }
-
     @Override
     public int getItemCount() {
         return postList.size();
     }
-
-
-
     public class PostViewHolder extends RecyclerView.ViewHolder {
 
         TextView postUserName;

@@ -95,10 +95,6 @@ public class EditPostActivity extends AppCompatActivity {
                         // Cập nhật EditText với nội dung mới
                         editPost.setText(updatedContent);
                         // Cập nhật thành công
-                        Intent intent = new Intent();
-                        intent.putExtra("updated_post", new Gson().toJson(updatedPost));
-                        // Gửi Intent và kết thúc EditPostActivity
-                        startActivity(intent);
                         finish();
 
                     } else {

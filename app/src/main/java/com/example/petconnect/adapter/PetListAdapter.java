@@ -12,10 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.petconnect.CustomAvatar;
 import com.example.petconnect.R;
-import com.example.petconnect.activity.CreateNewPetActivity;
-import com.example.petconnect.activity.ProfileActivity;
 import com.example.petconnect.models.ExtendedPet;
 import com.squareup.picasso.Picasso;
 

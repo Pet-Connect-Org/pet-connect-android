@@ -19,6 +19,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+
+
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petconnect.CustomAvatar;
@@ -27,7 +30,9 @@ import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.CustomTimeAgo;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
+import com.example.petconnect.activity.EditPostActivity;
 import com.example.petconnect.activity.ProfileActivity;
+
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedComment;
 import com.example.petconnect.models.ExtendedPost;
@@ -72,14 +77,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         if (post != null) {
             holder.bind(post, position);
         }
-    }
 
+    }
     @Override
     public int getItemCount() {
         return postList.size();
     }
-
     public class PostViewHolder extends RecyclerView.ViewHolder {
+
         TextView postUserName;
         ImageButton postLikeButton;
         TextView postContent;
@@ -96,6 +101,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         CustomDropdown post_action_dropdown, post_sort_comment;
         NestedScrollView scrollView;
         LinearLayout parentLayout;
+
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -219,8 +225,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
 
                     // Xử lý sự kiện nhấn update
-                    if (key == "update") {
+                    if ("update".equals(key)) {
                         Toast.makeText(PostListAdapter.this.context, "Selected item: " + key, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context.getApplicationContext(), EditPostActivity.class);
+
+                        intent.putExtra("datapost",post.toString());
+                        context.startActivity(intent);
                     }
                 }
             });
@@ -424,6 +434,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 }
             });
         }
+
     }
+
+
 }
+
 

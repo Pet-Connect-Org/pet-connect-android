@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.petconnect.R;
 import com.example.petconnect.adapter.PostListAdapter;
 import com.example.petconnect.databinding.ActivityMainBinding;
+
 import com.example.petconnect.manager.UserManager;
 import com.example.petconnect.models.ExtendedPost;
+import com.example.petconnect.models.Post;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.post.GetPostResponse;
+import com.example.petconnect.services.post.UpdatePostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends DrawerBaseActivity {
+public class MainActivity extends DrawerBaseActivity  {
 
     ActivityMainBinding activityMainBinding;
     RecyclerView recyclerViewPostList;
@@ -71,6 +74,7 @@ public class MainActivity extends DrawerBaseActivity {
                 Toast.makeText(MainActivity.this, "Bearer " + token, Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void updateRecyclerView(List<ExtendedPost> postList) {
@@ -84,4 +88,7 @@ public class MainActivity extends DrawerBaseActivity {
             findViewById(R.id.NoData).setVisibility(View.GONE); // Ẩn khi có dữ liệu
         }
     }
+
+
+
 }

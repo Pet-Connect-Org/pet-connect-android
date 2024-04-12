@@ -2,30 +2,48 @@ package com.example.petconnect.services;
 
 import com.example.petconnect.services.auth.ChangePasswordRequest;
 import com.example.petconnect.services.auth.ChangePasswordResponse;
+
 import com.example.petconnect.services.comment.AddCommentRequest;
 import com.example.petconnect.services.comment.AddCommentResponse;
+
 import com.example.petconnect.services.auth.LoginRequest;
 import com.example.petconnect.services.auth.LoginResponse;
+
 import com.example.petconnect.services.auth.OtpRequest;
 import com.example.petconnect.services.auth.OtpResponse;
+
 import com.example.petconnect.services.auth.ResendRequest;
 import com.example.petconnect.services.auth.ResendResponse;
+
 import com.example.petconnect.services.auth.SignupRequest;
 import com.example.petconnect.services.auth.SignupRespone;
+
 import com.example.petconnect.services.comment.DeleteCommentResponse;
+
 import com.example.petconnect.services.comment.LikeCommentResponse;
 import com.example.petconnect.services.comment.UnlikeCommentResponse;
+
 import com.example.petconnect.services.comment.UpdateCommentRequest;
 import com.example.petconnect.services.comment.UpdateCommentResponse;
+
 import com.example.petconnect.services.pet.CreateNewPetProfileRequest;
 import com.example.petconnect.services.pet.CreateNewPetProfileResponse;
+
 import com.example.petconnect.services.petType.GetPetTypeListResponse;
+
 import com.example.petconnect.services.post.CreatePostResponse;
-import com.example.petconnect.services.post.DeletePostResponse;
-import com.example.petconnect.services.post.GetPostResponse;
 import com.example.petconnect.services.post.CreatePostRequest;
+
+import com.example.petconnect.services.post.UpdatePostRequest;
+import com.example.petconnect.services.post.UpdatePostResponse;
+
+import com.example.petconnect.services.post.DeletePostResponse;
+
+import com.example.petconnect.services.post.GetPostResponse;
+
 import com.example.petconnect.services.post.LikePostResponse;
 import com.example.petconnect.services.post.UnlikePostResponse;
+
 import com.example.petconnect.services.user.FollowResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
 import com.example.petconnect.services.user.UnFollowResponse;
@@ -33,8 +51,6 @@ import com.example.petconnect.services.user.UpdateUserRequest;
 import com.example.petconnect.services.user.UpdateUserResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -117,6 +133,11 @@ public interface ApiService {
 
     @POST("post/unlike/{id}")
     Call<UnlikePostResponse> unlikepost(@Header("Authorization") String authorization, @Path("id") int id);
+    
+    @PUT("post/{id}")
+    Call<UpdatePostResponse> updatepost(@Header("Authorization") String authorization,
+                                        @Body UpdatePostRequest updatePostRequest,
+                                    @Path("id") int id);
 
     @DELETE("post/{id}")
     Call<DeletePostResponse> deletePost(@Header("Authorization") String authorization, @Path("id") int id);

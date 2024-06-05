@@ -1,7 +1,5 @@
 package com.example.petconnect.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,13 +16,14 @@ import com.example.petconnect.CustomTextfield;
 import com.example.petconnect.Item;
 import com.example.petconnect.R;
 import com.example.petconnect.databinding.ActivityCreateNewPetBinding;
-import com.example.petconnect.databinding.ActivityMainBinding;
 import com.example.petconnect.manager.UserManager;
+import com.example.petconnect.models.ExtendedPet;
 import com.example.petconnect.models.PetType;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.pet.CreateNewPetProfileRequest;
 import com.example.petconnect.services.pet.CreateNewPetProfileResponse;
 import com.example.petconnect.services.petType.GetPetTypeListResponse;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +33,6 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import com.squareup.picasso.Picasso;
 
 public class CreateNewPetActivity extends DrawerBaseActivity {
     LinearLayout pet_characteristic, pet_favorite_food, pet_basic_information;
@@ -51,6 +48,8 @@ public class CreateNewPetActivity extends DrawerBaseActivity {
     CheckBox dry, wet, fresh, cooked, seafood, raw;
 
     String selectedImage, favoriteFoods;
+    private int petId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +144,6 @@ public class CreateNewPetActivity extends DrawerBaseActivity {
 
 
 //        STEP 3
-
         pet_confirm = findViewById(R.id.pet_confirm);
 
         pet_confirm.setOnClickListener(new View.OnClickListener() {
@@ -176,8 +174,6 @@ public class CreateNewPetActivity extends DrawerBaseActivity {
                 });
             }
         });
-
-
     }
 
     private boolean getAnswer(int radioGroupId) {

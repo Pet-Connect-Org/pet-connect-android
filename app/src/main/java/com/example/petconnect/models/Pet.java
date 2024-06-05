@@ -5,6 +5,12 @@ public class Pet {
     private String name;
     private String birthday;
     private String sex;
+    private String description;
+    private String image;
+    private int petTypeId;
+    private int userId;
+    private String createdAt;
+    private String updatedAt;
 
     public int getId() {
         return id;
@@ -86,10 +92,5 @@ public class Pet {
         this.updatedAt = updatedAt;
     }
 
-    private String description;
-    private String image;
-    private int petTypeId;
-    private int userId;
-    private String createdAt;
-    private String updatedAt;
+
 }

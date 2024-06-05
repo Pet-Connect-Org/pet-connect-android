@@ -21,10 +21,17 @@ import java.util.List;
 public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.ViewHolder> {
     private List<ExtendedPet> petList;
     private Context context;
-
+    private OnItemClickListener mListener;
     public PetListAdapter(Context context, List<ExtendedPet> petList) {
         this.context = context;
         this.petList = petList;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
     @NonNull
@@ -56,6 +63,19 @@ public class PetListAdapter extends RecyclerView.Adapter<PetListAdapter.ViewHold
             petImage = itemView.findViewById(R.id.petImage);
             petName = itemView.findViewById(R.id.petName);
             petType = itemView.findViewById(R.id.petType);
+
+            // Thêm sự kiện nhấn vào itemView
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 

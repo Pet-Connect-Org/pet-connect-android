@@ -2,8 +2,10 @@ package com.example.petconnect.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,7 @@ import com.example.petconnect.models.ExtendedPet;
 import com.example.petconnect.models.ExtendedPost;
 import com.example.petconnect.models.ExtendedUser;
 import com.example.petconnect.models.Follow;
+import com.example.petconnect.models.TagCharacter;
 import com.example.petconnect.services.ApiService;
 import com.example.petconnect.services.user.FollowResponse;
 import com.example.petconnect.services.user.GetUserByIdResponse;
@@ -52,6 +55,9 @@ public class ProfileActivity extends DrawerBaseActivity {
     int user_id;
     ArrayList<ExtendedFollow> followerList, followingList;
     boolean isFollow = false;
+    String favoriteFoods;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,11 +263,23 @@ public class ProfileActivity extends DrawerBaseActivity {
     private void updateRecyclerPet(List<ExtendedPet> petList) {
         petListAdapter = new PetListAdapter(ProfileActivity.this, petList);
         recyclerViewPet.setAdapter(petListAdapter);
+        petListAdapter.setOnItemClickListener(new PetListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                ExtendedPet selectedPet = petList.get(position);
+                int petId = selectedPet.getId();
 
+                // Chuyển sang PetProfileActivity và truyền petId
+                Intent intent = new Intent(ProfileActivity.this, PetProfileActivity.class);
+                intent.putExtra("petId", petId);
+                startActivity(intent);
+            }
+        });
         if (petList != null && !petList.isEmpty()) {
             findViewById(R.id.petNoData).setVisibility(View.GONE);
         } else {
             findViewById(R.id.petNoData).setVisibility(View.VISIBLE);
         }
     }
+
 }

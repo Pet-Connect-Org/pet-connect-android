@@ -1,5 +1,4 @@
 package com.example.petconnect.services.pet;
-
 public class CreateNewPetProfileResponse {
     String message;
     Boolean data;
@@ -20,3 +19,6 @@ public class CreateNewPetProfileResponse {
         this.data = data;
     }
 }
+
+
+

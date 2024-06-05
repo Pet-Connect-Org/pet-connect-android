@@ -29,6 +29,7 @@ import com.example.petconnect.services.comment.UpdateCommentResponse;
 import com.example.petconnect.services.pet.CreateNewPetProfileRequest;
 import com.example.petconnect.services.pet.CreateNewPetProfileResponse;
 
+import com.example.petconnect.services.pet.GetPetProfileRespone;
 import com.example.petconnect.services.petType.GetPetTypeListResponse;
 
 import com.example.petconnect.services.post.CreatePostResponse;
@@ -155,4 +156,8 @@ public interface ApiService {
 
     @POST("pet_profile")
     Call<CreateNewPetProfileResponse> createPetProfile(@Header("Authorization") String authorization, @Body CreateNewPetProfileRequest createNewPetProfileRequest);
+
+    @GET("pet_profile/{id}")
+    Call<GetPetProfileRespone> getPetProfile(@Header("Authorization") String authorization,
+                                             @Path("id") int id );
 }

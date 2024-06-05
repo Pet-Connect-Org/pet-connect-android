@@ -13,4 +13,7 @@
     <color name="smoke">#FCFCFC</color>
     <color name="correct">#17A117</color>
     <color name="defaultTextColor">#A6A0A0</color>
+    <color name="character"> #FCF0E6</color>
+    <color name="allergy"> #EBF0FF</color>
+
 </resources>

@@ -1,6 +1,6 @@
 package com.example.petconnect.models;
 
-public class Worm {
+public class Deworm {
     private int id;
     private int medical_record_id;
     private String description;

@@ -58,7 +58,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommentListAdapter.CommentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CommentListAdapter.CommentViewHolder holder, int position) { //hthi dl cho 1 item
         ExtendedComment comment = commentList.get(position);
 
         holder.bind(comment, position);
@@ -69,7 +69,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<CommentListAdapter.
         return commentList.size();
     }
 
-    public class CommentViewHolder extends RecyclerView.ViewHolder {
+    public class CommentViewHolder extends RecyclerView.ViewHolder { //hthi cac muc trong rcv
         TextView comment_author_name, comment_time;
         EditText comment_content;
         boolean isEditing = false;

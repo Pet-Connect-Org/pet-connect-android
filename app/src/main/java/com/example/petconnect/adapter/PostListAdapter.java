@@ -429,7 +429,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                         imm.hideSoftInputFromWindow(commentBox.getWindowToken(), 0);
                     }
 
-                    // Trả về false để cho phép các sự kiện khác (nếu có)
+                    // Trả về false để cho phép các sự kiện khác
                     return false;
                 }
             });
